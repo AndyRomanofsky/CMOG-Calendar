@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+        <layout title="COM_CMOGCAL_CMOGCAL_VIEW_DEFAULT_TITLE">
+                <message>COM_CMOGCAL_CMOGCAL_VIEW_DEFAULT_DESC</message>
+        </layout>
+        <fields 
+                name="request"
+                addfieldpath="/administrator/components/com_cmogcal/models/fields"
+        >
+                <fieldset name="request">
+                        <field
+                                name="id"
+                                type="cmogcal"
+                                label="COM_CMOGCAL_CMOGCAL_FIELD_INFO_LABEL"
+                                description="COM_CMOGCAL_CMOGCAL_FIELD_INFO_DESC"
+                        />
+                </fieldset>
+        </fields>
+</metadata>

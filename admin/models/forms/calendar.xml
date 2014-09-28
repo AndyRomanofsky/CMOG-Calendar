@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form
+        addrulepath="/administrator/components/com_cmogcal/models/rules"
+>
+        <fieldset name="details">
+                <field
+                        name="EventText"
+                        type="text"
+                        label="COM_CMOGCAL_CMOGCAL_FIELD_EVENT_TITLE_LABEL"
+                        description="COM_CMOGCAL_CMOGCAL_FIELD_EVENT_TITLE_DESC"
+                        size="80"
+                        class="inputbox validate-info"
+                        required="true"
+                        default=""
+                 />
+                <field
+                        name="Class"
+                        type="text"
+                        label="COM_CMOGCAL_CMOGCAL_FIELD_CLASS_LABEL"
+                        description="COM_CMOGCAL_CMOGCAL_FIELD_CLASS_DESC"
+                        size="10"
+                        class="inputbox validate-info"
+                        required="true"
+                        default="event"
+                 />
+				<field
+                        name="gmd"
+                        type="hidden"
+                />
+				<field
+                        name="AddDate"
+                        type="hidden"
+                />
+ 
+				 <field
+                        name="Year"
+                        type="text"
+                        label="COM_CMOGCAL_CMOGCAL_FIELD_EVENT_YEAR_LABEL"
+                        description="COM_CMOGCAL_CMOGCAL_FIELD_EVENT_YEAR_DESC"
+                        size="4"
+                        class="inputbox"
+                        required="true"
+                 />
+				 <field
+                        name="Month"
+                        type="text"
+                        label="COM_CMOGCAL_CMOGCAL_FIELD_EVENT_MONTH_LABEL"
+                        description="COM_CMOGCAL_CMOGCAL_FIELD_EVENT_MONTH_DESC"
+                        size="2"
+                        class="inputbox"
+                        required="true"
+                 />
+				 <field
+                        name="Day"
+                        type="text"
+                        label="COM_CMOGCAL_CMOGCAL_FIELD_EVENT_DAY_LABEL"
+                        description="COM_CMOGCAL_CMOGCAL_FIELD_EVENT_DAY_DESC"
+                        size="2"
+                        class="inputbox"
+                        required="true"
+                 />
+				 <field
+                        name="Link"
+                        type="text"
+                        label="COM_CMOGCAL_CMOGCAL_FIELD_EVENT_URL_LABEL"
+                        description="COM_CMOGCAL_CMOGCAL_FIELD_EVENT_URL_DESC"
+                        size="80"
+                        class="inputbox"
+                 />
+				 <field
+                        name="popup"
+                        type="text"
+                        label="COM_CMOGCAL_CMOGCAL_FIELD_EVENT_URLPOP_LABEL"
+                        description="COM_CMOGCAL_CMOGCAL_FIELD_EVENT_URLPOP_DESC"
+                        size="10"
+                        class="inputbox"
+                 />
+				 <field
+                        name="icon"
+                        type="text"
+                        label="COM_CMOGCAL_CMOGCAL_FIELD_EVENT_ICONURL_LABEL"
+                        description="COM_CMOGCAL_CMOGCAL_FIELD_EVENT_ICONURL_DESC"
+                        size="80"
+                        class="inputbox"
+                 />
+				 <field
+                        name="hymn"
+                        type="text"
+                        label="COM_CMOGCAL_CMOGCAL_FIELD_EVENT_HYMNURL_LABEL"
+                        description="COM_CMOGCAL_CMOGCAL_FIELD_EVENT_HYMNURL_DESC"
+                        size="10"
+                        class="inputbox"
+                 />
+				 <field
+                        name="listorder"
+                        type="text"
+                        label="COM_CMOGCAL_CMOGCAL_FIELD_EVENT_ORDERING_LABEL"
+                        description="COM_CMOGCAL_CMOGCAL_FIELD_EVENT_ORDERING_DESC"
+                        size="10"
+                        class="inputbox"
+                        required="true"
+                        default="50"
+                 />
+		<field name="ID"  type="text" class="readonly" label="JGLOBAL_FIELD_ID_LABEL"
+			description ="JGLOBAL_FIELD_ID_DESC" size="10" default="0"
+			readonly="true"  />
+        </fieldset>
+        <fields name="params">
+                <fieldset
+                        name="params"
+                        label="JGLOBAL_FIELDSET_DISPLAY_OPTIONS"
+                >
+                        <field
+                                name="show_category"
+                                type="list"
+                                label="COM_CMOGCAL_CMOGCAL_FIELD_SHOW_CATEGORY_LABEL"
+                                description="COM_CMOGCAL_CMOGCAL_FIELD_SHOW_CATEGORY_DESC"
+                                default=""
+                        >
+                                <option value="">JGLOBAL_USE_GLOBAL</option>
+                                <option value="0">JHIDE</option>
+                                <option value="1">JSHOW</option>
+                        </field>
+                </fieldset>
+        </fields>
+    <fieldset name="accesscontrol">
+        <field name="asset_id" type="hidden" filter="unset" />
+        <field name="rules"
+                type="rules"
+                label="JFIELD_RULES_LABEL"
+                translate_label="false"
+                filter="rules"
+                validate="rules"
+                class="inputbox"
+                component="com_cmogcal"
+                section="event"
+        />
+    </fieldset>
+</form>

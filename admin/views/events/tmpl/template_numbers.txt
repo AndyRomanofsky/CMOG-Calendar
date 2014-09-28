@@ -1,0 +1,11 @@
+
+Field "gmd"
+
+0 Select template
+-5 Pascha
+-4 Triodion
+-3 Luke
+-2 Pentecost
+-1 Movable
+1 (not from template)
+2 (Every Year Same)

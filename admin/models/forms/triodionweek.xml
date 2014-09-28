@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form
+        addrulepath="/administrator/components/com_cmogcal/models/rules"
+>
+        <!--  Form for entry in the table: `TriodionWeeks` -->
+        <fieldset name="details">
+        <!--  `EventText` text, -->
+                <field
+                        name="EventText"
+                        type="text"
+                        label="COM_CMOGCAL_TRIODION_FIELD_EVENTTEXT_LABEL"
+                        description="COM_CMOGCAL_TRIODION_FIELD_EVENTTEXT_DESC"
+                        size="80"
+                        class="inputbox"
+                        required="true"
+                        default=""
+                 />
+
+        <!--  `week` int(2) NOT NULL COMMENT 'week of Triodion', -->
+                <field
+                        name="week"
+                        type="text"
+                        label="COM_CMOGCAL_TRIODION_FIELD_WEEK_LABEL"
+                        description="COM_CMOGCAL_TRIODION_FIELD_WEEK_DESC"
+                        size="2"
+                        class="inputbox"
+                        required="true"
+                        default=""
+                 />
+        <!--  `wday` int(3) NOT NULL COMMENT 'Day of week, 0 is Sunday', -->
+                <field
+                        name="wday"
+                        type="list"
+                        label="COM_CMOGCAL_TRIODION_FIELD_DAY_LABEL"
+                        description="COM_CMOGCAL_TRIODION_FIELD_DAY_DESC"
+                        size="1"
+                        class="inputbox"
+                        required="true"
+                        default="0"
+                 >
+				 <option value="0">Sunday</option>
+				 <option value="1">Monday</option>
+				 <option value="2">Tuesday</option>
+				 <option value="3">Wednesday</option>
+				 <option value="4">Thursday</option>
+				 <option value="5">Friday</option>
+				 <option value="6">Saturday</option>
+                 </field>
+						 <!--  `access`  -->
+						 <field name="access" type="accesslevel" label="JFIELD_ACCESS_LABEL"
+							 description="JFIELD_ACCESS_DESC" class="inputbox" size="1" />
+							 
+        <!--  `Link` text, -->
+                <field
+                        name="Link"
+                        type="text"
+                        label="COM_CMOGCAL_TRIODION_FIELD_LINK_LABEL"
+                        description="COM_CMOGCAL_TRIODION_FIELD_LINK_DESC"
+                        size="100"
+                        class="inputbox"
+                 />
+        <!--  `Class` char(8) NOT NULL, -->
+                <field
+                        name="Class"
+                        type="list"
+                        label="COM_CMOGCAL_TRIODION_FIELD_CLASS_LABEL"
+                        description="COM_CMOGCAL_TRIODION_FIELD_CLASS_DESC"
+                        size="1"
+                        class="inputbox"
+                        required="true"
+                        default="evt"
+				>
+                        <option value="gf">Great Feast</option>
+                        <option value="lf">Lesser Feast</option>
+                        <option value="saint">Feast such a Saint day (not on month view)</option>
+                        <option value="evt">Event</option>
+                        <option value="ser">Service</option>
+                        <option value="read">Reading</option>
+                        <option value="fast">Fast day</option>
+                        <option value="fastfree">Fast Free day</option>
+                        <option value="memory">Parish Bulletin Memory (not on month view)</option>
+                        <option value="health">Parish Bulletin Health (not on month view)</option>
+                 </field>
+				  <field
+                        name="catid"
+                        type="category"
+                        extension="com_cmogcal"
+                        class="inputbox"
+                        default="309"
+                        label="COM_CMOGCAL_CMOGCAL_FIELD_CATID_LABEL"
+                        description="COM_CMOGCAL_CMOGCAL_FIELD_CATID_DESC"
+                        required="true"
+                >
+                        <option value="0">JOPTION_SELECT_CATEGORY</option>
+                </field>
+        <!--  `AddDate` date DEFAULT NULL, -->
+                <field
+                        name=" "
+                        type="hidden"
+                 />
+        <!--  `icon` char(100) NOT NULL, -->
+                <field
+                        name="icon"
+                        type="text"
+                        label="COM_CMOGCAL_TRIODION_FIELD_ICON_LABEL"
+                        description="COM_CMOGCAL_TRIODION_FIELD_ICON_DESC"
+                        size="100"
+                        class="inputbox"
+                 />
+        <!--  `hymn` char(100) NOT NULL, -->
+                <field
+                        name="hymn"
+                        type="text"
+                        label="COM_CMOGCAL_TRIODION_FIELD_HYMN_LABEL"
+                        description="COM_CMOGCAL_TRIODION_FIELD_HYMN_DESC"
+                        size="100"
+                        class="inputbox"
+                 />
+				 <field name="published" type="list" label="JSTATUS"
+			             description="JFIELD_PUBLISHED_DESC" class="inputbox"
+			             filter="intval" size="1" default="1"
+		            >
+		  	             <option value="1">JPUBLISHED</option>
+			             <option value="0">JUNPUBLISHED</option>
+			             <option value="2">JARCHIVED</option>
+			             <option value="-2">JTRASHED</option>
+		          </field>
+        <!--  `listorder` int(3) NOT NULL DEFAULT '50', -->
+                <field
+                        name="listorder"
+                        type="text"
+                        label="COM_CMOGCAL_TRIODION_FIELD_LISTORDER_LABEL"
+                        description="COM_CMOGCAL_TRIODION_FIELD_LISTORDER_DESC"
+                        size="3"
+                        class="inputbox"
+                        required="true"
+                        default="50"
+                 />
+        <!--  `popup` char(4) DEFAULT NULL COMMENT 'pup up flag', -->
+                <field
+                        name="popup"
+                        type="list"
+                        label="COM_CMOGCAL_TRIODION_FIELD_POPUP_LABEL"
+                        description="COM_CMOGCAL_TRIODION_FIELD_POPUP_DESC"
+                        size="1"
+                        class="inputbox"
+                        default=""
+				 >	
+                        <option value=""> (don't pup-up) </option>
+                        <option value="locp">local cp</option>
+                 </field>
+						 <!-- `gmd` tinyini(4) 	template type 
+						 -5 Pascha
+						 -4 Triodion
+						 -3 Luke
+						 -2 Pentecost
+						 -1 Movable
+						 -->
+						 <field 
+								  name="gmd" 
+								  type="text" 
+								  class="readonly" 
+								  label="Template type"
+								  default="-4"
+								  readonly="true"
+								   />
+        <!--  `ID` int(11) NOT NULL AUTO_INCREMENT, -->
+		<field name="ID"  type="text" class="readonly" label="JGLOBAL_FIELD_ID_LABEL"
+			description ="JGLOBAL_FIELD_ID_DESC" size="10" default="0"
+			readonly="true"  />
+    </fieldset>
+    <fieldset name="accesscontrol">
+        <field name="asset_id" type="hidden" filter="unset" />
+        <field name="rules"
+                type="rules"
+                label="JFIELD_RULES_LABEL"
+                translate_label="false"
+                filter="rules"
+                validate="rules"
+                class="inputbox"
+                component="com_cmogcal"
+                section="triodionweek"
+        />
+    </fieldset>
+</form>

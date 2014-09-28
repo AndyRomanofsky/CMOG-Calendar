@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form
+        addrulepath="/administrator/components/com_cmogcal/models/rules"
+>
+        <!--  Form for entry in the table: `TriodionWeeks` -->
+        <fieldset name="details">
+        <!--  `EventText` text, -->
+                <field
+                        name="EventText"
+                        type="text"
+                        label="COM_CMOGCAL_MOVABLE_FIELD_EVENTTEXT_LABEL"
+                        description="COM_CMOGCAL_MOVABLE_FIELD_EVENTTEXT_DESC"
+                        size="80"
+                        class="inputbox"
+                        required="true"
+                        default=""
+                 />
+
+        <!--  `Offset` int(2) NOT NULL COMMENT 'offset from Pascha', -->
+                <field
+                        name="Offset"
+                        type="text"
+                        label="COM_CMOGCAL_MOVABLE_FIELD_OFFSET_LABEL"
+                        description="COM_CMOGCAL_MOVABLE_FIELD_OFFSET_DESC"
+                        size="2"
+                        class="inputbox"
+                        required="true"
+                        default=""
+                 />
+        <!--  `Length` int(4) NOT NULL COMMENT 'number of days', -->
+                <field
+                        name="Length"
+                        type="text"
+                        label="COM_CMOGCAL_MOVABLE_FIELD_LENGTH_LABEL"
+                        description="COM_CMOGCAL_MOVABLE_FIELD_LENGTH_DESC"
+                        size="4"
+                        class="inputbox"
+                        required="true"
+                        default=""
+                 />
+        <!--  `Link` text, -->
+                <field
+                        name="Link"
+                        type="text"
+                        label="COM_CMOGCAL_MOVABLE_FIELD_LINK_LABEL"
+                        description="COM_CMOGCAL_MOVABLE_FIELD_LINK_DESC"
+                        size="100"
+                        class="inputbox"
+                 />
+        <!--  `Class` char(8) NOT NULL, -->
+                <field
+                        name="Class"
+                        type="list"
+                        label="COM_CMOGCAL_MOVABLE_FIELD_CLASS_LABEL"
+                        description="COM_CMOGCAL_MOVABLE_FIELD_CLASS_DESC"
+                        size="8"
+                        class="inputbox"
+                        required="true"
+                        default="evt"
+				>
+                        <option value="gf">Great Feast</option>
+                        <option value="lf">Lesser Feast</option>
+                        <option value="saint">Feast such a Saint day (not on month view)</option>
+                        <option value="evt">Event</option>
+                        <option value="ser">Service</option>
+                        <option value="read">Reading</option>
+                        <option value="fast">Fast day</option>
+                        <option value="fastfree">Fast Free day</option>
+                        <option value="memory">Parish Bulletin Memory (not on month view)</option>
+                        <option value="health">Parish Bulletin Health (not on month view)</option>
+                 </field>
+        <!--  `AddDate` date DEFAULT NULL, -->
+                <field
+                        name=" "
+                        type="hidden"
+                 />
+        <!--  `icon` char(100) NOT NULL, -->
+                <field
+                        name="icon"
+                        type="text"
+                        label="COM_CMOGCAL_MOVABLE_FIELD_ICON_LABEL"
+                        description="COM_CMOGCAL_MOVABLE_FIELD_ICON_DESC"
+                        size="100"
+                        class="inputbox"
+                 />
+        <!--  `hymn` char(100) NOT NULL, -->
+                <field
+                        name="hymn"
+                        type="text"
+                        label="COM_CMOGCAL_MOVABLE_FIELD_HYMN_LABEL"
+                        description="COM_CMOGCAL_MOVABLE_FIELD_HYMN_DESC"
+                        size="100"
+                        class="inputbox"
+                 />
+        <!--  `listorder` int(3) NOT NULL DEFAULT '50', -->
+                <field
+                        name="listorder"
+                        type="text"
+                        label="COM_CMOGCAL_MOVABLE_FIELD_LISTORDER_LABEL"
+                        description="COM_CMOGCAL_MOVABLE_FIELD_LISTORDER_DESC"
+                        size="3"
+                        class="inputbox"
+                        required="true"
+                        default="50"
+                 />
+        <!--  `popup` char(4) DEFAULT NULL COMMENT 'pup up flag', -->
+                <field
+                        name="popup"
+                        type="list"
+                        label="COM_CMOGCAL_MOVABLE_FIELD_POPUP_LABEL"
+                        description="COM_CMOGCAL_MOVABLE_FIELD_POPUP_DESC"
+                        size="4"
+                        class="inputbox"
+                        default=""
+				 >	
+                        <option value=""> (don't pup-up) </option>
+                        <option value="locp">local cp</option>
+                 </field>
+        <!--  `ID` int(11) NOT NULL AUTO_INCREMENT, -->
+		<field name="ID"  type="text" class="readonly" label="JGLOBAL_FIELD_ID_LABEL"
+			description ="JGLOBAL_FIELD_ID_DESC" size="10" default="0"
+			readonly="true"  />
+    </fieldset>
+</form>
