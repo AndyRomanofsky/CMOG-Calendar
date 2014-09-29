@@ -10,7 +10,7 @@
         <copyright>Copyright 2013 - Andy Romanofsky and Orthodox Church of the Mother of God, Mays Landing, NJ</copyright>
         <license>License Info</license>
         <!--  The version string is recorded in the components table -->
-        <version>0.2.48</version>
+        <version>0.2.49</version>
         <!-- The description is optional and defaults to the name -->
         <description>COM_CMOGCAL_DESCRIPTION</description>
  
