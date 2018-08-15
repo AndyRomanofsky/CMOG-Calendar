@@ -248,7 +248,7 @@ class CMOG_Template_List_Table extends WP_List_Table {
      * @see $this->prepare_items()
      **************************************************************************/
     function process_bulk_action() {
-		parse_str($_SERVER['QUERY_STRING'], $query); 
+		parse_str($_SERVER['QUERY_STRING'], $query); var_dump($this->current_action());
 	        if( 'delete'===$this->current_action() ) {
 				if (!isset($query['template'])) {
 					echo "<div class='notice notice-error is-dismissible'>";
@@ -318,6 +318,23 @@ class CMOG_Template_List_Table extends WP_List_Table {
 				// (code to load row)  
 				echo "<div class='notice notice-error is-dismissible'>";
 				echo  	'<br /> (can not load at this time) <br /></div>';
+			}
+        }    
+		if( 'update'===$this->current_action() ) {
+				if (!isset($query['template'])) {
+					echo "<div class='notice notice-error is-dismissible'>";
+					echo  '<br />update</div>' ;
+					RETURN;
+				}
+			$id = $query['template'];
+			if (is_array($id)){
+				// (code to load many row)
+				echo "<div class='notice notice-success is-dismissible'>";
+				echo  	'<br /> Updated <br /></div>';
+			} else {
+				// (code to load row)  
+				echo "<div class='noticesuccess is-dismissible'>";
+				echo  	'<br />Added <br /></div>';
 			}
         }
     }
@@ -970,7 +987,7 @@ function cmog_render_pentecost_list_page(){
 		<a href="/wp-admin?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New</a>
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(template info here) </p>
-			<p> Template type is <?php echo $cmog_template_type; ?>  </p>
+			<p> Template type is Pentecost Templates  </p>
         </div>
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="templates-filter" method="get">
@@ -1129,10 +1146,11 @@ function cmog_render_edit_page($id){
         </div>
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
 	<div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">			
-			<form id="templates-edit" method="get">
-			
+			<form id="templates-edit" method="get"	action="/wp-admin?page=cmog_list_test">
        <fieldset>
           <legend>Selecting elements</legend>
+		   <input type="hidden" id="page" name="page" value="cmog_list_test">
+		   <input type="hidden" id="action" name="action" value="update">
   <br />
   ID:<br />
   <input type="text" name='ID'  readonly  value="<?php echo $row['ID']; ?>">
@@ -1143,8 +1161,7 @@ function cmog_render_edit_page($id){
   <br />
   wday:<br />
   <select name='wday'>
- 
-				 <option value="0" <?php if  ( 0 == $row['wday']) echo " selected ";?>>Sunday (1st day)</option>
+ 				 <option value="0" <?php if  ( 0 == $row['wday']) echo " selected ";?>>Sunday (1st day)</option>
   				 <option value="1" <?php if  ( 1 == $row['wday']) echo " selected ";?>>Monday</option>
 				 <option value="2" <?php if  ( 2 == $row['wday']) echo " selected ";?>>Tuesday</option>
 				 <option value="3" <?php if  ( 3 == $row['wday']) echo " selected ";?>>Wednesday</option>
@@ -1154,15 +1171,10 @@ function cmog_render_edit_page($id){
 				 <option value="7" <?php if  ( 7 == $row['wday']) echo " selected ";?>>Sunday (Last day)</option>
   </select>				 
   <br />
-  <label for="Link">Link:</label><br />
-  <input type="url" name='Link'  name='Link' id='Link'  value="<?php echo $row['Link'];?>">
-  <br />
+  <?php cmog_input_text('Link', $row,'Link to use'); ?>
   Class:<br />
-
-  
-   <select name='Class' >
-  
-                        <option value="gf" <?php if  ( "gf" == $row['Class']) echo " selected ";?>>Great Feast</option>
+    <select name='Class' >
+                          <option value="gf" <?php if  ( "gf" == $row['Class']) echo " selected ";?>>Great Feast</option>
                         <option value="lf" <?php if  ( "lf" == $row['Class']) echo " selected ";?>>Lesser Feast</option>
                         <option value="saint" <?php if  ( "saint" == $row['Class']) echo " selected ";?>>Feast such a Saint day (not on month view)</option>
                         <option value="evt" <?php if  ( "evt" == $row['Class']) echo " selected ";?>>Event</option>
