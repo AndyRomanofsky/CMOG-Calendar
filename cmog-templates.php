@@ -393,15 +393,15 @@ class CMOG_Template_List_Table extends WP_List_Table {
 		}
 		if ($cmog_template_type == 'ALL'){
         $data = $wpdb->get_results( "SELECT * FROM `cmog66_cmog_templates` ORDER BY $orderby  ", 'ARRAY_A' ); 
-        } elseif ($cmog_template_type == 'Pascha'){
+        } elseif ($cmog_template_type == -5 ){ //Pascha
         $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_templates WHERE gmd = -5 ORDER BY   $orderby  ", 'ARRAY_A' ); 
-        } elseif ($cmog_template_type == 'Triodion'){
+        } elseif ($cmog_template_type == -4){ //Triodion
         $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_templates WHERE gmd = -4 ORDER BY   $orderby  ", 'ARRAY_A' ); 
-        } elseif ($cmog_template_type == 'Luke'){
+        } elseif ($cmog_template_type == -3){ //Luke
         $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_templates WHERE gmd = -3 ORDER BY   $orderby  ", 'ARRAY_A' ); 
-        } elseif ($cmog_template_type == 'Pentecost'){
+        } elseif ($cmog_template_type == -2){ //Pentecost
         $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_templates WHERE gmd = -2 ORDER BY   $orderby  ", 'ARRAY_A' ); 
-        } elseif ($cmog_template_type == 'Movable'){
+        } elseif ($cmog_template_type == -1){ //Movable
         $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_moveableevent WHERE gmd = -1 ORDER BY   $orderby  ", 'ARRAY_A' ); 
         } else {
         $data = $wpdb->get_results( "SELECT * FROM `cmog66_cmog_templates` ORDER BY $orderby  ", 'ARRAY_A' ); 
@@ -895,7 +895,7 @@ function cmog_render_list_page(){
     ?>
     <div class="wrap">
         <h2>CMOG Templates</h2> 
-		<a href="http://localhost/cmog/wp-admin?page=cmog_list_test&action=add" class="page-title-action">Add New</a>
+		<a href="/wp-admin?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New</a>
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(template info here) </p>
 			<p> Template type is <?php echo $cmog_template_type; ?>  </p>
@@ -925,13 +925,13 @@ function  cmog_render_luke_list_page(){
     //Create an instance of our package class...
     $TemplateListTable = new CMOG_Template_List_Table();
     //Fetch, prepare, sort, and filter our data...
-    $TemplateListTable->prepare_items();
+    $TemplateListTable->prepare_items(-3);
 	if( 'edit' === $TemplateListTable->current_action() | 'add' === $TemplateListTable->current_action()) RETURN;
     $cmog_template_type =  (int)(!empty($_REQUEST['gmd'])) ? $_REQUEST['gmd'] : ''; //If no sort, default to null
     ?>
     <div class="wrap">
         <h2>Luke Templates</h2> 
-		<a href="http://localhost/cmog/wp-admin?page=cmog_list_test&action=add" class="page-title-action">Add New</a>
+		<a href="/wp-admin?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New</a>
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(template info here) </p>
 			<p> Template type is <?php echo $cmog_template_type; ?>  </p>
@@ -961,13 +961,13 @@ function cmog_render_pentecost_list_page(){
     //Create an instance of our package class...
     $TemplateListTable = new CMOG_Template_List_Table();
     //Fetch, prepare, sort, and filter our data...
-    $TemplateListTable->prepare_items();
+    $TemplateListTable->prepare_items(-2);
 	if( 'edit' === $TemplateListTable->current_action() | 'add' === $TemplateListTable->current_action()) RETURN;
     $cmog_template_type =  (int)(!empty($_REQUEST['gmd'])) ? $_REQUEST['gmd'] : ''; //If no sort, default to null
     ?>
     <div class="wrap">
         <h2>Pentecost Templates</h2> 
-		<a href="http://localhost/cmog/wp-admin?page=cmog_list_test&action=add" class="page-title-action">Add New</a>
+		<a href="/wp-admin?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New</a>
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(template info here) </p>
 			<p> Template type is <?php echo $cmog_template_type; ?>  </p>
@@ -996,13 +996,13 @@ function cmog_render_pascha_list_page(){
     //Create an instance of our package class...
     $TemplateListTable = new CMOG_Template_List_Table();
     //Fetch, prepare, sort, and filter our data...
-    $TemplateListTable->prepare_items();
+    $TemplateListTable->prepare_items(-5);
 	if( 'edit' === $TemplateListTable->current_action() | 'add' === $TemplateListTable->current_action()) RETURN;
     $cmog_template_type =  (int)(!empty($_REQUEST['gmd'])) ? $_REQUEST['gmd'] : ''; //If no sort, default to null
     ?>
     <div class="wrap">
         <h2>Pascha Templates</h2> 
-		<a href="http://localhost/cmog/wp-admin?page=cmog_list_test&action=add" class="page-title-action">Add New</a>
+		<a href="/wp-admin?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New</a>
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(template info here) </p>
 			<p> Template type is <?php echo $cmog_template_type; ?>  </p>
@@ -1032,13 +1032,13 @@ function cmog_render_triodion_list_page(){
     //Create an instance of our package class...
     $TemplateListTable = new CMOG_Template_List_Table();
     //Fetch, prepare, sort, and filter our data...
-    $TemplateListTable->prepare_items();
+    $TemplateListTable->prepare_items(-4);
 	if( 'edit' === $TemplateListTable->current_action() | 'add' === $TemplateListTable->current_action()) RETURN;
     $cmog_template_type =  (int)(!empty($_REQUEST['gmd'])) ? $_REQUEST['gmd'] : ''; //If no sort, default to null
     ?>
     <div class="wrap">
         <h2>Triodion Templates</h2> 
-		<a href="http://localhost/cmog/wp-admin?page=cmog_list_test&action=add" class="page-title-action">Add New</a>
+		<a href="/wp-admin?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New</a>
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(template info here) </p>
 			<p> Template type is <?php echo $cmog_template_type; ?>  </p>
@@ -1074,7 +1074,7 @@ function cmog_render_movable_list_page(){
     ?>
     <div class="wrap">
         <h2>Movable Templates</h2> 
-		<a href="http://localhost/cmog/wp-admin?page=cmog_list_test&action=add" class="page-title-action">Add New</a>
+		<a href="/wp-admin?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New</a>
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(template info here) </p>
 			<p> Template type is <?php echo $cmog_template_type; ?>  </p>
@@ -1089,7 +1089,19 @@ function cmog_render_movable_list_page(){
     </div>
     <?php
 }
+/** Helper functions for edit fields. **/
 
+/** Render a for text fields. **/
+function cmog_input_text($field, $row, $label=null, $id=null  ){
+	if ( empty($label)) $label = $field; 
+	if ( empty($id))	$id = $field; 
+	$value = $row[$field];
+    echo "<label for=$id>$label:</label><br />";
+    echo "<input type='text' name='$field' id='$id'   value=$value  ><br />";
+}
+/** cmog_render_edit_page
+This is for the all templates except Movable
+*/
 function cmog_render_edit_page($id){
 	if ( !current_user_can( 'manage_options' ) )  	{
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
@@ -1097,6 +1109,7 @@ function cmog_render_edit_page($id){
 	if ($id) { // id  = 0 is add not edit
         global $wpdb; //This is used only if making any database queries
 				 $row = $wpdb->get_row( "SELECT * FROM `cmog66_cmog_templates` where ID = $id  ", 'ARRAY_A' ); 
+				 echo $row['gmd'] ; 
     } else {
 		$row['ID'] = $row['EventText'] = $row['week'] =$row['wday'] = $row['Link'] = $row['Class'] = $row['icon'] = $row['hymn'] = "";
 		$row['listorder'] = $row['popup'] = $row['asset_id'] =$row['catid'] = $row['created_by'] = $row['gmd'] = $row['published'] = $row['access'] = $row['language'] = "";
@@ -1124,9 +1137,7 @@ function cmog_render_edit_page($id){
   ID:<br />
   <input type="text" name='ID'  readonly  value="<?php echo $row['ID']; ?>">
   <br />
-  <label for="EventText">Event Text:</label><br />
-  <input type="text" name='EventText' id='EventText'   value="<?php echo $row['EventText'];?>">
-  <br />
+  <?php cmog_input_text('EventText', $row,'Event'); ?>
   week:<br />
   <input type="number" name='week'   value="<?php echo $row['week']; ?>" min="1" max="52" >
   <br />
@@ -1163,48 +1174,26 @@ function cmog_render_edit_page($id){
                         <option value="health" <?php if  ( "health" == $row['Class']) echo " selected ";?>>Parish Bulletin Health (not on month view)</option>
     </select>	
   <br />
-  AddDate:<br />
-  <input type="text" name='AddDate'  value="<?php echo $row['AddDate'];?>">
-  <br />
-  icon:<br />
-  <input type="url" name='icon'   value="<?php echo $row['icon'];?>">
-  <br />
-  hymn:<br />
-  <input type="url" name='hymn'  value="<?php echo $row['hymn'];?>">
-  <br />
-  listorder:<br />
-  <input type="number" name='listorder'   value="<?php echo $row['listorder'];?>">
-  <br />
-  popup:<br />
-  <input type="text" name='popup'  value="<?php echo $row['popup'];?>">
-  <br />
-  asset_id:<br />
-  <input type="text" name='asset_id'   value="<?php echo $row['asset_id'];?>">
-  <br />
-  catid:<br />
-  <input type="text" name='catid' value="<?php echo $row['catid'];?>">
-  <br />
-  created_by:<br />
-  <input type="text" name='created_by'  value="<?php echo $row['created_by'];?>">
-  <br />
-  gmd:<br />
+  <?php cmog_input_text('AddDate', $row,'Date Added'); ?>
+    <?php cmog_input_text('icon', $row,'Icon to use'); ?>
+    <?php cmog_input_text('hymn', $row,'Hymn to use'); ?>
+    <?php cmog_input_text('listorder', $row,'Order'); ?>
+    <?php cmog_input_text('popup', $row,'Display code'); ?>
+    <?php cmog_input_text('asset_id', $row); ?>
+    <?php cmog_input_text('catid', $row); ?>
+    <?php cmog_input_text('created_by', $row,'Created by'); ?>  
+	gmd:<br />
   <select name='gmd' >
-				 <option value="-5" <?php if  ( 0 == $row['gmd']) echo " selected ";?>>Pascha</option>
-  				 <option value="-4" <?php if  ( 1 == $row['gmd']) echo " selected ";?>>Triodion</option>
-				 <option value="-3" <?php if  ( 2 == $row['gmd']) echo " selected ";?>>Luke</option>
-				 <option value="-2" <?php if  ( 3 == $row['gmd']) echo " selected ";?>>Pentecost</option>
-				 <option value="-1" <?php if  ( 4 == $row['gmd']) echo " selected ";?>>Movable</option>
+				 <option value="-5" <?php if  ( -5 == $row['gmd']) echo " selected ";?>>Pascha</option>
+  				 <option value="-4" <?php if  ( -4 == $row['gmd']) echo " selected ";?>>Triodion</option>
+				 <option value="-3" <?php if  ( -3 == $row['gmd']) echo " selected ";?>>Luke</option>
+				 <option value="-2" <?php if  ( -2 == $row['gmd']) echo " selected ";?>>Pentecost</option>
+				 <option value="-1" <?php if  ( -1 == $row['gmd']) echo " selected ";?>>Movable</option>
   </select>	
   <br />
-  published:<br />
-  <input type="text" name='published'  value="<?php echo $row['published'];?>">
-  <br />
-  access:<br />
-  <input type="text" name='access'   value="<?php echo $row['access'];?>">
-  <br />
-  language:<br />
-  <input type="text" name='language'  value="<?php echo $row['language'];?>">
-  <br />	
+    <?php cmog_input_text('published', $row,'Status'); ?>
+    <?php cmog_input_text('access', $row,'Access'); ?>
+    <?php cmog_input_text('language', $row,'Language'); ?>
     <input type="submit" value="Submit">
   <br />	
   </fieldset>
@@ -1213,8 +1202,9 @@ function cmog_render_edit_page($id){
     </div>
     <?php
 }
-
-
+/** cmog_render_edit_Movable_page
+This is for the Movable templates only
+*/
 function cmog_render_edit_Movable_page($id){
 	if ( !current_user_can( 'manage_options' ) )  	{
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
@@ -1228,7 +1218,7 @@ function cmog_render_edit_Movable_page($id){
 		$row['listorder'] = $row['popup'] = $row['asset_id'] =$row['catid'] = $row['created_by'] = $row['gmd'] = $row['published'] = $row['access'] = $row['language'] = "";
 		$row['AddDate'] = "?"; 
 	} 
-    $cmog_template_type =  (int)(!empty($_REQUEST['gmd'])) ? $_REQUEST['gmd'] : ''; //If no sort, default to null
+    $cmog_template_type =  (int)(!empty($row['gmd'])) ? $row['gmd'] : ''; //If no sort, default to null
     ?>
     <div class="wrap">
 	<?php if ($id) { ?>
