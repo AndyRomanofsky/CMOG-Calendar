@@ -1143,8 +1143,8 @@ function cmog_render_edit_page($id){
 				 <option value="7" <?php if  ( 7 == $row['wday']) echo " selected ";?>>Sunday (Last day)</option>
   </select>				 
   <br />
-  Link:<br />
-  <input type="url" name='Link'  value="<?php echo $row['Link'];?>">
+  <label for="Link">Link:</label><br />
+  <input type="url" name='Link'  name='Link' id='Link'  value="<?php echo $row['Link'];?>">
   <br />
   Class:<br />
 
