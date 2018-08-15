@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: CMOG Templates
-Plugin URI: https://churchmotherofgod.org
+Plugin URI: http://andyromanofsky.github.io/CMOG-Calendar/
 Version: 0.0.1 
 License: GPL2
 */
