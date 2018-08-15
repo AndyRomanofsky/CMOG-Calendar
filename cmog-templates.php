@@ -915,7 +915,7 @@ function cmog_render_list_page(){
 		<a href="/wp-admin?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New</a>
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(template info here) </p>
-			<p> Template type is <?php echo $cmog_template_type; ?>  </p>
+			<p> Template type is All CMOG Templates </p>
         </div>
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="templates-filter" method="get">
@@ -951,7 +951,7 @@ function  cmog_render_luke_list_page(){
 		<a href="/wp-admin?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New</a>
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(template info here) </p>
-			<p> Template type is <?php echo $cmog_template_type; ?>  </p>
+			<p> Template type is Luke Templates </p>
         </div>
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="templates-filter" method="get">
@@ -1022,7 +1022,7 @@ function cmog_render_pascha_list_page(){
 		<a href="/wp-admin?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New</a>
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(template info here) </p>
-			<p> Template type is <?php echo $cmog_template_type; ?>  </p>
+			<p> Template type is Pascha Templates  </p>
         </div>
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="templates-filter" method="get">
@@ -1058,7 +1058,7 @@ function cmog_render_triodion_list_page(){
 		<a href="/wp-admin?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New</a>
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(template info here) </p>
-			<p> Template type is <?php echo $cmog_template_type; ?>  </p>
+			<p> Template type is Triodion Templates  </p>
         </div>
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="templates-filter" method="get">
@@ -1094,7 +1094,7 @@ function cmog_render_movable_list_page(){
 		<a href="/wp-admin?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New</a>
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(template info here) </p>
-			<p> Template type is <?php echo $cmog_template_type; ?>  </p>
+			<p> Template type is the Movable Templates </p>
         </div>
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="templates-filter" method="get">
