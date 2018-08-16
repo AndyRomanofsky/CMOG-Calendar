@@ -289,7 +289,8 @@ function cmog_render_events_list_page(){
             <!-- For plugins, we also need to ensure that the form posts back to our current page -->
             <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
             <!-- Now we can render the completed list table -->
-            <?php $CMOG_Events_List_Table->display() ?>
+            ++++<?php $CMOG_Events_List_Table->views() ?>+++
+            ----<?php $CMOG_Events_List_Table->display() ?>----
         </form>
     </div>
     <?php

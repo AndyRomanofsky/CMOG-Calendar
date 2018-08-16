@@ -45,7 +45,6 @@ class CMOG_Events_List_Table extends WP_List_Table {
             case 'Class'  :
             case 'Day'  :
             case 'AddDate' :
-            case 'tmplt_id' :
             case 'icon' :
             case 'hymn' :
             case 'listorder'  :
@@ -108,13 +107,15 @@ class CMOG_Events_List_Table extends WP_List_Table {
             /*$2%s*/ $item['ID']                //The value of the checkbox should be the record's id
         );
     }
-    function column_gmd($item){
+    function column_tmplt_id($item){
+		         //  'tmplt_id' /
+				 if (empty($item['tmplt_id']))	 RETURN ;
 		 switch($item['gmd']){
-            case -5: return "Pascha";
-            case -4  : return "Triodion";
-            case  -3  : return "Luke";
-            case  -2  : return "Pentecost";
-            case  -1  : return "Movable";
+            case -5: return "Pascha (" . $item['tmplt_id'] . ")"; 
+            case -4  : return "Triodion (" . $item['tmplt_id'] . ")"; 
+            case  -3  : return "Luke (" . $item['tmplt_id'] . ")"; 
+            case  -2  : return "Pentecost (" . $item['tmplt_id'] . ")"; 
+            case  -1  : return "Movable (" . $item['tmplt_id'] . ")"; 
             default:
                 return print_r($item,true); //Show the item for troubleshooting purposes
         }
@@ -177,13 +178,14 @@ class CMOG_Events_List_Table extends WP_List_Table {
              'access'  =>    'Access',
              'language'      => 'Language' ,
              'AddDate'     => 'Date added',
-			 'tmplt_id'     => 'tmplt_id',
+			 'tmplt_id'     => 'Template ID',
              'ID'     => 'ID',
         );
 	  return $columns;
 	}
     function get_hidden(){
         $hidden = array(
+			 'gmd', 
              'access' ,
              'language' ,
              'asset_id'  , 
@@ -216,6 +218,8 @@ class CMOG_Events_List_Table extends WP_List_Table {
             'Day'  => array('Day',false),
             'Year'  => array('Year',false),
             'ID'  => array('ID',false),
+            'Class'  => array('Class',false),
+			'listorder'   => array('listorder',false),
         );
         return $sortable_columns;
     }
