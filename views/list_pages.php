@@ -54,7 +54,7 @@ function  cmog_render_luke_list_page(){
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	}
     //Create an instance of our package class...
-    $TemplateListTable = new CMOG_Template_List_Table();
+    $TemplateListTable = new CMOG_Template_List_Table();  
     //Fetch, prepare, sort, and filter our data...
     $TemplateListTable->prepare_items(-3);
 	if( 'edit' === $TemplateListTable->current_action() | 'add' === $TemplateListTable->current_action()) RETURN;
@@ -267,7 +267,8 @@ function cmog_render_events_list_page(){
     //Create an instance of our package class...
     $CMOG_Events_List_Table = new CMOG_Events_List_Table();
     //Fetch, prepare, sort, and filter our data...
-    $CMOG_Events_List_Table->prepare_items();
+    $CMOG_Events_List_Table->prepare_items(); 
+	//var_dump($CMOG_Events_List_Table);
 	if( 'edit' === $CMOG_Events_List_Table->current_action() | 'add' === $CMOG_Events_List_Table->current_action()) RETURN;
     $cmog_template_type =  (int)(!empty($_REQUEST['gmd'])) ? $_REQUEST['gmd'] : ''; //If no sort, default to null
     ?>
@@ -284,34 +285,22 @@ function cmog_render_events_list_page(){
             <p>(some text) </p>
 			<p> Events </p>
         </div>
+		<div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
+        </div>
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="templates-filter" method="get">
+		  <br />
+		  Year: <input type="text" name='f_year' <?php if ( !empty($_REQUEST['f_year'] ))     echo "Value='" . $_REQUEST['f_year'] . "'";?> >
+		  Month: <input type="text" name='f_month'<?php if ( !empty($_REQUEST['f_month'] ))     echo "Value='" . $_REQUEST['f_month'] . "'";?> >
+		  Day: <input type="text" name='f_day' <?php if ( !empty($_REQUEST['f_day'] ))     echo "Value='" . $_REQUEST['f_day'] . "'";?>> 
+		  <input type="submit" value='Filter'>
+		  <br />
             <!-- For plugins, we also need to ensure that the form posts back to our current page -->
             <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
             <!-- Now we can render the completed list table -->
-            ++++<?php $CMOG_Events_List_Table->views() ?>+++
-            ----<?php $CMOG_Events_List_Table->display() ?>----
+            <?php $CMOG_Events_List_Table->views() ?>
+            <?php $CMOG_Events_List_Table->display() ?>
         </form>
     </div>
     <?php
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -358,6 +358,7 @@ class CMOG_Events_List_Table extends WP_List_Table {
      * @uses $this->set_pagination_args()
      **************************************************************************/
     function prepare_items($cmog_event_type='ALL') {
+		
         global $wpdb; //This is used only if making any database queries
         /**
          * First, lets decide how many records per page to show
@@ -413,21 +414,33 @@ class CMOG_Events_List_Table extends WP_List_Table {
 				} else {			
 					$orderby = $_REQUEST['orderby'] . " " .$order ;
 				}
+		} 
+		var_dump($_REQUEST);
+		$filter ='';
+		if ( !empty($_REQUEST['f_year'] )) {
+			$filter .= " and Year = " . $_REQUEST['f_year'] . " " ;
 		}
+		if ( !empty($_REQUEST['f_day'] )) {
+			$filter .= " and Day = " . $_REQUEST['f_day'] . " " ;
+		}
+		if ( !empty($_REQUEST['f_month'] )) {
+			$filter .= " and Month = " . $_REQUEST['f_month'] . " " ;
+		}
+		
 		if ($cmog_event_type == 'ALL'){
-        $data = $wpdb->get_results( "SELECT * FROM `cmog66_cmog_events` ORDER BY $orderby  ", 'ARRAY_A' ); 
+        $data = $wpdb->get_results( "SELECT * FROM `cmog66_cmog_events` WHERE 1 = 1 $filter ORDER BY $orderby  ", 'ARRAY_A' ); 
         } elseif ($cmog_event_type == -5 ){ //Pascha
-        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_events WHERE gmd = -5 ORDER BY   $orderby  ", 'ARRAY_A' ); 
+        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_events WHERE gmd = -5 $filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
         } elseif ($cmog_event_type == -4){ //Triodion
-        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_events WHERE gmd = -4 ORDER BY   $orderby  ", 'ARRAY_A' ); 
+        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_events WHERE gmd = -4 $filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
         } elseif ($cmog_event_type == -3){ //Luke
-        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_events WHERE gmd = -3 ORDER BY   $orderby  ", 'ARRAY_A' ); 
+        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_events WHERE gmd = -3 $filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
         } elseif ($cmog_event_type == -2){ //Pentecost
-        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_events WHERE gmd = -2 ORDER BY   $orderby  ", 'ARRAY_A' ); 
+        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_events WHERE gmd = -2 $filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
         } elseif ($cmog_event_type == -1){ //Movable
-        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_moveableevent WHERE gmd = -1 ORDER BY   $orderby  ", 'ARRAY_A' ); 
+        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_moveableevent WHERE gmd = -1 $filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
         } else {
-        $data = $wpdb->get_results( "SELECT * FROM `cmog66_cmog_events` ORDER BY $orderby  ", 'ARRAY_A' ); 
+        $data = $wpdb->get_results( "SELECT * FROM `cmog66_cmog_events` WHERE 1 = 1 $filter ORDER BY $orderby  ", 'ARRAY_A' ); 
  		 }
         /***********************************************************************
          * http://codex.wordpress.org/Class_Reference/wpdb
