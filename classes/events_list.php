@@ -415,7 +415,6 @@ class CMOG_Events_List_Table extends WP_List_Table {
 					$orderby = $_REQUEST['orderby'] . " " .$order ;
 				}
 		} 
-		var_dump($_REQUEST);
 		$filter ='';
 		if ( !empty($_REQUEST['f_year'] )) {
 			$filter .= " and Year = " . $_REQUEST['f_year'] . " " ;
