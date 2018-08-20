@@ -291,7 +291,24 @@ function cmog_render_events_list_page(){
         <form id="templates-filter" method="get">
 		  <br />
 		  Year: <input type="text" name='f_year' <?php if ( !empty($_REQUEST['f_year'] ))     echo "Value='" . $_REQUEST['f_year'] . "'";?> >
-		  Month: <input type="text" name='f_month'<?php if ( !empty($_REQUEST['f_month'] ))     echo "Value='" . $_REQUEST['f_month'] . "'";?> >
+		  Month: 
+  <select name='f_month' >	
+<option value= "" <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == null  )  echo " selected ";?>></option>;	  
+<option value= 1 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 1  )  echo " selected ";?>>January</option>;
+<option value= 2 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 2  )  echo " selected ";?>>February</option>;
+<option value= 3 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 3  )  echo " selected ";?>>March</option>;
+<option value= 4 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 4  )  echo " selected ";?>>April</option>;
+<option value= 5 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 5  )  echo " selected ";?>>May</option>;
+<option value= 6 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 6  )  echo " selected ";?>>June</option>;
+<option value= 7 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 7  )  echo " selected ";?>>July</option>;
+<option value= 8 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 8  )  echo " selected ";?>>August</option>;
+<option value= 9 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 9  )  echo " selected ";?>>September</option>;
+<option value= 10 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 10  )  echo " selected ";?>>October</option>;
+<option value= 11 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 11  )  echo " selected ";?>>November</option>;
+<option value= 12 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 12  )  echo " selected ";?>>December</option>;
+	</select>		
+			
+		  
 		  Day: <input type="text" name='f_day' <?php if ( !empty($_REQUEST['f_day'] ))     echo "Value='" . $_REQUEST['f_day'] . "'";?>> 
 		  <input type="submit" value='Filter'>
 		  <br />
