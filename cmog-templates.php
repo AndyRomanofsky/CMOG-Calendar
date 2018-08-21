@@ -25,19 +25,24 @@ require 'views/edit_pages.php';
  *******************************************************************************
  * Now we just need to define an admin page. For this template, we'll add a top-level
  * menu item to the bottom of the admin menus.
+ *
+ * add_submenu_page(   $parent_slug,   $page_title,   $menu_title,   $capability,   $menu_slug,  $function = '' )
  */
 function cmog_add_menu_items(){
 	//global $cmog_plugin_hook;
 	//global $cmog_plugin_hook_luke;
     add_menu_page('Template Plugin List Table', 'CMOG Templates', 'activate_plugins', 'cmog_list_test', 'cmog_render_list_page');
-	add_submenu_page('cmog_list_test', 'All Templates', 'All Templates',  'activate_plugins', 'cmog_list_test', 'cmog_render_list_page');
-	add_submenu_page('cmog_list_test', 'Add Template', 'Add Template',  'activate_plugins', 'cmog_list_test&action=add&template=0', 'cmog_render_add_page');
+	add_submenu_page('cmog_list_test', 'Add Template', '- Add Template',  'activate_plugins', 'cmog_list_test&action=add&template=0', 'cmog_render_add_page');
+	//add_submenu_page('cmog_list_test', 'All Templates', 'All Templates',  'activate_plugins', 'cmog_list_test', 'cmog_render_list_page');
 	add_submenu_page('cmog_list_test', 'Luke Templates', 'Luke Templates',  'activate_plugins', 'cmog_list_luke', 'cmog_render_luke_list_page');
 	add_submenu_page('cmog_list_test', 'Pentecost Templates', 'Pentecost Templates',  'activate_plugins', 'cmog_list_pentecos', 'cmog_render_pentecost_list_page');
 	add_submenu_page('cmog_list_test', 'Pascha Templates', 'Pascha Templates',  'activate_plugins', 'cmog_list_pascha', 'cmog_render_pascha_list_page');
 	add_submenu_page('cmog_list_test', 'Triodion Templates', 'Triodion Templates',  'activate_plugins', 'cmog_list_triodion', 'cmog_render_triodion_list_page');
 	add_submenu_page('cmog_list_test', 'Movable Templates', 'Movable  Templates',  'activate_plugins', 'cmog_list_movable', 'cmog_render_movable_list_page');
+	add_submenu_page('cmog_list_test', 'Add Movable', '- Add Movable',  'activate_plugins', 'cmog_list_movable&action=add&template=0', 'cmog_render_edit_Movable_page');
 	add_submenu_page('cmog_list_test', 'Events', 'Events',  'activate_plugins', 'cmog_list_events', 'cmog_render_events_list_page');
+	add_submenu_page('cmog_list_test', 'Add Event', '- Add Event',  'activate_plugins', 'cmog_list_events&action=add&event=0', 'cmog_render_edit_event');
+	add_submenu_page('cmog_list_test', 'Calender', 'Calender',  'activate_plugins', 'cmog_list_events&action=Calender', 'cmog_render_events_calendar_page');
 	}
 add_action('admin_menu', 'cmog_add_menu_items');
 

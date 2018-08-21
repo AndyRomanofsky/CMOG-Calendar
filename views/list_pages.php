@@ -230,7 +230,7 @@ function cmog_render_movable_list_page(){
     ?>
     <div class="wrap">
         <h2>Movable Templates</h2> 
-		<a href="/wp-admin?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New</a>
+		<a href="/wp-admin/admin.php?page=cmog_list_movable&action=add&template=0" class="page-title-action">Add New</a>
 		<a href="/wp-admin/admin.php?page=cmog_list_luke" class="page-title-action">Luke Templates</a>
 		<a href="/wp-admin/admin.php?page=cmog_list_pentecos" class="page-title-action">Pentecost Templates</a>
 		<a href="/wp-admin/admin.php?page=cmog_list_pascha" class="page-title-action">Pascha Templates</a>
@@ -265,16 +265,20 @@ function cmog_render_events_list_page(){
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	}
     //Create an instance of our package class...
-    $CMOG_Events_List_Table = new CMOG_Events_List_Table();
+    $Events_List = new CMOG_Events_List_Table();
     //Fetch, prepare, sort, and filter our data...
-    $CMOG_Events_List_Table->prepare_items(); 
-	//var_dump($CMOG_Events_List_Table);
-	if( 'edit' === $CMOG_Events_List_Table->current_action() | 'add' === $CMOG_Events_List_Table->current_action()) RETURN;
+    $Events_List->prepare_items(); 
+	//var_dump($Events_List);
+	if( 'edit' === $Events_List->current_action() | 'add' === $Events_List->current_action()) RETURN;
+	if( 'Calendar' === $Events_List->current_action()) {
+		cmog_render_events_calendar_page();
+		RETURN;
+	}
     $cmog_template_type =  (int)(!empty($_REQUEST['gmd'])) ? $_REQUEST['gmd'] : ''; //If no sort, default to null
     ?>
     <div class="wrap">
         <h2>Events</h2> 
-		<a href="/wp-admin?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New</a>
+		<a href="/wp-admin/admin.php?page=cmog_list_events&action=add&event=0" class="page-title-action">Add New</a>
 		<a href="/wp-admin/admin.php?page=cmog_list_luke" class="page-title-action">Luke Templates</a>
 		<a href="/wp-admin/admin.php?page=cmog_list_pentecos" class="page-title-action">Pentecost Templates</a>
 		<a href="/wp-admin/admin.php?page=cmog_list_pascha" class="page-title-action">Pascha Templates</a>
@@ -315,8 +319,78 @@ function cmog_render_events_list_page(){
             <!-- For plugins, we also need to ensure that the form posts back to our current page -->
             <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
             <!-- Now we can render the completed list table -->
-            <?php $CMOG_Events_List_Table->views() ?>
-            <?php $CMOG_Events_List_Table->display() ?>
+        
+            <?php $Events_List->display() ?>
+        </form>
+    </div>
+    <?php
+}
+//cmog_render_events_list_page
+/** *************************** RENDER Events list PAGE ********************************
+ *******************************************************************************
+ * This function renders the admin page and the template list table. Although it's
+ * possible to call prepare_items() and display() from the constructor, there
+ * are often times where you may need to include logic here between those steps,
+ * so we've instead called those methods explicitly. It keeps things flexible, and
+ * it's the way the list tables are used in the WordPress core.
+ */
+function cmog_render_events_calendar_page(){
+	if ( !current_user_can( 'manage_options' ) )  	{
+		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+	}
+    //Create an instance of our package class...
+    $Events_Calendar = new CMOG_Events_List_Table();
+    //Fetch, prepare, sort, and filter our data...
+    $Events_Calendar->prepare_items(); 
+	//var_dump($Events_Calendar);
+	if( 'edit' === $Events_Calendar->current_action() | 'add' === $Events_Calendar->current_action()| 'Calender' === $Events_Calendar->current_action()) RETURN;
+    $cmog_template_type =  (int)(!empty($_REQUEST['gmd'])) ? $_REQUEST['gmd'] : ''; //If no sort, default to null
+    ?>
+    <div class="wrap">
+        <h2>Events</h2> 
+		<a href="/wp-admin/admin.php?page=cmog_list_events&action=add&event=0" class="page-title-action">Add New</a>
+		<a href="/wp-admin/admin.php?page=cmog_list_luke" class="page-title-action">Luke Templates</a>
+		<a href="/wp-admin/admin.php?page=cmog_list_pentecos" class="page-title-action">Pentecost Templates</a>
+		<a href="/wp-admin/admin.php?page=cmog_list_pascha" class="page-title-action">Pascha Templates</a>
+		<a href="/wp-admin/admin.php?page=cmog_list_triodion" class="page-title-action">Triodion Templates</a>
+		<a href="/wp-admin/admin.php?page=cmog_list_movable" class="page-title-action">Movable Templates</a>
+		<a href="/wp-admin/admin.php?page=cmog_list_events" class="page-title-action">Events</a>
+        <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
+            <p>(some text) </p>
+			<p> Events </p>
+        </div>
+		<div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
+        </div>
+        <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
+        <form id="templates-filter" method="get">
+		  <br />
+		  Year: <input type="text" name='f_year' <?php if ( !empty($_REQUEST['f_year'] ))     echo "Value='" . $_REQUEST['f_year'] . "'";?> >
+		  Month: 
+  <select name='f_month' >	
+<option value= "" <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == null  )  echo " selected ";?>></option>;	  
+<option value= 1 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 1  )  echo " selected ";?>>January</option>;
+<option value= 2 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 2  )  echo " selected ";?>>February</option>;
+<option value= 3 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 3  )  echo " selected ";?>>March</option>;
+<option value= 4 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 4  )  echo " selected ";?>>April</option>;
+<option value= 5 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 5  )  echo " selected ";?>>May</option>;
+<option value= 6 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 6  )  echo " selected ";?>>June</option>;
+<option value= 7 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 7  )  echo " selected ";?>>July</option>;
+<option value= 8 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 8  )  echo " selected ";?>>August</option>;
+<option value= 9 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 9  )  echo " selected ";?>>September</option>;
+<option value= 10 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 10  )  echo " selected ";?>>October</option>;
+<option value= 11 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 11  )  echo " selected ";?>>November</option>;
+<option value= 12 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 12  )  echo " selected ";?>>December</option>;
+	</select>		
+			
+		  
+		  Day: <input type="text" name='f_day' <?php if ( !empty($_REQUEST['f_day'] ))     echo "Value='" . $_REQUEST['f_day'] . "'";?>> 
+		  <input type="submit" value='Filter'>
+		  <br />
+            <!-- For plugins, we also need to ensure that the form posts back to our current page -->
+            <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
+            <!-- Now we can render the completed list table -->
+        
+            <?php echo " <br /> calenmar <br />"?>
         </form>
     </div>
     <?php

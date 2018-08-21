@@ -276,7 +276,7 @@ class CMOG_Movable_List_Table extends WP_List_Table {
 				echo  	'<br /> (can not bulk edit at this time) <br /></div>';
 			} else {
 				// (code to edit row)  
-				cmog_render_edit_page($id);
+				cmog_render_edit_Movable_page($id);
 			}
         }      
 		if( 'add'===$this->current_action() ) {
@@ -292,7 +292,7 @@ class CMOG_Movable_List_Table extends WP_List_Table {
 				echo  	'<br /> (can not bulk add at this time) <br /></div>';
 			} else {
 				// (code to add row)  
-				cmog_render_edit_page(0);
+				cmog_render_edit_Movable_page(0);
 			}
         }    
 		if( 'load'===$this->current_action() ) {

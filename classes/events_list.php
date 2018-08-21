@@ -288,7 +288,7 @@ class CMOG_Events_List_Table extends WP_List_Table {
 				echo  	'<br /> (can not bulk edit at this time) <br /></div>';
 			} else {
 				// (code to edit row)  
-				cmog_render_edit_page($id);
+				cmog_render_edit_event($id);
 			}
         }      
 		if( 'add'===$this->current_action() ) {
@@ -304,7 +304,7 @@ class CMOG_Events_List_Table extends WP_List_Table {
 				echo  	'<br /> (can not bulk add at this time) <br /></div>';
 			} else {
 				// (code to add row)  
-				cmog_render_edit_page(0);
+				cmog_render_edit_event(0);
 			}
         }    
 		if( 'load'===$this->current_action() ) {
@@ -341,7 +341,12 @@ class CMOG_Events_List_Table extends WP_List_Table {
 				echo  	'<br />Added <br /></div>';
 			}
         }
-    }
+		if( 'Calender'===$this->current_action() ) {
+				//cmog_render_events_calendar_page(0);
+			
+        }
+	//cmog_render_events_calendar_page
+	}
     /** ************* function prepare_items ********************* 
      * REQUIRED! This is where you prepare your data for display. This method will
      * usually be used to query the database, sort and filter the data, and generally
