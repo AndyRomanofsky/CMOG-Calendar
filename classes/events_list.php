@@ -252,7 +252,7 @@ class CMOG_Events_List_Table extends WP_List_Table {
      * @see $this->prepare_items()
      **************************************************************************/
     function process_bulk_action() {
-		parse_str($_SERVER['QUERY_STRING'], $query); var_dump($this->current_action());
+		parse_str($_SERVER['QUERY_STRING'], $query); 
 	        if( 'delete'===$this->current_action() ) {
 				if (!isset($query['event'])) {
 					echo "<div class='notice notice-error is-dismissible'>";
@@ -341,11 +341,6 @@ class CMOG_Events_List_Table extends WP_List_Table {
 				echo  	'<br />Added <br /></div>';
 			}
         }
-		if( 'Calender'===$this->current_action() ) {
-				//cmog_render_events_calendar_page(0);
-			
-        }
-	//cmog_render_events_calendar_page
 	}
     /** ************* function prepare_items ********************* 
      * REQUIRED! This is where you prepare your data for display. This method will
@@ -422,7 +417,7 @@ class CMOG_Events_List_Table extends WP_List_Table {
 		} 
 		$filter ='';
 		if ( !empty($_REQUEST['f_year'] )) {
-			$filter .= " and Year = " . $_REQUEST['f_year'] . " " ;
+			$filter .= " and (Year = " . $_REQUEST['f_year'] . " or Year = -1 ) " ;
 		}
 		if ( !empty($_REQUEST['f_day'] )) {
 			$filter .= " and Day = " . $_REQUEST['f_day'] . " " ;

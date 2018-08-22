@@ -14,6 +14,7 @@ defined( 'ABSPATH' ) or die( 'Do not!' );
 if(!class_exists('WP_List_Table')){
     require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 }
+require 'cmog-helper.php';
 /** load calsses for list table pages */
 require 'classes/template_list.php';
 require 'classes/movable_list.php';
@@ -42,7 +43,7 @@ function cmog_add_menu_items(){
 	add_submenu_page('cmog_list_test', 'Add Movable', '- Add Movable',  'activate_plugins', 'cmog_list_movable&action=add&template=0', 'cmog_render_edit_Movable_page');
 	add_submenu_page('cmog_list_test', 'Events', 'Events',  'activate_plugins', 'cmog_list_events', 'cmog_render_events_list_page');
 	add_submenu_page('cmog_list_test', 'Add Event', '- Add Event',  'activate_plugins', 'cmog_list_events&action=add&event=0', 'cmog_render_edit_event');
-	add_submenu_page('cmog_list_test', 'Calender', 'Calender',  'activate_plugins', 'cmog_list_events&action=Calender', 'cmog_render_events_calendar_page');
+	add_submenu_page('cmog_list_test', 'Calender', 'Calender',  'activate_plugins', 'cmog_month_calendaer', 'cmog_render_events_calendar_page');
 	}
 add_action('admin_menu', 'cmog_add_menu_items');
 

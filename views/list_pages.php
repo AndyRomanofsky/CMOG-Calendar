@@ -271,10 +271,17 @@ function cmog_render_events_list_page(){
 	//var_dump($Events_List);
 	if( 'edit' === $Events_List->current_action() | 'add' === $Events_List->current_action()) RETURN;
 	if( 'Calendar' === $Events_List->current_action()) {
-		cmog_render_events_calendar_page();
-		RETURN;
+		//cmog_render_events_calendar_page();
+	
 	}
     $cmog_template_type =  (int)(!empty($_REQUEST['gmd'])) ? $_REQUEST['gmd'] : ''; //If no sort, default to null
+	global $wpdb; //This is used only if making any database queries
+$SMonth = (!empty($_REQUEST['f_month'] )) ? $_REQUEST['f_month'] : '';
+$SYear = (!empty ($_REQUEST['f_year'] )) ? $_REQUEST['f_year'] : '';
+
+ //$date = getDate(); 
+// if ($SMonth == "") $SMonth = $date["mon"];
+ //if ($SYear == "") $SYear = $date["year"];
     ?>
     <div class="wrap">
         <h2>Events</h2> 
@@ -294,24 +301,36 @@ function cmog_render_events_list_page(){
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="templates-filter" method="get">
 		  <br />
-		  Year: <input type="text" name='f_year' <?php if ( !empty($_REQUEST['f_year'] ))     echo "Value='" . $_REQUEST['f_year'] . "'";?> >
+		Year:  
+			<?php
+			$years = $wpdb->get_results( "SELECT DISTINCT `Year` FROM `cmog66_cmog_events`", 'ARRAY_A' ); 
+			?>
+			<select name='f_year' >	
+			<?php
+			foreach($years as  $y): 
+			echo "<option value=" . $y['Year'] ; 
+			if (  $SYear == $y['Year']  )  echo " selected "; 
+			echo ">" . $y['Year'] . "</option>;";	
+			endforeach; 
+			?>
+			</select>		
+		  
 		  Month: 
-  <select name='f_month' >	
-<option value= "" <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == null  )  echo " selected ";?>></option>;	  
-<option value= 1 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 1  )  echo " selected ";?>>January</option>;
-<option value= 2 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 2  )  echo " selected ";?>>February</option>;
-<option value= 3 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 3  )  echo " selected ";?>>March</option>;
-<option value= 4 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 4  )  echo " selected ";?>>April</option>;
-<option value= 5 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 5  )  echo " selected ";?>>May</option>;
-<option value= 6 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 6  )  echo " selected ";?>>June</option>;
-<option value= 7 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 7  )  echo " selected ";?>>July</option>;
-<option value= 8 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 8  )  echo " selected ";?>>August</option>;
-<option value= 9 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 9  )  echo " selected ";?>>September</option>;
-<option value= 10 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 10  )  echo " selected ";?>>October</option>;
-<option value= 11 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 11  )  echo " selected ";?>>November</option>;
-<option value= 12 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 12  )  echo " selected ";?>>December</option>;
-	</select>		
-			
+			<select name='f_month' >	
+			<option value= "" <?php if (  $SMonth == null  )  echo " selected ";?>></option>;	  
+			<option value= 1 <?php if (   $SMonth == 1  )  echo " selected ";?>>January</option>;
+			<option value= 2 <?php if (   $SMonth == 2  )  echo " selected ";?>>February</option>;
+			<option value= 3 <?php if (   $SMonth == 3  )  echo " selected ";?>>March</option>;
+			<option value= 4 <?php if (   $SMonth == 4  )  echo " selected ";?>>April</option>;
+			<option value= 5 <?php if (  $SMonth == 5  )  echo " selected ";?>>May</option>;
+			<option value= 6 <?php if (  $SMonth == 6  )  echo " selected ";?>>June</option>;
+			<option value= 7 <?php if (  $SMonth == 7  )  echo " selected ";?>>July</option>;
+			<option value= 8 <?php if (  $SMonth == 8  )  echo " selected ";?>>August</option>;
+			<option value= 9 <?php if (  $SMonth == 9  )  echo " selected ";?>>September</option>;
+			<option value= 10 <?php if (  $SMonth == 10  )  echo " selected ";?>>October</option>;
+			<option value= 11 <?php if (  $SMonth == 11  )  echo " selected ";?>>November</option>;
+			<option value= 12 <?php if (  $SMonth == 12  )  echo " selected ";?>>December</option>;
+			</select>				
 		  
 		  Day: <input type="text" name='f_day' <?php if ( !empty($_REQUEST['f_day'] ))     echo "Value='" . $_REQUEST['f_day'] . "'";?>> 
 		  <input type="submit" value='Filter'>
@@ -325,8 +344,8 @@ function cmog_render_events_list_page(){
     </div>
     <?php
 }
-//cmog_render_events_list_page
-/** *************************** RENDER Events list PAGE ********************************
+//cmog_render_events_calendar_page
+/** *************************** RENDER calendart PAGE ********************************
  *******************************************************************************
  * This function renders the admin page and the template list table. Although it's
  * possible to call prepare_items() and display() from the constructor, there
@@ -338,13 +357,17 @@ function cmog_render_events_calendar_page(){
 	if ( !current_user_can( 'manage_options' ) )  	{
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	}
-    //Create an instance of our package class...
-    $Events_Calendar = new CMOG_Events_List_Table();
-    //Fetch, prepare, sort, and filter our data...
-    $Events_Calendar->prepare_items(); 
-	//var_dump($Events_Calendar);
-	if( 'edit' === $Events_Calendar->current_action() | 'add' === $Events_Calendar->current_action()| 'Calender' === $Events_Calendar->current_action()) RETURN;
-    $cmog_template_type =  (int)(!empty($_REQUEST['gmd'])) ? $_REQUEST['gmd'] : ''; //If no sort, default to null
+	
+global $wpdb; //This is used only if making any database queries
+$SMonth = (!empty($_REQUEST['f_month'] )) ? $_REQUEST['f_month'] : '';
+$SYear = (!empty ($_REQUEST['f_year'] )) ? $_REQUEST['f_year'] : '';
+
+ $date = getDate();
+//$state= $this->get('state');
+//$SMonth = $state->get('filter.month');  
+ if ($SMonth == "") $SMonth = $date["mon"];
+//$SYear = $state->get('filter.year');
+ if ($SYear == "") $SYear = $date["year"];
     ?>
     <div class="wrap">
         <h2>Events</h2> 
@@ -364,33 +387,128 @@ function cmog_render_events_calendar_page(){
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="templates-filter" method="get">
 		  <br />
-		  Year: <input type="text" name='f_year' <?php if ( !empty($_REQUEST['f_year'] ))     echo "Value='" . $_REQUEST['f_year'] . "'";?> >
-		  Month: 
-  <select name='f_month' >	
-<option value= "" <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == null  )  echo " selected ";?>></option>;	  
-<option value= 1 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 1  )  echo " selected ";?>>January</option>;
-<option value= 2 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 2  )  echo " selected ";?>>February</option>;
-<option value= 3 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 3  )  echo " selected ";?>>March</option>;
-<option value= 4 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 4  )  echo " selected ";?>>April</option>;
-<option value= 5 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 5  )  echo " selected ";?>>May</option>;
-<option value= 6 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 6  )  echo " selected ";?>>June</option>;
-<option value= 7 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 7  )  echo " selected ";?>>July</option>;
-<option value= 8 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 8  )  echo " selected ";?>>August</option>;
-<option value= 9 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 9  )  echo " selected ";?>>September</option>;
-<option value= 10 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 10  )  echo " selected ";?>>October</option>;
-<option value= 11 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 11  )  echo " selected ";?>>November</option>;
-<option value= 12 <?php if ( !empty($_REQUEST['f_month']) and $_REQUEST['f_month'] == 12  )  echo " selected ";?>>December</option>;
-	</select>		
-			
+		Year:  
+			<?php
+			$years = $wpdb->get_results( "SELECT DISTINCT `Year` FROM `cmog66_cmog_events`", 'ARRAY_A' ); 
+			?>
+			<select name='f_year' >	
+			<?php
+			foreach($years as  $y): 
+			echo "<option value=" . $y['Year'] ; 
+			if (  $SYear == $y['Year']  )  echo " selected "; 
+			echo ">" . $y['Year'] . "</option>;";	
+			endforeach; 
+			?>
+			</select>		
 		  
-		  Day: <input type="text" name='f_day' <?php if ( !empty($_REQUEST['f_day'] ))     echo "Value='" . $_REQUEST['f_day'] . "'";?>> 
+		  Month: 
+			<select name='f_month' >	
+			<option value= "" <?php if (  $SMonth == null  )  echo " selected ";?>></option>;	  
+			<option value= 1 <?php if (   $SMonth == 1  )  echo " selected ";?>>January</option>;
+			<option value= 2 <?php if (   $SMonth == 2  )  echo " selected ";?>>February</option>;
+			<option value= 3 <?php if (   $SMonth == 3  )  echo " selected ";?>>March</option>;
+			<option value= 4 <?php if (   $SMonth == 4  )  echo " selected ";?>>April</option>;
+			<option value= 5 <?php if (  $SMonth == 5  )  echo " selected ";?>>May</option>;
+			<option value= 6 <?php if (  $SMonth == 6  )  echo " selected ";?>>June</option>;
+			<option value= 7 <?php if (  $SMonth == 7  )  echo " selected ";?>>July</option>;
+			<option value= 8 <?php if (  $SMonth == 8  )  echo " selected ";?>>August</option>;
+			<option value= 9 <?php if (  $SMonth == 9  )  echo " selected ";?>>September</option>;
+			<option value= 10 <?php if (  $SMonth == 10  )  echo " selected ";?>>October</option>;
+			<option value= 11 <?php if (  $SMonth == 11  )  echo " selected ";?>>November</option>;
+			<option value= 12 <?php if (  $SMonth == 12  )  echo " selected ";?>>December</option>;
+			</select>		
+		  
 		  <input type="submit" value='Filter'>
 		  <br />
             <!-- For plugins, we also need to ensure that the form posts back to our current page -->
             <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
             <!-- Now we can render the completed list table -->
-        
-            <?php echo " <br /> calenmar <br />"?>
+			<table class="adminlist" style="border-collapse: collapse; border: 1px solid black;">
+				<thead><tr>
+					<td align=\"center\" width='2%' class='dayhead'><small> </small></td>
+					<td align=\"center\" width='14%' class='dayhead'><small>Sunday</small></td>
+					<td align=\"center\" width='14%' class='dayhead'><small>Monday</small></td>
+					<td align=\"center\" width='14%' class='dayhead'><small>Tuesday</small></td>
+					<td align=\"center\" width='14%' class='dayhead'><small>Wednesday</small></td>
+					<td align=\"center\" width='14%' class='dayhead'><small>Thursday</small></td>
+					<td align=\"center\" width='14%' class='dayhead'><small>Friday</small></td>
+					<td align=\"center\" width='14%' class='dayhead'><small>Saturday</small></td>
+				</tr></thead>
+				<tfoot><tr>
+					<td colspan="8">foot</td>
+				</tr></tfoot>
+                <tbody>
+				
+	<?php	
+
+//get data
+				 $items = $wpdb->get_results( "SELECT * FROM `cmog66_cmog_events` WHERE (Year = $SYear or Year = -1 ) and Month = $SMonth ORDER BY Day asc", 'ARRAY_A' ); 
+//var_dump($items);
+         $this_month = getDate(mktime(0, 0, 0, $SMonth, 1, $SYear));
+         $next_month = getDate(mktime(0, 0, 0, $SMonth + 1, 1, $SYear));
+   
+
+         //Find out when this month starts and ends.
+         $first_week_day = $this_month["wday"];
+         $days_in_this_month = round(($next_month[0] - $this_month[0]) / (60 * 60 * 24));
+         
+      $last_sunday = getDate(MKTIME(0, 0, 0, $SMonth,(1 - $first_week_day), $SYear)) ;        
+         // Top of caendar
+
+
+
+//Fill the first week of the month with the appropriate number of blanks if needed.
+         if ($first_week_day <> 0) {
+         echo("<tr>");
+     //    echo("Year = ". $last_sunday["year"]." month = " . $last_sunday["mon"] . "day = " . $last_sunday["mday"]. "</small></td>");
+        //  echo("<td class=weeklable><small>" . $SYear . $SMonth . "1"  . "</small></td>");
+          echo("<td class=weeklable><small>".Pentecost_offset($last_sunday["year"],$last_sunday["mon"], $last_sunday["mday"]) . "</small></td>");
+     $top_skip = $first_week_day;
+     echo("<td  colspan=\"$top_skip\" class=\"blank\"> </td>");
+         }
+         $week_day = $first_week_day;
+         for($day_counter = 1; $day_counter <= $days_in_this_month; $day_counter++)
+            {
+            $week_day %= 7;
+
+            if($week_day == 0){
+               echo "</tr><tr border='0'>" ;
+			   //Pentecost_offset($I_year, $I_month, $I_day)
+             //   echo("<td class=weeklable><small>" . $SYear . $SMonth . $day_counter . "</small></td>");
+            echo "<td class=weeklable><small>".Pentecost_offset($SYear,$SMonth,$day_counter) . "</small></td>" ;
+                               }
+               echo "<td  valign='top' class='day' border='1' ><table hight='100%'class='daytable' ><tr border='1' valign='top'><td border='1' valign='top'>" ;
+            // echo "<big><b><A HREF=" ;
+			//   echo(JRoute::_('index.php?option=com_cmogcal&view=events&filter_year='.$SYear.'&filter_month='.$SMonth.'&filter_day='.$day_counter ).">");
+			 // echo $day_counter;
+			 //  echo "</a></b></big></td></tr>" ;
+            //echo"<tr><td border='1' ><small>data for $SMonth/$day_counter/$SYear</small></td><tr>" ;
+			echo "<tr><td border='1' ><a href='admin.php?f_year=" . $SYear . "&f_month=" . $SMonth . "&f_day=" . $day_counter . "&page=cmog_list_events'>".$day_counter."</a></td><tr>";
+			 
+			// data for this day
+				 foreach($items as $i => $item): 
+				// var_dump($item);
+					if ( $item['Day'] == $day_counter) {
+						echo "<tr><td><span class='" . $item['Class'] . "'>      " ;
+						echo "<a href='/wp-admin/admin.php?page=cmog_list_events&action=edit&event=". $item['ID']  ."'>";
+						echo $item['EventText'] . "</a></span></td><tr>";
+						//echo $item['EventText'] . "</span></td><tr>" ;
+						/**if ( $item->icon){	
+							if ((JURI::root( true ) == "") & ($item->icon[0] == "/")) {
+								echo  "<img src='" . $item->icon ."'  height='42' width='42'><br>" ;
+							}else{	
+								echo  "<img src='" . JURI::root( true ) . "/" . $item->icon ."'  height='42' width='42'><br>" ;	
+							}  
+							echo  "<b>Icon: </b>" . $item->icon ."<br>" ;  		
+						}**/							
+					}
+				endforeach;  
+             echo( "</table></td>"); 
+            $week_day++;
+            }		
+	?>			
+				</tbody>
+			</table>
         </form>
     </div>
     <?php
