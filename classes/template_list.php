@@ -233,7 +233,7 @@ class CMOG_Template_List_Table extends WP_List_Table {
      * @see $this->prepare_items()
      **************************************************************************/
     function process_bulk_action() {
-		parse_str($_SERVER['QUERY_STRING'], $query); var_dump($this->current_action());
+		parse_str($_SERVER['QUERY_STRING'], $query); 
 	        if( 'delete'===$this->current_action() ) {
 				if (!isset($query['template'])) {
 					echo "<div class='notice notice-error is-dismissible'>";
