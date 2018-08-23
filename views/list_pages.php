@@ -20,14 +20,7 @@ function cmog_render_list_page(){
     ?>
     <div class="wrap">
         <h2>CMOG Templates</h2> 
-		<a href="/wp-admin?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_luke" class="page-title-action">Luke Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_pentecos" class="page-title-action">Pentecost Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_pascha" class="page-title-action">Pascha Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_triodion" class="page-title-action">Triodion Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_movable" class="page-title-action">Movable Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_events" class="page-title-action">Events</a>
-		<a href="/wp-admin/admin.php?page=cmog_month_calendaer" class="page-title-action">Calendaer</a>
+		<?php cmog_top_menu(); ?>
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(template info here) </p>
 			<p> Template type is All CMOG Templates </p>
@@ -63,14 +56,7 @@ function  cmog_render_luke_list_page(){
     ?>
     <div class="wrap">
         <h2>Luke Templates</h2> 
-		<a href="/wp-admin?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_luke" class="page-title-action">Luke Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_pentecos" class="page-title-action">Pentecost Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_pascha" class="page-title-action">Pascha Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_triodion" class="page-title-action">Triodion Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_movable" class="page-title-action">Movable Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_events" class="page-title-action">Events</a>
-		<a href="/wp-admin/admin.php?page=cmog_month_calendaer" class="page-title-action">Calendaer</a>
+		<?php cmog_top_menu(); ?>
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(template info here) </p>
 			<p> Template type is Luke Templates </p>
@@ -106,14 +92,7 @@ function cmog_render_pentecost_list_page(){
     ?>
     <div class="wrap">
         <h2>Pentecost Templates</h2> 
-		<a href="/wp-admin?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_luke" class="page-title-action">Luke Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_pentecos" class="page-title-action">Pentecost Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_pascha" class="page-title-action">Pascha Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_triodion" class="page-title-action">Triodion Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_movable" class="page-title-action">Movable Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_events" class="page-title-action">Events</a>
-		<a href="/wp-admin/admin.php?page=cmog_month_calendaer" class="page-title-action">Calendaer</a>
+		<?php cmog_top_menu(); ?>
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(template info here) </p>
 			<p> Template type is Pentecost Templates  </p>
@@ -149,14 +128,7 @@ function cmog_render_pascha_list_page(){
     ?>
     <div class="wrap">
         <h2>Pascha Templates</h2> 
-		<a href="/wp-admin?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_luke" class="page-title-action">Luke Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_pentecos" class="page-title-action">Pentecost Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_pascha" class="page-title-action">Pascha Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_triodion" class="page-title-action">Triodion Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_movable" class="page-title-action">Movable Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_events" class="page-title-action">Events</a>
-		<a href="/wp-admin/admin.php?page=cmog_month_calendaer" class="page-title-action">Calendaer</a>
+		<?php cmog_top_menu(); ?>
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(template info here) </p>
 			<p> Template type is Pascha Templates  </p>
@@ -192,14 +164,7 @@ function cmog_render_triodion_list_page(){
     ?>
     <div class="wrap">
         <h2>Triodion Templates</h2> 
-		<a href="/wp-admin?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_luke" class="page-title-action">Luke Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_pentecos" class="page-title-action">Pentecost Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_pascha" class="page-title-action">Pascha Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_triodion" class="page-title-action">Triodion Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_movable" class="page-title-action">Movable Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_events" class="page-title-action">Events</a>
-		<a href="/wp-admin/admin.php?page=cmog_month_calendaer" class="page-title-action">Calendaer</a>
+		<?php cmog_top_menu(); ?>
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(template info here) </p>
 			<p> Template type is Triodion Templates  </p>
@@ -235,14 +200,7 @@ function cmog_render_movable_list_page(){
     ?>
     <div class="wrap">
         <h2>Movable Templates</h2> 
-		<a href="/wp-admin/admin.php?page=cmog_list_movable&action=add&template=0" class="page-title-action">Add New</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_luke" class="page-title-action">Luke Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_pentecos" class="page-title-action">Pentecost Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_pascha" class="page-title-action">Pascha Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_triodion" class="page-title-action">Triodion Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_movable" class="page-title-action">Movable Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_events" class="page-title-action">Events</a>
-		<a href="/wp-admin/admin.php?page=cmog_month_calendaer" class="page-title-action">Calendaer</a>
+		<?php cmog_top_menu(); ?>
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(template info here) </p>
 			<p> Template type is the Movable Templates </p>
@@ -284,6 +242,7 @@ function cmog_render_events_list_page(){
 	global $wpdb; //This is used only if making any database queries
 $SMonth = (!empty($_REQUEST['f_month'] )) ? $_REQUEST['f_month'] : '';
 $SYear = (!empty ($_REQUEST['f_year'] )) ? $_REQUEST['f_year'] : '';
+$EveryYear = (!empty ($_REQUEST['f_every_year'] )) ? $_REQUEST['f_every_year'] : '';
 
  //$date = getDate(); 
 // if ($SMonth == "") $SMonth = $date["mon"];
@@ -308,6 +267,7 @@ $SYear = (!empty ($_REQUEST['f_year'] )) ? $_REQUEST['f_year'] : '';
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="templates-filter" method="get">
 		  <br />
+		Show Every Year: <input type="checkbox" name="f_every_year" value="Yes" <?php if ('Yes' == $EveryYear  ) echo ' checked';?>  >
 		Year:  
 			<?php
 			$years = $wpdb->get_results( "SELECT DISTINCT `Year` FROM `cmog66_cmog_events`", 'ARRAY_A' ); 
@@ -352,7 +312,7 @@ $SYear = (!empty ($_REQUEST['f_year'] )) ? $_REQUEST['f_year'] : '';
     <?php
 }
 //cmog_render_events_calendar_page
-/** *************************** RENDER calendart PAGE ********************************
+/** *************************** RENDER calendar PAGE ********************************
  *******************************************************************************
  * This function renders the admin page and the template list table. Although it's
  * possible to call prepare_items() and display() from the constructor, there
@@ -368,6 +328,7 @@ function cmog_render_events_calendar_page(){
 global $wpdb; //This is used only if making any database queries
 $SMonth = (!empty($_REQUEST['f_month'] )) ? $_REQUEST['f_month'] : '';
 $SYear = (!empty ($_REQUEST['f_year'] )) ? $_REQUEST['f_year'] : '';
+$EveryYear = (!empty ($_REQUEST['f_every_year'] )) ? $_REQUEST['f_every_year'] : '';
 
  $date = getDate();
 //$state= $this->get('state');
@@ -378,14 +339,7 @@ $SYear = (!empty ($_REQUEST['f_year'] )) ? $_REQUEST['f_year'] : '';
     ?>
     <div class="wrap">
         <h2>Events</h2> 
-		<a href="/wp-admin/admin.php?page=cmog_list_events&action=add&event=0" class="page-title-action">Add New</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_luke" class="page-title-action">Luke Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_pentecos" class="page-title-action">Pentecost Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_pascha" class="page-title-action">Pascha Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_triodion" class="page-title-action">Triodion Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_movable" class="page-title-action">Movable Templates</a>
-		<a href="/wp-admin/admin.php?page=cmog_list_events" class="page-title-action">Events</a>
-		<a href="/wp-admin/admin.php?page=cmog_month_calendaer" class="page-title-action">Calendaer</a>
+		<?php cmog_top_menu(); ?>
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(some text) </p>
 			<p> Events </p>
@@ -395,6 +349,7 @@ $SYear = (!empty ($_REQUEST['f_year'] )) ? $_REQUEST['f_year'] : '';
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="templates-filter" method="get">
 		  <br />
+		Show Every Year: <input type="checkbox" name="f_every_year" value="Yes" <?php if ('Yes' == $EveryYear  ) echo ' checked';?>  >
 		Year:  
 			<?php
 			$years = $wpdb->get_results( "SELECT DISTINCT `Year` FROM `cmog66_cmog_events`", 'ARRAY_A' ); 
@@ -450,7 +405,11 @@ $SYear = (!empty ($_REQUEST['f_year'] )) ? $_REQUEST['f_year'] : '';
 	<?php	
 
 //get data
+if ("Yes" == $EveryYear){
 				 $items = $wpdb->get_results( "SELECT * FROM `cmog66_cmog_events` WHERE (Year = $SYear or Year = -1 ) and Month = $SMonth ORDER BY Day asc", 'ARRAY_A' ); 
+} else {
+				 $items = $wpdb->get_results( "SELECT * FROM `cmog66_cmog_events` WHERE Year = $SYear  and Month = $SMonth ORDER BY Day asc", 'ARRAY_A' ); 
+}
 //var_dump($items);
          $this_month = getDate(mktime(0, 0, 0, $SMonth, 1, $SYear));
          $next_month = getDate(mktime(0, 0, 0, $SMonth + 1, 1, $SYear));
@@ -520,4 +479,20 @@ $SYear = (!empty ($_REQUEST['f_year'] )) ? $_REQUEST['f_year'] : '';
         </form>
     </div>
     <?php
+}
+
+/** *************************** RENDER top menu PAGE part********************************
+ *******************************************************************************
+ */
+function cmog_top_menu(){
+	?>
+		<a href="/wp-admin?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New</a>
+		<a href="/wp-admin/admin.php?page=cmog_list_luke" class="page-title-action">Luke Templates</a>
+		<a href="/wp-admin/admin.php?page=cmog_list_pentecos" class="page-title-action">Pentecost Templates</a>
+		<a href="/wp-admin/admin.php?page=cmog_list_pascha" class="page-title-action">Pascha Templates</a>
+		<a href="/wp-admin/admin.php?page=cmog_list_triodion" class="page-title-action">Triodion Templates</a>
+		<a href="/wp-admin/admin.php?page=cmog_list_movable" class="page-title-action">Movable Templates</a>
+		<a href="/wp-admin/admin.php?page=cmog_list_events" class="page-title-action">Events</a>
+		<a href="/wp-admin/admin.php?page=cmog_month_calendaer" class="page-title-action">Calendaer</a>
+	<?php
 }

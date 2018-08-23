@@ -115,7 +115,7 @@ class CMOG_Events_List_Table extends WP_List_Table {
             case -4  : return "Triodion (" . $item['tmplt_id'] . ")"; 
             case  -3  : return "Luke (" . $item['tmplt_id'] . ")"; 
             case  -2  : return "Pentecost (" . $item['tmplt_id'] . ")"; 
-            case  -1  : return "Movable (" . $item['tmplt_id'] . ")"; 
+            case  -1  : return " <a admin.php?page=cmog_list_movable&action=edit&template=" . $item['tmplt_id'] . ">Movable (" . $item['tmplt_id'] . ")</a>"; 
             default:
                 return print_r($item,true); //Show the item for troubleshooting purposes
         }
@@ -399,7 +399,9 @@ class CMOG_Events_List_Table extends WP_List_Table {
 		if ($cmog_event_type == 'Movable'){
 			$orderby = " Offset $order " ;
 		} else  { 
-				if ( empty($_REQUEST['orderby'])) {
+				if ( empty($_REQUEST['orderby']) and !empty($_REQUEST['f_year'])) {
+					  $orderby = "  Month  $order ,  Day $order" ;
+				} elseif ( empty($_REQUEST['orderby'])){
 					  $orderby = " Year  , Month  $order ,  Day $order" ;
 				} elseif ($_REQUEST['orderby']  == 'Year'){
 					  $orderby = " Year $order , Month  $order ,  Day $order" ;
@@ -416,8 +418,10 @@ class CMOG_Events_List_Table extends WP_List_Table {
 				}
 		} 
 		$filter ='';
-		if ( !empty($_REQUEST['f_year'] )) {
+		if ( !empty($_REQUEST['f_year'] )   and !empty($_REQUEST['f_every_year']) ){
 			$filter .= " and (Year = " . $_REQUEST['f_year'] . " or Year = -1 ) " ;
+		} elseif ( !empty($_REQUEST['f_year'] )) {
+			$filter .= " and  Year = " . $_REQUEST['f_year'] . " " ;
 		}
 		if ( !empty($_REQUEST['f_day'] )) {
 			$filter .= " and Day = " . $_REQUEST['f_day'] . " " ;
