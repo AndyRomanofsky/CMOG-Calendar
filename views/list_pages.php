@@ -329,6 +329,7 @@ global $wpdb; //This is used only if making any database queries
 $SMonth = (!empty($_REQUEST['f_month'] )) ? $_REQUEST['f_month'] : '';
 $SYear = (!empty ($_REQUEST['f_year'] )) ? $_REQUEST['f_year'] : '';
 $EveryYear = (!empty ($_REQUEST['f_every_year'] )) ? $_REQUEST['f_every_year'] : '';
+$SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
 
  $date = getDate();
 //$state= $this->get('state');
@@ -355,7 +356,7 @@ $EveryYear = (!empty ($_REQUEST['f_every_year'] )) ? $_REQUEST['f_every_year'] :
 			$years = $wpdb->get_results( "SELECT DISTINCT `Year` FROM `cmog66_cmog_events`", 'ARRAY_A' ); 
 			?>
 			<select name='f_year' >	
-			<?php
+			<?php		
 			foreach($years as  $y): 
 			echo "<option value=" . $y['Year'] ; 
 			if (  $SYear == $y['Year']  )  echo " selected "; 
@@ -380,7 +381,20 @@ $EveryYear = (!empty ($_REQUEST['f_every_year'] )) ? $_REQUEST['f_every_year'] :
 			<option value= 11 <?php if (  $SMonth == 11  )  echo " selected ";?>>November</option>;
 			<option value= 12 <?php if (  $SMonth == 12  )  echo " selected ";?>>December</option>;
 			</select>		
-		  
+		Class:  
+			<?php
+			$classes = $wpdb->get_results( "SELECT DISTINCT `Class` FROM `cmog66_cmog_events`", 'ARRAY_A' ); 
+			?> 
+			<select name='f_class' >		
+			echo "<option value=''></option>;";	
+			<?php
+			foreach($classes as  $c): 
+			echo "<option value=" . $c['Class'] ; 
+			if (  $SClass == $c['Class']  )  echo " selected "; 
+			echo ">" . $c['Class'] . "</option>;";	
+			endforeach; 
+			?>
+			</select> 
 		  <input type="submit" value='Filter'>
 		  <br />
             <!-- For plugins, we also need to ensure that the form posts back to our current page -->
@@ -405,10 +419,16 @@ $EveryYear = (!empty ($_REQUEST['f_every_year'] )) ? $_REQUEST['f_every_year'] :
 	<?php	
 
 //get data
+
+if (!empty($SClass) ) {
+	$WhereClass = " and Class = " . $SClass . " ";
+	} else {
+	$WhereClass = "";
+	}
 if ("Yes" == $EveryYear){
-				 $items = $wpdb->get_results( "SELECT * FROM `cmog66_cmog_events` WHERE (Year = $SYear or Year = -1 ) and Month = $SMonth ORDER BY Day asc", 'ARRAY_A' ); 
+				 $items = $wpdb->get_results( "SELECT * FROM `cmog66_cmog_events` WHERE (Year = $SYear or Year = -1 ) and Month = $SMonth $WhereClass ORDER  BY Day asc", 'ARRAY_A' ); 
 } else {
-				 $items = $wpdb->get_results( "SELECT * FROM `cmog66_cmog_events` WHERE Year = $SYear  and Month = $SMonth ORDER BY Day asc", 'ARRAY_A' ); 
+				 $items = $wpdb->get_results( "SELECT * FROM `cmog66_cmog_events` WHERE Year = $SYear  and Month = $SMonth $WhereClass ORDER BY Day asc", 'ARRAY_A' ); 
 }
 //var_dump($items);
          $this_month = getDate(mktime(0, 0, 0, $SMonth, 1, $SYear));
