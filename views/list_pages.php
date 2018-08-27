@@ -274,6 +274,7 @@ $EveryYear = (!empty ($_REQUEST['f_every_year'] )) ? $_REQUEST['f_every_year'] :
 			?>
 			<select name='f_year' >	
 			<?php
+			echo "<option value=''> </option>;";	
 			foreach($years as  $y): 
 			echo "<option value=" . $y['Year'] ; 
 			if (  $SYear == $y['Year']  )  echo " selected "; 
@@ -305,7 +306,8 @@ $EveryYear = (!empty ($_REQUEST['f_every_year'] )) ? $_REQUEST['f_every_year'] :
             <!-- For plugins, we also need to ensure that the form posts back to our current page -->
             <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
             <!-- Now we can render the completed list table -->
-        
+<?php $counts = $wpdb->get_results( "SELECT COUNT(ID), published FROM `cmog66_cmog_events` GROUP BY published ORDER BY COUNT(ID) DESC", 'ARRAY_A' ); ?>
+<?php var_dump($counts);?>
             <?php $Events_List->display() ?>
         </form>
     </div>
@@ -402,14 +404,14 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
             <!-- Now we can render the completed list table -->
 			<table class="adminlist" style="border-collapse: collapse; border: 1px solid black;">
 				<thead><tr>
-					<td align=\"center\" width='2%' class='dayhead'><small> </small></td>
-					<td align=\"center\" width='14%' class='dayhead'><small>Sunday</small></td>
-					<td align=\"center\" width='14%' class='dayhead'><small>Monday</small></td>
-					<td align=\"center\" width='14%' class='dayhead'><small>Tuesday</small></td>
-					<td align=\"center\" width='14%' class='dayhead'><small>Wednesday</small></td>
-					<td align=\"center\" width='14%' class='dayhead'><small>Thursday</small></td>
-					<td align=\"center\" width='14%' class='dayhead'><small>Friday</small></td>
-					<td align=\"center\" width='14%' class='dayhead'><small>Saturday</small></td>
+					<td  width='2%' class='dayhead'><small> </small></td>
+					<td  width='14%' class='dayhead'><small>Sunday</small></td>
+					<td  width='14%' class='dayhead'><small>Monday</small></td>
+					<td  width='14%' class='dayhead'><small>Tuesday</small></td>
+					<td  width='14%' class='dayhead'><small>Wednesday</small></td>
+					<td  width='14%' class='dayhead'><small>Thursday</small></td>
+					<td  width='14%' class='dayhead'><small>Friday</small></td>
+					<td  width='14%' class='dayhead'><small>Saturday</small></td>
 				</tr></thead>
 				<tfoot><tr>
 					<td colspan="8">foot</td>

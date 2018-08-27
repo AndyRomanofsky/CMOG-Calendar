@@ -81,15 +81,31 @@ class CMOG_Events_List_Table extends WP_List_Table {
      **************************************************************************/
     function column_EventText($item){
         //Build row actions
-        $actions = array(
+
+		if( 0 == $item['published'] ){ 
+		$actions = array(			
             'edit'      => sprintf('<a href="?page=%s&action=%s&event=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID']),
-            'delete'    => sprintf('<a href="?page=%s&action=%s&event=%s">Delete</a>',$_REQUEST['page'],'delete',$item['ID']),
+            'trash'    => sprintf('<a href="?page=%s&action=%s&event=%s">Delete</a>',$_REQUEST['page'],'delete',$item['ID']),
+        );
+		$row_status = " <b>(Draft)</b>";
+		} elseif ( -2 == $item['published'] ){
+		$actions = array(	
+            'trash'    => sprintf('<a href="?page=%s&action=%s&event=%s">Delete</a>',$_REQUEST['page'],'delete',$item['ID']),
+            'un-trash'    => sprintf('<a href="?page=%s&action=%s&event=%s">Restore</a>',$_REQUEST['page'],'restore',$item['ID']),
+        );
+		$row_status = " <b>(In Trash)</b>";
+		} else {
+		$actions = array(			
+            'edit'      => sprintf('<a href="?page=%s&action=%s&event=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID']),
+            'trash'    => sprintf('<a href="?page=%s&action=%s&event=%s">Delete</a>',$_REQUEST['page'],'delete',$item['ID']),
             'load'      => sprintf('<a href="?page=%s&action=%s&event=%s">Load</a>',$_REQUEST['page'],'load',$item['ID']),
         );
+		$row_status = "";
+		}
         //Return the title contents
         //return '<a href="?page=' . $_REQUEST['page'] . '&action=edit&event=' . $item['ID'] . '>' . $item['EventText'] . '</a> ' ;
         //return '<a href="?page=' . $_REQUEST['page'] . '&action=edit&event=' . $item['ID'] . '>' . $item['EventText'] . '</a> ' . $this->row_actions($actions);
-         return $item['EventText'] . $this->row_actions($actions);
+         return $item['EventText'] . $row_status . $this->row_actions($actions);
     }
     /** ************ function column_cb **********************
      * REQUIRED if displaying checkboxes or using bulk actions! The 'cb' column
@@ -116,6 +132,17 @@ class CMOG_Events_List_Table extends WP_List_Table {
             case  -3  : return "Luke (" . $item['tmplt_id'] . ")"; 
             case  -2  : return "Pentecost (" . $item['tmplt_id'] . ")"; 
             case  -1  : return " <a admin.php?page=cmog_list_movable&action=edit&template=" . $item['tmplt_id'] . ">Movable (" . $item['tmplt_id'] . ")</a>"; 
+            default:
+                return print_r($item,true); //Show the item for troubleshooting purposes
+        }
+	}    
+	function column_published($item){
+		         //  'tmplt_id' /
+				 if (empty($item['published']))	 RETURN ;
+		 switch($item['published']){
+            case -2: return "Trashed"; 
+            case 0  : return "Draft"; 
+            case 1  : return "Published"; 
             default:
                 return print_r($item,true); //Show the item for troubleshooting purposes
         }
