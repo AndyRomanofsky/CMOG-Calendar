@@ -85,19 +85,19 @@ class CMOG_Events_List_Table extends WP_List_Table {
 		if( 0 == $item['published'] ){ 
 		$actions = array(			
             'edit'      => sprintf('<a href="?page=%s&action=%s&event=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID']),
-            'trash'    => sprintf('<a href="?page=%s&action=%s&event=%s">Delete</a>',$_REQUEST['page'],'delete',$item['ID']),
+            'trash'    => sprintf('<a href="?page=%s&action=%s&event=%s">Trash</a>',$_REQUEST['page'],'trash',$item['ID']),
         );
 		$row_status = " <b>(Draft)</b>";
 		} elseif ( -2 == $item['published'] ){
 		$actions = array(	
-            'trash'    => sprintf('<a href="?page=%s&action=%s&event=%s">Delete</a>',$_REQUEST['page'],'delete',$item['ID']),
+            'delete'    => sprintf('<a href="?page=%s&action=%s&event=%s">Delete</a>',$_REQUEST['page'],'delete',$item['ID']),
             'un-trash'    => sprintf('<a href="?page=%s&action=%s&event=%s">Restore</a>',$_REQUEST['page'],'restore',$item['ID']),
         );
 		$row_status = " <b>(In Trash)</b>";
 		} else {
 		$actions = array(			
             'edit'      => sprintf('<a href="?page=%s&action=%s&event=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID']),
-            'trash'    => sprintf('<a href="?page=%s&action=%s&event=%s">Delete</a>',$_REQUEST['page'],'delete',$item['ID']),
+            'trash'    => sprintf('<a href="?page=%s&action=%s&event=%s">Trash</a>',$_REQUEST['page'],'trash',$item['ID']),
             'load'      => sprintf('<a href="?page=%s&action=%s&event=%s">Load</a>',$_REQUEST['page'],'load',$item['ID']),
         );
 		$row_status = "";
@@ -141,6 +141,7 @@ class CMOG_Events_List_Table extends WP_List_Table {
 				 if (empty($item['published']))	 RETURN ;
 		 switch($item['published']){
             case -2: return "Trashed"; 
+            case -1: return "Archived"; 
             case 0  : return "Draft"; 
             case 1  : return "Published"; 
             default:
@@ -266,7 +267,7 @@ class CMOG_Events_List_Table extends WP_List_Table {
      **************************************************************************/
     function get_bulk_actions() {
         $actions = array(
-            'delete'    => 'Delete',
+            'trash'    => 'Trash',
             'load'    => 'Load',
         );
         return $actions;
@@ -278,8 +279,31 @@ class CMOG_Events_List_Table extends WP_List_Table {
      * (For now all actions processed here)
      * @see $this->prepare_items()
      **************************************************************************/
+
     function process_bulk_action() {
 		parse_str($_SERVER['QUERY_STRING'], $query); 
+	        if( 'trash'===$this->current_action() ) {
+				if (!isset($query['event'])) {
+					echo "<div class='notice notice-error is-dismissible'>";
+					echo  '<br />No rows are checked for the trash!</div>' ;
+					RETURN;
+				}
+			$id = $query['event'];
+			if (is_array($id)){
+			echo "<div class='notice notice-success is-dismissible'>";
+				// (code to trash many row)
+				echo  	'<br /> (bulk) <br />';
+				foreach ( $id as $value )
+					{
+					echo  "Trashed " . $value . "<br />";
+					} 
+				echo '</div>';
+			} else {
+			echo "<div class='notice notice-success is-dismissible'>";
+				// (code to trash row)
+				echo  '<br />Trashing ' .  $id . ' (or it would be if we had a trash can)!<br /></div>' ;
+			} 
+        }        
 	        if( 'delete'===$this->current_action() ) {
 				if (!isset($query['event'])) {
 					echo "<div class='notice notice-error is-dismissible'>";
@@ -310,7 +334,7 @@ class CMOG_Events_List_Table extends WP_List_Table {
 				}
 			$id = $query['event'];
 			if (is_array($id)){
-				// (code to delete many row)
+				// (code to edit many row)
 				echo "<div class='notice notice-error is-dismissible'>";
 				echo  	'<br /> (can not bulk edit at this time) <br /></div>';
 			} else {

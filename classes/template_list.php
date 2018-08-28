@@ -116,6 +116,18 @@ class CMOG_Template_List_Table extends WP_List_Table {
             default:
                 return print_r($item,true); //Show the item for troubleshooting purposes
         }
+	}   
+	function column_published($item){
+		         //  'tmplt_id' /
+				 if (empty($item['published']))	 RETURN ;
+		 switch($item['published']){
+            case -2: return "Trashed"; 
+            case -1: return "Archived"; 
+            case 0  : return "Draft"; 
+            case 1  : return "Published"; 
+            default:
+                return print_r($item,true); //Show the item for troubleshooting purposes
+        }
 	}
     function column_wday($item){
 		switch($item['wday']){
