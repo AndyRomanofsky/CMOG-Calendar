@@ -27,6 +27,10 @@ function cmog_render_list_page(){
         </div>
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="templates-filter" method="get">
+		  <?php if ( array_key_exists('published',$_REQUEST )) {
+			//$status_filter =  " and published = " . $_REQUEST['published'] . " " ;
+			echo "<input type='hidden' id='published' name='published' value='" . $_REQUEST['published'] . "'>";
+		} ?>
             <!-- For plugins, we also need to ensure that the form posts back to our current page -->
             <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
             <!-- Now we can render the completed list table -->
@@ -63,6 +67,10 @@ function  cmog_render_luke_list_page(){
         </div>
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="templates-filter" method="get">
+		  <?php if ( array_key_exists('published',$_REQUEST )) {
+			//$status_filter =  " and published = " . $_REQUEST['published'] . " " ;
+			echo "<input type='hidden' id='published' name='published' value='" . $_REQUEST['published'] . "'>";
+		} ?>
             <!-- For plugins, we also need to ensure that the form posts back to our current page -->
             <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
             <!-- Now we can render the completed list table -->
@@ -99,6 +107,10 @@ function cmog_render_pentecost_list_page(){
         </div>
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="templates-filter" method="get">
+		  <?php if ( array_key_exists('published',$_REQUEST )) {
+			//$status_filter =  " and published = " . $_REQUEST['published'] . " " ;
+			echo "<input type='hidden' id='published' name='published' value='" . $_REQUEST['published'] . "'>";
+		} ?>
             <!-- For plugins, we also need to ensure that the form posts back to our current page -->
             <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
             <!-- Now we can render the completed list table -->
@@ -135,6 +147,10 @@ function cmog_render_pascha_list_page(){
         </div>
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="templates-filter" method="get">
+		  <?php if ( array_key_exists('published',$_REQUEST )) {
+			//$status_filter =  " and published = " . $_REQUEST['published'] . " " ;
+			echo "<input type='hidden' id='published' name='published' value='" . $_REQUEST['published'] . "'>";
+		} ?>
             <!-- For plugins, we also need to ensure that the form posts back to our current page -->
             <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
             <!-- Now we can render the completed list table -->
@@ -171,6 +187,10 @@ function cmog_render_triodion_list_page(){
         </div>
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="templates-filter" method="get">
+		  <?php if ( array_key_exists('published',$_REQUEST )) {
+			//$status_filter =  " and published = " . $_REQUEST['published'] . " " ;
+			echo "<input type='hidden' id='published' name='published' value='" . $_REQUEST['published'] . "'>";
+		} ?>
             <!-- For plugins, we also need to ensure that the form posts back to our current page -->
             <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
             <!-- Now we can render the completed list table -->
@@ -207,6 +227,10 @@ function cmog_render_movable_list_page(){
         </div>
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="templates-filter" method="get">
+		  <?php if ( array_key_exists('published',$_REQUEST )) {
+			//$status_filter =  " and published = " . $_REQUEST['published'] . " " ;
+			echo "<input type='hidden' id='published' name='published' value='" . $_REQUEST['published'] . "'>";
+		} ?>
             <!-- For plugins, we also need to ensure that the form posts back to our current page -->
             <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
             <!-- Now we can render the completed list table -->
@@ -262,11 +286,31 @@ $EveryYear = (!empty ($_REQUEST['f_every_year'] )) ? $_REQUEST['f_every_year'] :
             <p>(some text) </p>
 			<p> Events </p>
         </div>
-		<div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
+		<div>
+		  
+<?php $counts = $wpdb->get_results( "SELECT COUNT(ID), published FROM `cmog66_cmog_events` GROUP BY published ORDER BY published  DESC ", 'ARRAY_A' ); ?>
+<?php $cl =  array(1 =>"Published", 0 =>"Draft", -1 =>"Archived" , -2 =>"Trashed");
+
+			$total = 0;
+			foreach($counts as  $c): 
+			if ( $c['published'] == 0 | $c['published'] == 1){
+			$total += $c['COUNT(ID)'];
+			}
+			endforeach; 
+			echo "<br /><a  href='/wp-admin/admin.php?page=cmog_list_events'> All </a>($total)";
+			foreach($counts as  $c): 
+			echo " | <a  href='/wp-admin/admin.php?page=cmog_list_events&published=" . $c['published']. "'>" . $cl[$c['published']] ; 
+			echo "</a> (" . $c['COUNT(ID)'] . ") ";	
+			endforeach; 
+			?><br />
         </div>
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="templates-filter" method="get">
 		  <br />
+		  <?php if ( array_key_exists('published',$_REQUEST )) {
+			//$status_filter =  " and published = " . $_REQUEST['published'] . " " ;
+			echo "<input type='hidden' id='published' name='published' value='" . $_REQUEST['published'] . "'>";
+		} ?>
 		Show Every Year: <input type="checkbox" name="f_every_year" value="Yes" <?php if ('Yes' == $EveryYear  ) echo ' checked';?>  >
 		Year:  
 			<?php
@@ -306,8 +350,7 @@ $EveryYear = (!empty ($_REQUEST['f_every_year'] )) ? $_REQUEST['f_every_year'] :
             <!-- For plugins, we also need to ensure that the form posts back to our current page -->
             <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
             <!-- Now we can render the completed list table -->
-<?php $counts = $wpdb->get_results( "SELECT COUNT(ID), published FROM `cmog66_cmog_events` GROUP BY published ORDER BY COUNT(ID) DESC", 'ARRAY_A' ); ?>
-<?php var_dump($counts);?>
+
             <?php $Events_List->display() ?>
         </form>
     </div>
@@ -352,6 +395,10 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="templates-filter" method="get">
 		  <br />
+		  <?php if ( array_key_exists('published',$_REQUEST )) {
+			//$status_filter =  " and published = " . $_REQUEST['published'] . " " ;
+			echo "<input type='hidden' id='published' name='published' value='" . $_REQUEST['published'] . "'>";
+		} ?>
 		Show Every Year: <input type="checkbox" name="f_every_year" value="Yes" <?php if ('Yes' == $EveryYear  ) echo ' checked';?>  >
 		Year:  
 			<?php
