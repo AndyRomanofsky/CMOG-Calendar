@@ -145,7 +145,7 @@ class CMOG_Events_List_Table extends WP_List_Table {
             case 0  : return "Draft"; 
             case 1  : return "Published"; 
             default:
-                return print_r($item,true); //Show the item for troubleshooting purposes
+                return "(" . $item['published'] . ")";
         }
 	}
 	function column_Year($item){

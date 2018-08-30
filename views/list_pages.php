@@ -11,6 +11,8 @@ function cmog_render_list_page(){
 	if ( !current_user_can( 'manage_options' ) )  	{
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	}
+	
+global $wpdb; //This is used only if making any database queries
     //Create an instance of our package class...
     $TemplateListTable = new CMOG_Template_List_Table();
     //Fetch, prepare, sort, and filter our data...
@@ -24,6 +26,24 @@ function cmog_render_list_page(){
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(template info here) </p>
 			<p> Template type is All CMOG Templates </p>
+        </div>
+		<div>
+		  
+<?php $counts = $wpdb->get_results( "SELECT COUNT(ID), published FROM `cmog66_cmog_templates`  GROUP BY published ORDER BY published  DESC ", 'ARRAY_A' ); ?>
+<?php $cl =  array(2 =>"?", 1 =>"Published", 0 =>"Draft", -1 =>"Archived" , -2 =>"Trashed");
+
+			$total = 0;
+			foreach($counts as  $c): 
+			if ( $c['published'] == 0 | $c['published'] == 1){
+			$total += $c['COUNT(ID)'];
+			}
+			endforeach; 
+			echo "<br /><a  href='/wp-admin/admin.php?page=cmog_list_test'> All </a>($total)";
+			foreach($counts as  $c): 
+			echo " | <a  href='/wp-admin/admin.php?page=cmog_list_test&published=" . $c['published']. "'>" . $cl[$c['published']] ; 
+			echo "</a> (" . $c['COUNT(ID)'] . ") ";	
+			endforeach; 
+			?><br />
         </div>
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="templates-filter" method="get">
@@ -51,6 +71,8 @@ function  cmog_render_luke_list_page(){
 	if ( !current_user_can( 'manage_options' ) )  	{
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	}
+	
+global $wpdb; //This is used only if making any database queries
     //Create an instance of our package class...
     $TemplateListTable = new CMOG_Template_List_Table();  
     //Fetch, prepare, sort, and filter our data...
@@ -64,6 +86,24 @@ function  cmog_render_luke_list_page(){
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(template info here) </p>
 			<p> Template type is Luke Templates </p>
+        </div>
+		<div>
+		  
+<?php $counts = $wpdb->get_results( "SELECT COUNT(ID), published FROM `cmog66_cmog_templates` WHERE gmd = -3 GROUP BY published ORDER BY published  DESC ", 'ARRAY_A' ); ?>
+<?php $cl =  array(2 =>"?", 1 =>"Published", 0 =>"Draft", -1 =>"Archived" , -2 =>"Trashed");
+
+			$total = 0;
+			foreach($counts as  $c): 
+			if ( $c['published'] == 0 | $c['published'] == 1){
+			$total += $c['COUNT(ID)'];
+			}
+			endforeach; 
+			echo "<br /><a  href='/wp-admin/admin.php?page=cmog_list_luke'> All </a>($total)";
+			foreach($counts as  $c): 
+			echo " | <a  href='/wp-admin/admin.php?page=cmog_list_luke&published=" . $c['published']. "'>" . $cl[$c['published']] ; 
+			echo "</a> (" . $c['COUNT(ID)'] . ") ";	
+			endforeach; 
+			?><br />
         </div>
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="templates-filter" method="get">
@@ -91,6 +131,8 @@ function cmog_render_pentecost_list_page(){
 	if ( !current_user_can( 'manage_options' ) )  	{
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	}
+	
+global $wpdb; //This is used only if making any database queries
     //Create an instance of our package class...
     $TemplateListTable = new CMOG_Template_List_Table();
     //Fetch, prepare, sort, and filter our data...
@@ -104,6 +146,24 @@ function cmog_render_pentecost_list_page(){
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(template info here) </p>
 			<p> Template type is Pentecost Templates  </p>
+        </div>
+		<div>
+		  
+<?php $counts = $wpdb->get_results( "SELECT COUNT(ID), published FROM `cmog66_cmog_templates` WHERE gmd = -2 GROUP BY published ORDER BY published  DESC ", 'ARRAY_A' ); ?>
+<?php $cl =  array(2 =>"?", 1 =>"Published", 0 =>"Draft", -1 =>"Archived" , -2 =>"Trashed");
+
+			$total = 0;
+			foreach($counts as  $c): 
+			if ( $c['published'] == 0 | $c['published'] == 1){
+			$total += $c['COUNT(ID)'];
+			}
+			endforeach; 
+			echo "<br /><a  href='/wp-admin/admin.php?page=cmog_list_pentecos'> All </a>($total)";
+			foreach($counts as  $c): 
+			echo " | <a  href='/wp-admin/admin.php?page=cmog_list_pentecos&published=" . $c['published']. "'>" . $cl[$c['published']] ; 
+			echo "</a> (" . $c['COUNT(ID)'] . ") ";	
+			endforeach; 
+			?><br />
         </div>
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="templates-filter" method="get">
@@ -131,6 +191,8 @@ function cmog_render_pascha_list_page(){
 	if ( !current_user_can( 'manage_options' ) )  	{
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	}
+	
+global $wpdb; //This is used only if making any database queries
     //Create an instance of our package class...
     $TemplateListTable = new CMOG_Template_List_Table();
     //Fetch, prepare, sort, and filter our data...
@@ -144,6 +206,24 @@ function cmog_render_pascha_list_page(){
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(template info here) </p>
 			<p> Template type is Pascha Templates  </p>
+        </div>
+		<div>
+		  
+<?php $counts = $wpdb->get_results( "SELECT COUNT(ID), published FROM `cmog66_cmog_templates` WHERE gmd = -5 GROUP BY published ORDER BY published  DESC ", 'ARRAY_A' ); ?>
+<?php $cl =  array(2 =>"?", 1 =>"Published", 0 =>"Draft", -1 =>"Archived" , -2 =>"Trashed");
+
+			$total = 0;
+			foreach($counts as  $c): 
+			if ( $c['published'] == 0 | $c['published'] == 1){
+			$total += $c['COUNT(ID)'];
+			}
+			endforeach; 
+			echo "<br /><a  href='/wp-admin/admin.php?page=cmog_list_pascha'> All </a>($total)";
+			foreach($counts as  $c): 
+			echo " | <a  href='/wp-admin/admin.php?page=cmog_list_pascha&published=" . $c['published']. "'>" . $cl[$c['published']] ; 
+			echo "</a> (" . $c['COUNT(ID)'] . ") ";	
+			endforeach; 
+			?><br />
         </div>
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="templates-filter" method="get">
@@ -171,6 +251,8 @@ function cmog_render_triodion_list_page(){
 	if ( !current_user_can( 'manage_options' ) )  	{
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	}
+	
+global $wpdb; //This is used only if making any database queries
     //Create an instance of our package class...
     $TemplateListTable = new CMOG_Template_List_Table();
     //Fetch, prepare, sort, and filter our data...
@@ -184,6 +266,24 @@ function cmog_render_triodion_list_page(){
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(template info here) </p>
 			<p> Template type is Triodion Templates  </p>
+        </div>
+		<div>
+		  
+<?php $counts = $wpdb->get_results( "SELECT COUNT(ID), published FROM `cmog66_cmog_templates` WHERE gmd = -4 GROUP BY published ORDER BY published  DESC ", 'ARRAY_A' ); ?>
+<?php $cl =  array(2 =>"?", 1 =>"Published", 0 =>"Draft", -1 =>"Archived" , -2 =>"Trashed");
+
+			$total = 0;
+			foreach($counts as  $c): 
+			if ( $c['published'] == 0 | $c['published'] == 1){
+			$total += $c['COUNT(ID)'];
+			}
+			endforeach; 
+			echo "<br /><a  href='/wp-admin/admin.php?page=cmog_list_triodion'> All </a>($total)";
+			foreach($counts as  $c): 
+			echo " | <a  href='/wp-admin/admin.php?page=cmog_list_triodion&published=" . $c['published']. "'>" . $cl[$c['published']] ; 
+			echo "</a> (" . $c['COUNT(ID)'] . ") ";	
+			endforeach; 
+			?><br />
         </div>
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="templates-filter" method="get">
@@ -211,6 +311,8 @@ function cmog_render_movable_list_page(){
 	if ( !current_user_can( 'manage_options' ) )  	{
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	}
+	
+global $wpdb; //This is used only if making any database queries
     //Create an instance of our package class...
     $TemplateMovableListTable = new CMOG_Movable_List_Table();
     //Fetch, prepare, sort, and filter our data...
@@ -224,6 +326,24 @@ function cmog_render_movable_list_page(){
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(template info here) </p>
 			<p> Template type is the Movable Templates </p>
+        </div>
+		<div>
+		  
+<?php $counts = $wpdb->get_results( "SELECT COUNT(ID), published FROM `cmog66_cmog_moveableevent` GROUP BY published ORDER BY published  DESC ", 'ARRAY_A' ); ?>
+<?php $cl =  array(1 =>"Published", 0 =>"Draft", -1 =>"Archived" , -2 =>"Trashed");
+
+			$total = 0;
+			foreach($counts as  $c): 
+			if ( $c['published'] == 0 | $c['published'] == 1){
+			$total += $c['COUNT(ID)'];
+			}
+			endforeach; 
+			echo "<br /><a  href='/wp-admin/admin.php?page=cmog_list_movable'> All </a>($total)";
+			foreach($counts as  $c): 
+			echo " | <a  href='/wp-admin/admin.php?page=cmog_list_movable&published=" . $c['published']. "'>" . $cl[$c['published']] ; 
+			echo "</a> (" . $c['COUNT(ID)'] . ") ";	
+			endforeach; 
+			?><br />
         </div>
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="templates-filter" method="get">
@@ -252,6 +372,8 @@ function cmog_render_events_list_page(){
 	if ( !current_user_can( 'manage_options' ) )  	{
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	}
+	
+global $wpdb; //This is used only if making any database queries
     //Create an instance of our package class...
     $Events_List = new CMOG_Events_List_Table();
     //Fetch, prepare, sort, and filter our data...

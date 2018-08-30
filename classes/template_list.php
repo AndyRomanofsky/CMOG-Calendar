@@ -119,14 +119,14 @@ class CMOG_Template_List_Table extends WP_List_Table {
 	}   
 	function column_published($item){
 		         //  'tmplt_id' /
-				 if (empty($item['published']))	 RETURN ;
+				 //if (empty($item['published']))	 RETURN ;
 		 switch($item['published']){
             case -2: return "Trashed"; 
             case -1: return "Archived"; 
             case 0  : return "Draft"; 
             case 1  : return "Published"; 
             default:
-                return print_r($item,true); //Show the item for troubleshooting purposes
+                return "(" . $item['published'] . ")";
         }
 	}
     function column_wday($item){
@@ -404,21 +404,26 @@ class CMOG_Template_List_Table extends WP_List_Table {
 				} else {			
 					$orderby = $_REQUEST['orderby'] . " " .$order ;
 				}
-		}
+		} 
+		$status_filter = ' and published >= 0 ';
+		if ( array_key_exists('published',$_REQUEST )) {
+			$status_filter =  " and published = " . $_REQUEST['published'] . " " ;
+		} 
+		
 		if ($cmog_template_type == 'ALL'){
-        $data = $wpdb->get_results( "SELECT * FROM `cmog66_cmog_templates` ORDER BY $orderby  ", 'ARRAY_A' ); 
+        $data = $wpdb->get_results( "SELECT * FROM `cmog66_cmog_templates` WHERE 1 = 1 $status_filter ORDER BY $orderby  ", 'ARRAY_A' ); 
         } elseif ($cmog_template_type == -5 ){ //Pascha
-        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_templates WHERE gmd = -5 ORDER BY   $orderby  ", 'ARRAY_A' ); 
+        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_templates WHERE gmd = -5 $status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
         } elseif ($cmog_template_type == -4){ //Triodion
-        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_templates WHERE gmd = -4 ORDER BY   $orderby  ", 'ARRAY_A' ); 
+        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_templates WHERE gmd = -4 $status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
         } elseif ($cmog_template_type == -3){ //Luke
-        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_templates WHERE gmd = -3 ORDER BY   $orderby  ", 'ARRAY_A' ); 
+        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_templates WHERE gmd = -3 $status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
         } elseif ($cmog_template_type == -2){ //Pentecost
-        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_templates WHERE gmd = -2 ORDER BY   $orderby  ", 'ARRAY_A' ); 
+        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_templates WHERE gmd = -2 $status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
         } elseif ($cmog_template_type == -1){ //Movable
-        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_moveableevent WHERE gmd = -1 ORDER BY   $orderby  ", 'ARRAY_A' ); 
+        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_moveableevent WHERE gmd = -1 $status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
         } else {
-        $data = $wpdb->get_results( "SELECT * FROM `cmog66_cmog_templates` ORDER BY $orderby  ", 'ARRAY_A' ); 
+        $data = $wpdb->get_results( "SELECT * FROM `cmog66_cmog_templates`  WHERE 1 = 1 $status_filter ORDER BY $orderby  ", 'ARRAY_A' ); 
  		 }
         /***********************************************************************
          * http://codex.wordpress.org/Class_Reference/wpdb

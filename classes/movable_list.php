@@ -139,6 +139,18 @@ class CMOG_Movable_List_Table extends WP_List_Table {
                 return print_r($item,true); //Show the item for troubleshooting purposes
         }
 	}
+	function column_published($item){
+		         //  'tmplt_id' /
+				 if (empty($item['published']))	 RETURN ;
+		 switch($item['published']){
+            case -2: return "Trashed"; 
+            case -1: return "Archived"; 
+            case 0  : return "Draft"; 
+            case 1  : return "Published"; 
+            default:
+                return "(" . $item['published'] . ")";
+        }
+	}
     /** ************************************************************************
      * REQUIRED! This method dictates the table's columns and titles. This should
      * return an array where the key is the column slug (and class) and the value 
@@ -365,6 +377,12 @@ class CMOG_Movable_List_Table extends WP_List_Table {
         /**
          * This checks for sorting 
          */
+		 
+		$status_filter = ' and published >= 0 ';
+		if ( array_key_exists('published',$_REQUEST )) {
+			$status_filter =  " and published = " . $_REQUEST['published'] . " " ;
+		} 
+		
 		$order = (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : 'asc'; //If no order, default to asc
 		$orderby = " Offset $order " ;
 				if ( empty($_REQUEST['orderby'])) {
@@ -376,7 +394,7 @@ class CMOG_Movable_List_Table extends WP_List_Table {
 				} else {			
 					$orderby = $_REQUEST['orderby'] . " " .$order ;
 				}
-        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_moveableevent WHERE gmd = -1 ORDER BY   $orderby  ", 'ARRAY_A' ); 
+        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_moveableevent WHERE gmd = -1 $status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
         /***********************************************************************
          * http://codex.wordpress.org/Class_Reference/wpdb
          **********************************************************************/
