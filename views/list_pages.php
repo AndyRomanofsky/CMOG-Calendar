@@ -406,11 +406,11 @@ $EveryYear = (!empty ($_REQUEST['f_every_year'] )) ? $_REQUEST['f_every_year'] :
 		<a href="/wp-admin/admin.php?page=cmog_month_calendaer" class="page-title-action">Calendaer</a>
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(some text) </p>
-			<p> Events </p>
+			<p> Events </p><p> <?php var_dump($wpdb->prefix  );?></p>
         </div>
 		<div>
 		  
-<?php $counts = $wpdb->get_results( "SELECT COUNT(ID), published FROM `cmog66_cmog_events` GROUP BY published ORDER BY published  DESC ", 'ARRAY_A' ); ?>
+<?php $counts = $wpdb->get_results( "SELECT COUNT(ID), published FROM `" . $wpdb->prefix . "cmog_events` GROUP BY published ORDER BY published  DESC ", 'ARRAY_A' ); ?>
 <?php $cl =  array(1 =>"Published", 0 =>"Draft", -1 =>"Archived" , -2 =>"Trashed");
 
 			$total = 0;

@@ -487,19 +487,19 @@ class CMOG_Events_List_Table extends WP_List_Table {
 		}
 		
 		if ($cmog_event_type == 'ALL'){
-        $data = $wpdb->get_results( "SELECT * FROM `cmog66_cmog_events` WHERE 1 = 1 $filter  $status_filter ORDER BY $orderby  ", 'ARRAY_A' ); 
+        $data = $wpdb->get_results( "SELECT * FROM `" . $wpdb->prefix . "cmog_events` WHERE 1 = 1 $filter  $status_filter ORDER BY $orderby  ", 'ARRAY_A' ); 
         } elseif ($cmog_event_type == -5 ){ //Pascha
-        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_events WHERE gmd = -5 $filter  $status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
+        $data = $wpdb->get_results( "SELECT * FROM " . $wpdb->prefix . "cmog_events WHERE gmd = -5 $filter  $status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
         } elseif ($cmog_event_type == -4){ //Triodion
-        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_events WHERE gmd = -4 $filter  $status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
+        $data = $wpdb->get_results( "SELECT * FROM " . $wpdb->prefix . "cmog_events WHERE gmd = -4 $filter  $status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
         } elseif ($cmog_event_type == -3){ //Luke
-        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_events WHERE gmd = -3 $filter  $status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
+        $data = $wpdb->get_results( "SELECT * FROM " . $wpdb->prefix . "cmog_events WHERE gmd = -3 $filter  $status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
         } elseif ($cmog_event_type == -2){ //Pentecost
-        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_events WHERE gmd = -2 $filter  $status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
+        $data = $wpdb->get_results( "SELECT * FROM " . $wpdb->prefix . "cmog_events WHERE gmd = -2 $filter  $status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
         } elseif ($cmog_event_type == -1){ //Movable
-        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_moveableevent WHERE gmd = -1 $filter  $status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
+        $data = $wpdb->get_results( "SELECT * FROM " . $wpdb->prefix . "cmog_moveableevent WHERE gmd = -1 $filter  $status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
         } else {
-        $data = $wpdb->get_results( "SELECT * FROM `cmog66_cmog_events` WHERE 1 = 1 $filter  $status_filter ORDER BY $orderby  ", 'ARRAY_A' ); 
+        $data = $wpdb->get_results( "SELECT * FROM `" . $wpdb->prefix . "cmog_events` WHERE 1 = 1 $filter  $status_filter ORDER BY $orderby  ", 'ARRAY_A' ); 
  		 }
         /***********************************************************************
          * http://codex.wordpress.org/Class_Reference/wpdb
