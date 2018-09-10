@@ -554,7 +554,10 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
 			</select>		
 		Class:  
 			<?php
+<<<<<<< HEAD
 			$classes = $wpdb->get_results( "SELECT DISTINCT `Class` FROM `" . $wpdb->prefix . "_cmog_events`", 'ARRAY_A' ); 
+=======
+>>>>>>> 132df86fc5a0c52d26f0fa62094cbf19170e56a6
 			?> 
 			<select name='f_class' >		
 			echo "<option value=''></option>;";	
@@ -592,7 +595,6 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
 //get data
 
 if (!empty($SClass) ) {
-	$WhereClass = " and Class = " . $SClass . " ";
 	} else {
 	$WhereClass = "";
 	}
