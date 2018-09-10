@@ -29,7 +29,7 @@ global $wpdb; //This is used only if making any database queries
         </div>
 		<div>
 		  
-<?php $counts = $wpdb->get_results( "SELECT COUNT(ID), published FROM `cmog66_cmog_templates`  GROUP BY published ORDER BY published  DESC ", 'ARRAY_A' ); ?>
+<?php $counts = $wpdb->get_results( "SELECT COUNT(ID), published FROM `" . $wpdb->prefix . "cmog_templates`  GROUP BY published ORDER BY published  DESC ", 'ARRAY_A' ); ?>
 <?php $cl =  array(2 =>"?", 1 =>"Published", 0 =>"Draft", -1 =>"Archived" , -2 =>"Trashed");
 
 			$total = 0;
@@ -89,7 +89,7 @@ global $wpdb; //This is used only if making any database queries
         </div>
 		<div>
 		  
-<?php $counts = $wpdb->get_results( "SELECT COUNT(ID), published FROM `cmog66_cmog_templates` WHERE gmd = -3 GROUP BY published ORDER BY published  DESC ", 'ARRAY_A' ); ?>
+<?php $counts = $wpdb->get_results( "SELECT COUNT(ID), published FROM `" . $wpdb->prefix . "cmog_templates` WHERE gmd = -3 GROUP BY published ORDER BY published  DESC ", 'ARRAY_A' ); ?>
 <?php $cl =  array(2 =>"?", 1 =>"Published", 0 =>"Draft", -1 =>"Archived" , -2 =>"Trashed");
 
 			$total = 0;
@@ -149,7 +149,7 @@ global $wpdb; //This is used only if making any database queries
         </div>
 		<div>
 		  
-<?php $counts = $wpdb->get_results( "SELECT COUNT(ID), published FROM `cmog66_cmog_templates` WHERE gmd = -2 GROUP BY published ORDER BY published  DESC ", 'ARRAY_A' ); ?>
+<?php $counts = $wpdb->get_results( "SELECT COUNT(ID), published FROM `" . $wpdb->prefix . "cmog_templates` WHERE gmd = -2 GROUP BY published ORDER BY published  DESC ", 'ARRAY_A' ); ?>
 <?php $cl =  array(2 =>"?", 1 =>"Published", 0 =>"Draft", -1 =>"Archived" , -2 =>"Trashed");
 
 			$total = 0;
@@ -209,7 +209,7 @@ global $wpdb; //This is used only if making any database queries
         </div>
 		<div>
 		  
-<?php $counts = $wpdb->get_results( "SELECT COUNT(ID), published FROM `cmog66_cmog_templates` WHERE gmd = -5 GROUP BY published ORDER BY published  DESC ", 'ARRAY_A' ); ?>
+<?php $counts = $wpdb->get_results( "SELECT COUNT(ID), published FROM `" . $wpdb->prefix . "cmog_templates` WHERE gmd = -5 GROUP BY published ORDER BY published  DESC ", 'ARRAY_A' ); ?>
 <?php $cl =  array(2 =>"?", 1 =>"Published", 0 =>"Draft", -1 =>"Archived" , -2 =>"Trashed");
 
 			$total = 0;
@@ -269,7 +269,7 @@ global $wpdb; //This is used only if making any database queries
         </div>
 		<div>
 		  
-<?php $counts = $wpdb->get_results( "SELECT COUNT(ID), published FROM `cmog66_cmog_templates` WHERE gmd = -4 GROUP BY published ORDER BY published  DESC ", 'ARRAY_A' ); ?>
+<?php $counts = $wpdb->get_results( "SELECT COUNT(ID), published FROM `" . $wpdb->prefix . "cmog_templates` WHERE gmd = -4 GROUP BY published ORDER BY published  DESC ", 'ARRAY_A' ); ?>
 <?php $cl =  array(2 =>"?", 1 =>"Published", 0 =>"Draft", -1 =>"Archived" , -2 =>"Trashed");
 
 			$total = 0;
@@ -329,7 +329,7 @@ global $wpdb; //This is used only if making any database queries
         </div>
 		<div>
 		  
-<?php $counts = $wpdb->get_results( "SELECT COUNT(ID), published FROM `cmog66_cmog_moveableevent` GROUP BY published ORDER BY published  DESC ", 'ARRAY_A' ); ?>
+<?php $counts = $wpdb->get_results( "SELECT COUNT(ID), published FROM `" . $wpdb->prefix . "cmog_moveableevent` GROUP BY published ORDER BY published  DESC ", 'ARRAY_A' ); ?>
 <?php $cl =  array(1 =>"Published", 0 =>"Draft", -1 =>"Archived" , -2 =>"Trashed");
 
 			$total = 0;
@@ -406,7 +406,7 @@ $EveryYear = (!empty ($_REQUEST['f_every_year'] )) ? $_REQUEST['f_every_year'] :
 		<a href="/wp-admin/admin.php?page=cmog_month_calendaer" class="page-title-action">Calendaer</a>
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(some text) </p>
-			<p> Events </p><p> <?php var_dump($wpdb->prefix  );?></p>
+			<p> Events </p>
         </div>
 		<div>
 		  
@@ -436,7 +436,7 @@ $EveryYear = (!empty ($_REQUEST['f_every_year'] )) ? $_REQUEST['f_every_year'] :
 		Show Every Year: <input type="checkbox" name="f_every_year" value="Yes" <?php if ('Yes' == $EveryYear  ) echo ' checked';?>  >
 		Year:  
 			<?php
-			$years = $wpdb->get_results( "SELECT DISTINCT `Year` FROM `cmog66_cmog_events`", 'ARRAY_A' ); 
+			$years = $wpdb->get_results( "SELECT DISTINCT `Year` FROM `" . $wpdb->prefix . "cmog_events`", 'ARRAY_A' ); 
 			?>
 			<select name='f_year' >	
 			<?php
@@ -524,7 +524,7 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
 		Show Every Year: <input type="checkbox" name="f_every_year" value="Yes" <?php if ('Yes' == $EveryYear  ) echo ' checked';?>  >
 		Year:  
 			<?php
-			$years = $wpdb->get_results( "SELECT DISTINCT `Year` FROM `cmog66_cmog_events`", 'ARRAY_A' ); 
+			$years = $wpdb->get_results( "SELECT DISTINCT `Year` FROM `" . $wpdb->prefix . "cmog_events`", 'ARRAY_A' ); 
 			?>
 			<select name='f_year' >	
 			<?php		
@@ -554,7 +554,7 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
 			</select>		
 		Class:  
 			<?php
-			$classes = $wpdb->get_results( "SELECT DISTINCT `Class` FROM `cmog66_cmog_events`", 'ARRAY_A' ); 
+			$classes = $wpdb->get_results( "SELECT DISTINCT `Class` FROM `" . $wpdb->prefix . "_cmog_events`", 'ARRAY_A' ); 
 			?> 
 			<select name='f_class' >		
 			echo "<option value=''></option>;";	
@@ -597,9 +597,9 @@ if (!empty($SClass) ) {
 	$WhereClass = "";
 	}
 if ("Yes" == $EveryYear){
-				 $items = $wpdb->get_results( "SELECT * FROM `cmog66_cmog_events` WHERE (Year = $SYear or Year = -1 ) and Month = $SMonth $WhereClass ORDER  BY Day asc", 'ARRAY_A' ); 
+				 $items = $wpdb->get_results( "SELECT * FROM `" . $wpdb->prefix . "cmog_events` WHERE (Year = $SYear or Year = -1 ) and Month = $SMonth $WhereClass ORDER  BY Day asc", 'ARRAY_A' ); 
 } else {
-				 $items = $wpdb->get_results( "SELECT * FROM `cmog66_cmog_events` WHERE Year = $SYear  and Month = $SMonth $WhereClass ORDER BY Day asc", 'ARRAY_A' ); 
+				 $items = $wpdb->get_results( "SELECT * FROM `" . $wpdb->prefix . "cmog_events` WHERE Year = $SYear  and Month = $SMonth $WhereClass ORDER BY Day asc", 'ARRAY_A' ); 
 }
 //var_dump($items);
          $this_month = getDate(mktime(0, 0, 0, $SMonth, 1, $SYear));
