@@ -8,7 +8,15 @@ function cmog_input_text($field, $row, $label=null, $id=null  ){
     echo "<label for=$id>$label:</label><br />";
     echo "<input type='text' name='$field' id='$id'   value='$value'  ><br />";
 }
-/** cmog_render_edit_page
+/** Render a for text fields. Required **/
+function cmog_input_text_r($field, $row, $label=null, $id=null  ){
+	if ( empty($label)) $label = $field; 
+	if ( empty($id))	$id = $field; 
+	$value = $row[$field];
+    echo "<label class='required' for=$id>$label:</label> *<br />";
+    echo "<input type='text' name='$field' id='$id'   value='$value' required ><br />";
+}
+/** cmog_render_edit_page (templates)
 This is for the all templates except Movable
 */
 function cmog_render_edit_page($id){
@@ -35,6 +43,74 @@ function cmog_render_edit_page($id){
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(Update/Add template info here) </p>
 			<p> Template type is <?php echo $cmog_template_type; ?>  </p>
+			
+			
+			
+				<?php 
+				if ($id) { 
+				echo "<p>";
+				switch ($row['wday']) {
+					case 0:
+					echo "Sunday (1st day)" ;
+					break;
+					case 1:
+					echo "Monday" ;
+					break;
+					case 2:
+					echo "Tuesday" ;
+					break;
+					case 3:
+					echo "Wednesday" ;
+					break;
+					case 4:
+					echo "Thursday" ;
+					break;
+					case 5:
+					echo "Friday" ;
+					break;
+					case 6:
+					echo "Saturday" ;
+					break;
+					case 7:
+					echo "Sunday (Last day)" ;
+					break;
+					default:
+					echo "?" ;
+				}	
+				echo " of week " . $row['week'] . " ";
+				
+				switch ($row['gmd']) {
+					case -5:
+					echo " of Pascha";
+					break;
+					case -4:
+					echo " of the Triodion";
+					break;
+					case -3:
+					echo " of Luke";
+					break;
+					case -2:
+					echo " after Pentecost";
+					break;
+					default:
+					echo "?" ;
+				}
+				echo "</p>";
+				
+				
+				if ($row['Link']) {
+					echo "<a href='" . $row['Link']  .  "' target='_blank'><p class='" . $row['Class'] ."'>" . $row['EventText'] ." </p></a>";
+				}else{
+				echo "<p class='" . $row['Class'] ."'>" . $row['EventText'] ." </p>";
+				}
+				if ($row['icon']) {
+				echo "<img src='" . $row['icon'] . "' alt='icon'   height='60'>";
+				}
+ 			}?>
+			
+			
+			
+			
         </div>
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
 	<div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">			
@@ -44,15 +120,13 @@ function cmog_render_edit_page($id){
 		   <input type="hidden" id="page" name="page" value="cmog_list_test">
 		   <input type="hidden" id="action" name="action" value="update">
   <br />
-  ID:<br />
-  <input type="text" name='ID'  readonly  value="<?php echo $row['ID']; ?>">
-  <br />
-  <?php cmog_input_text('EventText', $row,'Event'); ?>
+  <?php cmog_input_text_r('EventText', $row,'Event'); ?>
   week:<br />
   <input type="number" name='week'   value="<?php echo $row['week']; ?>" min="1" max="52" >
   <br />
-  wday:<br />
-  <select name='wday'>
+  wday: *<br />
+  <select name='wday' required>  
+				<option></option>
  				 <option value="0" <?php if  ( 0 == $row['wday']) echo " selected ";?>>Sunday (1st day)</option>
   				 <option value="1" <?php if  ( 1 == $row['wday']) echo " selected ";?>>Monday</option>
 				 <option value="2" <?php if  ( 2 == $row['wday']) echo " selected ";?>>Tuesday</option>
@@ -64,9 +138,12 @@ function cmog_render_edit_page($id){
   </select>				 
   <br />
   <?php cmog_input_text('Link', $row,'Link to use'); ?>
-  Class:<br />
-    <select name='Class' >
-                          <option value="gf" <?php if  ( "gf" == $row['Class']) echo " selected ";?>>Great Feast</option>
+  <?php cmog_input_text('icon', $row,'Icon to use'); ?>
+  <?php cmog_input_text('hymn', $row,'Hymn to use'); ?>
+  Class: *<br />
+    <select name='Class' required>
+						<option></option>
+						<option value="gf" <?php if  ( "gf" == $row['Class']) echo " selected ";?>>Great Feast</option>
                         <option value="lf" <?php if  ( "lf" == $row['Class']) echo " selected ";?>>Lesser Feast</option>
                         <option value="saint" <?php if  ( "saint" == $row['Class']) echo " selected ";?>>Feast such a Saint day (not on month view)</option>
                         <option value="evt" <?php if  ( "evt" == $row['Class']) echo " selected ";?>>Event</option>
@@ -79,15 +156,14 @@ function cmog_render_edit_page($id){
     </select>	
   <br />
   <?php cmog_input_text('AddDate', $row,'Date Added'); ?>
-    <?php cmog_input_text('icon', $row,'Icon to use'); ?>
-    <?php cmog_input_text('hymn', $row,'Hymn to use'); ?>
     <?php cmog_input_text('listorder', $row,'Order'); ?>
     <?php cmog_input_text('popup', $row,'Display code'); ?>
     <?php cmog_input_text('asset_id', $row); ?>
     <?php cmog_input_text('catid', $row); ?>
     <?php cmog_input_text('created_by', $row,'Created by'); ?>  
-	Template type:<br />
-  <select name='gmd' >
+	Template type: *<br />
+  <select name='gmd' required >
+				<option></option>
 				 <option value="-5" <?php if  ( -5 == $row['gmd']) echo " selected ";?>>Pascha</option>
   				 <option value="-4" <?php if  ( -4 == $row['gmd']) echo " selected ";?>>Triodion</option>
 				 <option value="-3" <?php if  ( -3 == $row['gmd']) echo " selected ";?>>Luke</option>
@@ -96,11 +172,16 @@ function cmog_render_edit_page($id){
   </select>	
   <br />
     <?php cmog_input_text('published', $row,'Status'); ?>
+	<hr />
+  ID:<br />
+  <input type="text" name='ID'  readonly  value="<?php echo $row['ID']; ?>">
+  <br />
     <?php cmog_input_text('access', $row,'Access'); ?>
     <?php cmog_input_text('language', $row,'Language'); ?>
     <input type="submit" value="Submit">
   <br />	
   </fieldset>
+  <br /> * required field<br />
 			</form>
 	</div>	 
     </div>
@@ -133,24 +214,46 @@ function cmog_render_edit_Movable_page($id){
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(Update/Add template info here) </p>
 			<p> Template type is Movable  </p>
+			
+				<?php if ($id) { 
+				
+				Echo "<p>" . $row['Offset'] . " days from Pascha.</p>";
+				
+				
+				
+				if (1 <> $row['Length']) {
+				Echo "<p>For " .  $row['Length'] . " days.</p>";
+				}
+				
+				
+				/*if (-1 == $row['Year']){
+				echo  $row['Month'] . "/" . $row['Day'] . "/(every year)<br />";
+				} else{
+				echo  $row['Month'] . "/" . $row['Day'] . "/" . $row['Year'] . "<br />";
+				}*/
+				
+				
+				if ($row['Link']) {
+					echo "<a href='" . $row['Link']  .  "' target='_blank'><p class='" . $row['Class'] ."'>" . $row['EventText'] ." </p></a>";
+				}else{
+				echo "<p class='" . $row['Class'] ."'>" . $row['EventText'] ." </p>";
+				}
+				if ($row['icon']) {
+				echo "<img src='" . $row['icon'] . "' alt='icon'   height='60'>";
+				}
+			}?>
+			
         </div>
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
 	<div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">			
 			<form id="templates-edit" method="get">
   <br />
-  ID:<br />
-  <input type="text" name='ID'  readonly  value="<?php echo $row['ID']; ?>">
-  <br />
-  <?php cmog_input_text('EventText', $row,'Event'); ?>
-  Offset:<br />
-  <input type="text" name='Offset'   value="<?php echo $row['Offset'];?>">
-  <br />
-  Length:<br />
-  <input type="text" name='Length'   value="<?php echo $row['Length'];?>">
-  <br />
-  Link:<br />
-  <input type="text" name='Link'  value="<?php echo $row['Link'];?>">
-  <br />
+	<?php cmog_input_text_r('EventText', $row,'Event'); ?>
+	<?php cmog_input_text_r('Offset', $row,'Offset'); ?>
+	<?php cmog_input_text_r('Length', $row,'Length'); ?>
+	<?php cmog_input_text('Link', $row,'Link'); ?>
+	<?php cmog_input_text('icon', $row,'Icon to use'); ?>
+	<?php cmog_input_text('hymn', $row,'Hymn to use'); ?>
   Class:<br />
     <select name='Class' >
                         <option value="gf" <?php if  ( "gf" == $row['Class']) echo " selected ";?>>Great Feast</option>
@@ -164,29 +267,28 @@ function cmog_render_edit_Movable_page($id){
                         <option value="memory" <?php if  ( "memory" == $row['Class']) echo " selected ";?>>Parish Bulletin Memory (not on month view)</option>
                         <option value="health" <?php if  ( "health" == $row['Class']) echo " selected ";?>>Parish Bulletin Health (not on month view)</option>
     </select>	
+	<hr />
   <br />
   <?php cmog_input_text('AddDate', $row,'Date Added'); ?>
-    <?php cmog_input_text('icon', $row,'Icon to use'); ?>
-    <?php cmog_input_text('hymn', $row,'Hymn to use'); ?>
     <?php cmog_input_text('listorder', $row,'Order'); ?>
     <?php cmog_input_text('popup', $row,'Display code'); ?>
     <?php cmog_input_text('asset_id', $row); ?>
     <?php cmog_input_text('catid', $row); ?>
     <?php cmog_input_text('created_by', $row,'Created by'); ?>  
 	Template type:<br />
-  <select name='gmd' >
-				 <option value="-5" <?php if  ( -5 == $row['gmd']) echo " selected ";?>>Pascha</option>
-  				 <option value="-4" <?php if  ( -4 == $row['gmd']) echo " selected ";?>>Triodion</option>
-				 <option value="-3" <?php if  ( -3 == $row['gmd']) echo " selected ";?>>Luke</option>
-				 <option value="-2" <?php if  ( -2 == $row['gmd']) echo " selected ";?>>Pentecost</option>
-				 <option value="-1" <?php if  ( -1 == $row['gmd']) echo " selected ";?>>Movable</option>
+  <select name='gmd' disabled >
+				 <option value=" -1"  selected >Movable</option>
   </select>	
+  <br />
+  ID:<br />
+  <input type="text" name='ID'  readonly  value="<?php echo $row['ID']; ?>">
   <br />
     <?php cmog_input_text('published', $row,'Status'); ?>
     <?php cmog_input_text('access', $row,'Access'); ?>
     <?php cmog_input_text('language', $row,'Language'); ?>
     <input type="submit" value="Submit">
-  <br />	
+ 
+  <br /> * required field<br />
 			</form>
 	</div>	 
     </div>
@@ -204,7 +306,7 @@ function cmog_render_edit_event($id){
 		$row = $wpdb->get_row( "SELECT * FROM `cmog66_cmog_events` where ID = $id  ", 'ARRAY_A' ); 
 		if ($row == null)    echo "No data (" . $id . ")"; 
 	} else {
-		$row['ID'] = $row['EventText'] = $row['Year'] =$row['Month'] = $row['Day'] = $row['Link'] = $row['Class'] = $row['icon'] = $row['hymn'] = $row['tmplt_id'] =  "";
+		$row['ID'] = $row['EventText'] = $row['Year'] = $row['Month'] = $row['Day'] = $row['Link'] = $row['Class'] = $row['icon'] = $row['hymn'] = $row['tmplt_id'] =  "";
 		$row['listorder'] = $row['popup'] = $row['asset_id'] =$row['catid'] = $row['created_by'] = $row['gmd'] = $row['published'] = $row['access'] = $row['language'] = "";
 		$row['AddDate'] = "?"; 
 	} 
@@ -218,7 +320,21 @@ function cmog_render_edit_event($id){
 		<?php }   ?>
 		<div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
 			<p>(Update/Add template info here) </p>
-			<p> Event </p>
+			<p> Event </p><?php if ($id) { 
+				if (-1 == $row['Year']){
+				echo  $row['Month'] . "/" . $row['Day'] . "/(every year)<br />";
+				} else{
+				echo  $row['Month'] . "/" . $row['Day'] . "/" . $row['Year'] . "<br />";
+				}
+				if ($row['Link']) {
+					echo "<a href='" . $row['Link']  .  "' target='_blank'><p class='" . $row['Class'] ."'>" . $row['EventText'] ." </p></a>";
+				}else{
+				echo "<p class='" . $row['Class'] ."'>" . $row['EventText'] ." </p>";
+				}
+				if ($row['icon']) {
+				echo "<img src='" . $row['icon'] . "' alt='icon'   height='60'>";
+				}
+			}?>
 		</div>
 		<!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
 		<div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">			
@@ -226,9 +342,10 @@ function cmog_render_edit_event($id){
 			<input type="hidden" name='page'   value="cmog_list_events">
 			<input type="hidden" name='action'   value="update">
 			<br />
-			<?php cmog_input_text('EventText', $row,'Event'); ?>
-			Class:<br />
-			<select name='Class' >
+			<?php cmog_input_text_r('EventText', $row,'Event'); ?>
+			Class: *<br />
+			<select name='Class' required>			
+				<option></option>
 				<option value="evt" <?php if  ( "evt" == $row['Class']) echo " selected ";?>>Event</option>
 				<option value="gf" <?php if  ( "gf" == $row['Class']) echo " selected ";?>>Great Feast</option>
 				<option value="lf" <?php if  ( "lf" == $row['Class']) echo " selected ";?>>Lesser Feast</option>
@@ -241,11 +358,12 @@ function cmog_render_edit_event($id){
 				<option value="health" <?php if  ( "health" == $row['Class']) echo " selected ";?>>Parish Bulletin Health (not on month view)</option>
 			</select>	
 			<br />
-			Year:<br />
-			<input type="text" name='Year'   value="<?php echo $row['Year'];?>">
+			Year: *<br />
+			<input type="text" name='Year'  required value="<?php echo $row['Year'];?>">
 			<br />
-			Month:<br />
-			<select name='Month' >
+			Month: *<br />
+			<select name='Month' required>			
+				<option></option>
 				<option value= 1 <?php if  ( 1 == $row['Month']) echo " selected ";?>>January</option>
 				<option value= 2 <?php if  ( 2 == $row['Month']) echo " selected ";?>>February</option>
 				<option value= 3 <?php if  ( 3 == $row['Month']) echo " selected ";?>>March</option>
@@ -260,16 +378,15 @@ function cmog_render_edit_event($id){
 				<option value= 12 <?php if  ( 12 == $row['Month']) echo " selected ";?>>December</option>
 			</select>	
 			<br />
-			Day:<br />
-			<input type="text" name='Day'   value="<?php echo $row['Day'];?>">
+			Day: *<br />
+			<input type="number" name='Day'  required min="1" max="31" value="<?php echo $row['Day'];?>">
 			<br />
 			Link:<br />
 			<input type="text" name='Link'  value="<?php echo $row['Link'];?>">
 			<br />
-			Template id:<br />
-			<input type="text" name='tmplt_id'  readonly  value="<?php echo $row['tmplt_id']; ?>">
-			<br />
-			Status:
+			<?php cmog_input_text('icon', $row,'Icon to use'); ?>
+			<?php cmog_input_text('hymn', $row,'Hymn to use'); ?>
+			Status:<br />
 			<select name='published' 
 				<option value= -2 <?php if  ( -2 == $row['published']) echo " selected ";?>> Trashed</option>
 				<option value= -1 <?php if  ( -1 == $row['published']) echo " selected ";?>> Archived</option>
@@ -284,15 +401,13 @@ function cmog_render_edit_event($id){
 			<input type="text" name='ID'  readonly  value="<?php echo $row['ID']; ?>">
 			<br />
 			<?php cmog_input_text('AddDate', $row,'Date Added'); ?>
-			<?php cmog_input_text('icon', $row,'Icon to use'); ?>
-			<?php cmog_input_text('hymn', $row,'Hymn to use'); ?>
 			<?php cmog_input_text('listorder', $row,'Order'); ?>
 			<?php cmog_input_text('popup', $row,'Display code'); ?>
 			<?php cmog_input_text('asset_id', $row); ?>
 			<?php cmog_input_text('catid', $row); ?>
 			<?php cmog_input_text('created_by', $row,'Created by'); ?>  
 			From Template type:<br />
-			<select name='gmd' >
+			<select name='gmd' disabled >
 				<option ></option>
 				<option value="-5" <?php if  ( -5 == $row['gmd']) echo " selected ";?>>Pascha</option>
 				<option value="-4" <?php if  ( -4 == $row['gmd']) echo " selected ";?>>Triodion</option>
@@ -301,9 +416,13 @@ function cmog_render_edit_event($id){
 				<option value="-1" <?php if  ( -1 == $row['gmd']) echo " selected ";?>>Movable</option>
 			</select>	
 			<br />
+			Template id:<br />
+			<input type="text" name='tmplt_id'  readonly  value="<?php echo $row['tmplt_id']; ?>">
+			<br />
 			<hr />
 			<input type="submit" value="Submit">
-			<br />	
+			 
+  <br /> * required field<br />
 			</form>
 		</div>	 
 	</div>

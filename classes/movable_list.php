@@ -26,6 +26,11 @@ class CMOG_Movable_List_Table extends WP_List_Table {
             'ajax'      => false        //does this table support ajax?
         ) );
     }
+/** this removes 'fixed' from the table classes **/	
+	protected function get_table_classes() {
+    return array( 'widefat',  'striped', $this->_args['plural'] );
+}
+	
     /** ************************************************************************
      * Recommended. This method is called when the parent class can't find a method
      * specifically build for a given column. Generally, it's recommended to include
@@ -151,6 +156,13 @@ class CMOG_Movable_List_Table extends WP_List_Table {
                 return "(" . $item['published'] . ")";
         }
 	}
+	function column_Link($item){
+		$out = "";
+		if ( $item['Link'] ) $out .=  "Link: <a href='" . $item['Link'] . "' target='_blank'>" . $item['Link'] . "</a><br />";
+		if ( $item['hymn'] ) $out .=  "Hymn: <a href='" . $item['hymn'] . "' target='_blank'>" . $item['hymn'] . "</a><br />";
+		if ( $item['icon'] ) $out .=  "<img src='" . $item['icon'] . "' alt='icon'   height='50'><br />";
+		return $out;
+	}
     /** ************************************************************************
      * REQUIRED! This method dictates the table's columns and titles. This should
      * return an array where the key is the column slug (and class) and the value 
@@ -170,7 +182,7 @@ class CMOG_Movable_List_Table extends WP_List_Table {
             'EventText'     => 'Event Text',
             'Offset'     => 'Offset',
              'Length'      => 'Length',
-             'Link'      => 'Link',
+             'Link'      => 'Links',
              'Class'     => 'Class',
              'icon'      => 'Icon',
              'hymn'     => 'Hymn',
@@ -195,7 +207,7 @@ class CMOG_Movable_List_Table extends WP_List_Table {
              'asset_id'  , 
              'catid' ,
              'popup'    ,
-			 'Link',
+			// 'Link',
              'icon' ,
              'hymn' ,
         );

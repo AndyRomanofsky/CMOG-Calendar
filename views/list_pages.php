@@ -378,7 +378,6 @@ global $wpdb; //This is used only if making any database queries
     $Events_List = new CMOG_Events_List_Table();
     //Fetch, prepare, sort, and filter our data...
     $Events_List->prepare_items(); 
-	//var_dump($Events_List);
 	if( 'edit' === $Events_List->current_action() | 'add' === $Events_List->current_action()) RETURN;
 	if( 'Calendar' === $Events_List->current_action()) {
 		//cmog_render_events_calendar_page();

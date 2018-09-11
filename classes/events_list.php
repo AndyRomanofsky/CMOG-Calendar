@@ -17,6 +17,10 @@ class CMOG_Events_List_Table extends WP_List_Table {
             'ajax'      => false        //does this table support ajax?
         ) );
     }
+/** this removes 'fixed' from the table classes **/	
+	protected function get_table_classes() {
+    return array( 'widefat',  'striped', $this->_args['plural'] );
+}
     /** ***********************function column_default************************
      * Recommended. This method is called when the parent class can't find a method
      * specifically build for a given column. Generally, it's recommended to include
@@ -171,6 +175,13 @@ class CMOG_Events_List_Table extends WP_List_Table {
             default:
                 return print_r($item,true); //Show the item for troubleshooting purposes
         }
+	} 
+	function column_Link($item){
+		$out = "";
+		if ( $item['Link'] ) $out .=  "Link: <a href='" . $item['Link'] . "' target='_blank'>" . $item['Link'] . "</a><br />";
+		if ( $item['hymn'] ) $out .=  "Hymn: <a href='" . $item['hymn'] . "' target='_blank'>" . $item['hymn'] . "</a><br />";
+		if ( $item['icon'] ) $out .=  "<img src='" . $item['icon'] . "' alt='icon'   height='50'><br />";
+		return $out;
 	}
     /** ***************** function get_columns ************************
      * REQUIRED! This method dictates the table's columns and titles. This should
@@ -192,7 +203,7 @@ class CMOG_Events_List_Table extends WP_List_Table {
              'Year'      => 'Year',
              'Month'      => 'Month',
              'Day'      => 'Day',
-             'Link'      => 'Link',
+             'Link'      => 'Links',
              'Class'     => 'Class',
              'icon'      => 'Icon',
              'hymn'     => 'Hymn',
@@ -219,7 +230,7 @@ class CMOG_Events_List_Table extends WP_List_Table {
              'asset_id'  , 
              'catid' ,
              'popup'    ,
-			 'Link',
+			// 'Link',
              'icon' ,
              'hymn' ,
         );
