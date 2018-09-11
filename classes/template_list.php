@@ -154,6 +154,14 @@ class CMOG_Template_List_Table extends WP_List_Table {
 		if ( $item['icon'] ) $out .=  "<img src='" . $item['icon'] . "' alt='icon'   height='50'><br />";
 		return $out;
 	}
+	function column_Loaded($item){
+		$out = ".";
+		return $out;
+	}
+	
+	
+	
+	
     /** ***************** function get_columns ************************
      * REQUIRED! This method dictates the table's columns and titles. This should
      * return an array where the key is the column slug (and class) and the value 
@@ -174,6 +182,7 @@ class CMOG_Template_List_Table extends WP_List_Table {
             'week'     => 'Week',
              'wday'      => 'Day',
              'Link'      => 'Link',
+			 'Loaded'   => 'Loaded dates',
              'Class'     => 'Class',
              'icon'      => 'Icon',
              'hymn'     => 'Hymn',
