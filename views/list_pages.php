@@ -383,11 +383,13 @@ global $wpdb; //This is used only if making any database queries
 		//cmog_render_events_calendar_page();
 	
 	}
-    $cmog_template_type =  (int)(!empty($_REQUEST['gmd'])) ? $_REQUEST['gmd'] : ''; //If no sort, default to null
+    $cmog_template_type =  (int)(!empty($_REQUEST['f_gmd'])) ? $_REQUEST['f_gmd'] : ''; //If no sort, default to null
 	global $wpdb; //This is used only if making any database queries
 $SMonth = (!empty($_REQUEST['f_month'] )) ? $_REQUEST['f_month'] : '';
 $SYear = (!empty ($_REQUEST['f_year'] )) ? $_REQUEST['f_year'] : '';
 $EveryYear = (!empty ($_REQUEST['f_every_year'] )) ? $_REQUEST['f_every_year'] : '';
+
+$SGmd = (!empty ($_REQUEST['f_gmd'] )) ? $_REQUEST['f_gmd'] : '';
 
  //$date = getDate(); 
 // if ($SMonth == "") $SMonth = $date["mon"];
@@ -426,7 +428,7 @@ $EveryYear = (!empty ($_REQUEST['f_every_year'] )) ? $_REQUEST['f_every_year'] :
 			?><br />
         </div>
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
-        <form id="templates-filter" method="get">
+        <form id="templates-filter" method="post">
 		  <br />
 		  <?php if ( array_key_exists('published',$_REQUEST )) {
 			//$status_filter =  " and published = " . $_REQUEST['published'] . " " ;
@@ -466,6 +468,20 @@ $EveryYear = (!empty ($_REQUEST['f_every_year'] )) ? $_REQUEST['f_every_year'] :
 			</select>				
 		  
 		  Day: <input type="text" name='f_day' <?php if ( !empty($_REQUEST['f_day'] ))     echo "Value='" . $_REQUEST['f_day'] . "'";?>> 
+		  
+		  Template:
+			 <select name='f_gmd' >
+				<option></option>
+				 <option value="any" <?php if  ( "any" == $SGmd) echo " selected ";?>>From any template</option>
+				 <option value="none" <?php if  ( "none" == $SGmd) echo " selected ";?>>Not from a template</option>
+				 <option value="-5"  <?php if  ( -5 == $SGmd) echo " selected ";?>>Pascha template</option>
+  				 <option value="-4" <?php if  ( -4 == $SGmd) echo " selected ";?>>Triodion template</option>
+				 <option value="-3" <?php if  ( -3 == $SGmd) echo " selected ";?>>Luke template</option>
+				 <option value="-2" <?php if  ( -2 == $SGmd) echo " selected ";?>>Pentecost template</option>
+				 <option value="-1" <?php if  ( -1 == $SGmd) echo " selected ";?>>Movable template</option>
+			 </select>	
+		  
+		  
 		  <input type="submit" value='Filter'>
 		  <br />
             <!-- For plugins, we also need to ensure that the form posts back to our current page -->

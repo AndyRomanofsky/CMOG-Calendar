@@ -453,7 +453,7 @@ class CMOG_Events_List_Table extends WP_List_Table {
          * use sort and pagination data to build a custom query.
          */
 		//$tquert = "SELECT * FROM cmog_events";
-		//$cmog_event_type =  (int)(!empty($_REQUEST['gmd'])) ? $_REQUEST['gmd'] : ''; //If no sort, default to null
+		 $SGmd =  (!empty($_REQUEST['f_gmd'])) ? $_REQUEST['f_gmd'] : '';  
         /**
          * This checks for sorting 
          */
@@ -488,27 +488,30 @@ class CMOG_Events_List_Table extends WP_List_Table {
 		if ( !empty($_REQUEST['f_year'] )   and !empty($_REQUEST['f_every_year']) ){
 			$filter .= " and (Year = " . $_REQUEST['f_year'] . " or Year = -1 ) " ;
 		} elseif ( !empty($_REQUEST['f_year'] )) {
-			$filter .= " and  Year = " . $_REQUEST['f_year'] . " " ;
+			$filter .= " and  Year = " . (int) $_REQUEST['f_year'] . " " ;
 		}
 		if ( !empty($_REQUEST['f_day'] )) {
-			$filter .= " and Day = " . $_REQUEST['f_day'] . " " ;
+			$filter .= " and Day = " . (int) $_REQUEST['f_day'] . " " ;
 		}
 		if ( !empty($_REQUEST['f_month'] )) {
-			$filter .= " and Month = " . $_REQUEST['f_month'] . " " ;
+			$filter .= " and Month = " . (int) $_REQUEST['f_month'] . " " ;
 		}
+
 		
-		if ($cmog_event_type == 'ALL'){
-        $data = $wpdb->get_results( "SELECT * FROM `" . $wpdb->prefix . "cmog_events` WHERE 1 = 1 $filter  $status_filter ORDER BY $orderby  ", 'ARRAY_A' ); 
-        } elseif ($cmog_event_type == -5 ){ //Pascha
+		if ($SGmd == 'any'){
+        $data = $wpdb->get_results( "SELECT * FROM `" . $wpdb->prefix . "cmog_events` WHERE gmd = -5 or gmd = -4 or gmd = -3 or gmd = -2 or gmd = -1 $filter  $status_filter ORDER BY $orderby  ", 'ARRAY_A' ); 
+		} elseif ($SGmd == 'none'){
+        $data = $wpdb->get_results( "SELECT * FROM `" . $wpdb->prefix . "cmog_events` WHERE gmd <> -5 and gmd <> -4 and gmd <> -3 and gmd <> -2 and gmd <> -1 $filter  $status_filter ORDER BY $orderby  ", 'ARRAY_A' ); 
+        } elseif ($SGmd == -5 ){ //Pascha
         $data = $wpdb->get_results( "SELECT * FROM " . $wpdb->prefix . "cmog_events WHERE gmd = -5 $filter  $status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
-        } elseif ($cmog_event_type == -4){ //Triodion
+        } elseif ($SGmd == -4){ //Triodion
         $data = $wpdb->get_results( "SELECT * FROM " . $wpdb->prefix . "cmog_events WHERE gmd = -4 $filter  $status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
-        } elseif ($cmog_event_type == -3){ //Luke
+        } elseif ($SGmd == -3){ //Luke
         $data = $wpdb->get_results( "SELECT * FROM " . $wpdb->prefix . "cmog_events WHERE gmd = -3 $filter  $status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
-        } elseif ($cmog_event_type == -2){ //Pentecost
+        } elseif ($SGmd == -2){ //Pentecost
         $data = $wpdb->get_results( "SELECT * FROM " . $wpdb->prefix . "cmog_events WHERE gmd = -2 $filter  $status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
-        } elseif ($cmog_event_type == -1){ //Movable
-        $data = $wpdb->get_results( "SELECT * FROM " . $wpdb->prefix . "cmog_moveableevent WHERE gmd = -1 $filter  $status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
+        } elseif ($SGmd == -1){ //Movable
+        $data = $wpdb->get_results( "SELECT * FROM " . $wpdb->prefix . "cmog_events WHERE gmd = -1 $filter  $status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
         } else {
         $data = $wpdb->get_results( "SELECT * FROM `" . $wpdb->prefix . "cmog_events` WHERE 1 = 1 $filter  $status_filter ORDER BY $orderby  ", 'ARRAY_A' ); 
  		 }
