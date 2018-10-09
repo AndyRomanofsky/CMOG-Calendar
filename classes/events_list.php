@@ -292,6 +292,7 @@ class CMOG_Events_List_Table extends WP_List_Table {
      **************************************************************************/
 
     function process_bulk_action() {
+		global $wpdb;
 		parse_str($_SERVER['QUERY_STRING'], $query); 
 	        if( 'trash'===$this->current_action() ) {
 				if (!isset($query['event'])) {
@@ -389,7 +390,60 @@ class CMOG_Events_List_Table extends WP_List_Table {
 		if( 'update'===$this->current_action() ) {
 				if (!isset($query['event'])) {
 					echo "<div class='notice notice-error is-dismissible'>";
-					echo  '<br />update</div>' ;
+					var_dump($query);
+					
+				
+$data	 = array(  
+'EventText' => $query['EventText'],
+'Class' => $query['Class'],
+'Year' => $query['Year'],
+'Month' => $query['Month'],
+'Day' => $query['Day'],
+'Link' => $query['Link'],
+'icon' => $query['icon'],
+'hymn' => $query['hymn'],
+'published' => $query['published'],
+'access' => $query['access'],
+'language' => $query['language'],
+'ID' => $query['ID'],
+'AddDate' => $query['AddDate'],
+'listorder' => $query['listorder'],
+'popup' => $query['popup'],
+'asset_id' => $query['asset_id'],
+'catid' => $query['catid'],
+'created_by' => $query['created_by'],
+'gmd' =>  $query['gmd'],
+'tmplt_id' => $query['tmplt_id']
+);
+$table = $wpdb->prefix . "cmog_events";
+$format =  array( 
+		'%s', // EventText
+		'%s', // Class
+		'%d', // Year
+		'%d', // Month
+		'%d', // Day
+		'%s', // Link
+		'%s', // icon
+		'%s', // hymn
+		'%d', // published
+		'%d', // access
+		'%s', // language
+		'%d', // ID
+		'%d', // AddDate
+		'%d', // listorder
+		'%s', // popup
+		'%d', // asset_id
+		'%d', // catid
+		'%d', // created_by
+		'%d', // gmd
+		'%d'  // tmplt_id
+);
+$wpdb->replace( $table, $data, $format ); 
+					
+					
+					
+					
+					echo  '<br />update.</div>' ;
 					RETURN;
 				}
 			$id = $query['event'];

@@ -407,7 +407,7 @@ function cmog_render_edit_event($id){
 			<?php cmog_input_text('catid', $row); ?>
 			<?php cmog_input_text('created_by', $row,'Created by'); ?>  
 			From Template type:<br />
-			<select name='gmd' disabled >
+			<select name='gmd' readonly >
 				<option ></option>
 				<option value="-5" <?php if  ( -5 == $row['gmd']) echo " selected ";?>>Pascha</option>
 				<option value="-4" <?php if  ( -4 == $row['gmd']) echo " selected ";?>>Triodion</option>
