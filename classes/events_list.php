@@ -328,6 +328,7 @@ class CMOG_Events_List_Table extends WP_List_Table {
 		global $wpdb;
 	
 		parse_str($_SERVER['QUERY_STRING'], $query); 
+/** event trash **/		
 	        if( 'trash'===$this->current_action() ) {
 				if (!isset($query['event']) and !isset($_POST['event'])) {
 					echo "<div class='notice notice-error is-dismissible'>";
@@ -335,7 +336,7 @@ class CMOG_Events_List_Table extends WP_List_Table {
 					RETURN;
 				}
 			
-			if (is_array($_POST['event'])){
+			if (isset($_POST['event'])){
 				$values = $_POST['event'];
 				
 					echo "<div class='notice notice-success is-dismissible'>";
@@ -359,33 +360,42 @@ class CMOG_Events_List_Table extends WP_List_Table {
 				$data	 = array( 'published' => -2);
 				$format =  array( '%d');
 				$wpdb->update( $table, $data, $where, $format ); 	
-				echo  '<br />Event ' .  $id . ' moved to the trash.<br /></div>' ;
+			 	echo  '<br />Event ' .  $id . ' moved to the trash.</div>' ;
 			} 
 			}
-			
+
+/** event delete **/		
 	        if( 'delete'===$this->current_action() ) {
-				if (!isset($query['event'])) {
+				if (!isset($query['event']) and !isset($_POST['event'])) {
 					echo "<div class='notice notice-error is-dismissible'>";
-					echo  '<br />No rows are checked for delete!</div>' ;
+					echo  '<br />No rows are checked to delete!</div>' ;
 					RETURN;
-				}
-			$id = $query['event'];
-			if (is_array($id)){
+				} 
+			if (is_array($_POST['event'])){
+				$values = $_POST['event'];
 			echo "<div class='notice notice-success is-dismissible'>";
 				// (code to delete many row)
+				$table = $wpdb->prefix . "cmog_events";
+				$format =  array( '%d');
 				echo  	'<br /> (bulk) <br />';
-				foreach ( $id as $value )
-					{
-					echo  "Deleted " . $value . "<br />";
+				foreach ( $values as $value ){
+					$where  = array ('ID' => $value);
+					$wpdb->delete( $table,  $where, $format ); 					
+					echo  "<br />Deleted " . $value . "!";
 					} 
 				echo '</div>';
 			} else {
+			$id = $query['event'];
 			echo "<div class='notice notice-success is-dismissible'>";
 				// (code to delete row)
-				echo  '<br />deleting ' .  $id . ' (or it would be if we had items to delete)!</div>' ;
+				$where  = array ('ID' => $id);
+				$table = $wpdb->prefix . "cmog_events";
+				$format =  array( '%d');
+				$wpdb->delete( $table,  $where, $format ); 
+				echo  '<br />deleted ' .  $id . ' !</div>' ;
 			} 
-        }        
-		
+        }   
+/** event publish **/
 	        if( 'publish'===$this->current_action() ) {
 				if (!isset($query['event']) and !isset($_POST['event'])) {
 					echo "<div class='notice notice-error is-dismissible'>";
@@ -420,7 +430,8 @@ class CMOG_Events_List_Table extends WP_List_Table {
 				echo  '<br />Event ' .  $id  . '   published.' ;
 			} 
 			}
-		
+
+/** event draft **/
 	        if( 'draft'===$this->current_action() ) {
 				if (!isset($query['event']) and !isset($_POST['event'])) {
 					echo "<div class='notice notice-error is-dismissible'>";
@@ -428,7 +439,7 @@ class CMOG_Events_List_Table extends WP_List_Table {
 					RETURN;
 				}
 			
-			if (is_array($_POST['event'])){
+			if (array_key_exists('event',$_POST)){
 				$values = $_POST['event'];
 				
 					echo "<div class='notice notice-success is-dismissible'>";
@@ -449,13 +460,14 @@ class CMOG_Events_List_Table extends WP_List_Table {
 					// (code to draft row)
 				$where  = array ('ID' => $id);
 				$table = $wpdb->prefix . "cmog_events";
-				$data	 = array( 'published' => -2);
+				$data	 = array( 'published' => 0);
 				$format =  array( '%d');
 				$wpdb->update( $table, $data, $where, $format ); 	
 				echo  '<br />Event ' .  $id . ' set to draft.<br /></div>' ;
 			} 
 			}
-			
+
+/** event edit **/
 		if( 'edit'===$this->current_action() ) {
 				if (!isset($query['event'])) {
 					echo "<div class='notice notice-error is-dismissible'>";
@@ -471,7 +483,8 @@ class CMOG_Events_List_Table extends WP_List_Table {
 				// (code to edit row)  
 				cmog_render_edit_event($id);
 			}
-        }      
+        }  
+/** event add **/    
 		if( 'add'===$this->current_action() ) {
 				if (!isset($query['event'])) {
 					echo "<div class='notice notice-success is-dismissible'>";
@@ -488,82 +501,79 @@ class CMOG_Events_List_Table extends WP_List_Table {
 				cmog_render_edit_event(0);
 			}
         }    
-		if( 'load'===$this->current_action() ) {
+/** event reload **/
+		if( 'reload'===$this->current_action() ) {
 				if (!isset($query['event'])) {
 					echo "<div class='notice notice-error is-dismissible'>";
-					echo  '<br />No rows are checked for load!</div>' ;
+					echo  '<br />No rows are checked for reload!</div>' ;
 					RETURN;
 				}
 			$id = $query['event'];
 			if (is_array($id)){
-				// (code to load many row)
+				// (code to reload many row)
 				echo "<div class='notice notice-error is-dismissible'>";
-				echo  	'<br /> (can not bulk load at this time) <br /></div>';
+				echo  	'<br /> (can not bulk reload at this time) <br /></div>';
 			} else {
-				// (code to load row)  
+				// (code to reload row)  
 				echo "<div class='notice notice-error is-dismissible'>";
-				echo  	'<br /> (can not load at this time) <br /></div>';
+				echo  	'<br /> (can not reload at this time) <br /></div>';
 			}
-        }    
+        } 
+
+/** event update **/		
 		if( 'update'===$this->current_action() ) {
 				if (!isset($query['event'])) {
 					echo "<div class='notice notice-error is-dismissible'>";
-					var_dump($query);
-					
-				
-$data	 = array(  
-'EventText' => $query['EventText'],
-'Class' => $query['Class'],
-'Year' => $query['Year'],
-'Month' => $query['Month'],
-'Day' => $query['Day'],
-'Link' => $query['Link'],
-'icon' => $query['icon'],
-'hymn' => $query['hymn'],
-'published' => $query['published'],
-'access' => $query['access'],
-'language' => $query['language'],
-'ID' => $query['ID'],
-//'AddDate' => $query['AddDate'],
-'listorder' => $query['listorder'],
-'popup' => $query['popup'],
-'asset_id' => $query['asset_id'],
-'catid' => $query['catid'],
-'created_by' => $query['created_by'],
-'gmd' =>  $query['gmd'],
-'tmplt_id' => $query['tmplt_id']
-);
-$table = $wpdb->prefix . "cmog_events";
-$format =  array( 
-		'%s', // EventText
-		'%s', // Class
-		'%d', // Year
-		'%d', // Month
-		'%d', // Day
-		'%s', // Link
-		'%s', // icon
-		'%s', // hymn
-		'%d', // published
-		'%d', // access
-		'%s', // language
-		'%d', // ID
-//		'%d', // AddDate
-		'%d', // listorder
-		'%s', // popup
-		'%d', // asset_id
-		'%d', // catid
-		'%d', // created_by
-		'%d', // gmd
-		'%d'  // tmplt_id
-);
-$wpdb->replace( $table, $data, $format ); 
-					
-					
-					
-					
+					$data	 = array(  
+					'EventText' => $query['EventText'],
+					'Class' => $query['Class'],
+					'Year' => $query['Year'],
+					'Month' => $query['Month'],
+					'Day' => $query['Day'],
+					'Link' => $query['Link'],
+					'icon' => $query['icon'],
+					'hymn' => $query['hymn'],
+					'published' => $query['published'],
+					'access' => $query['access'],
+					'language' => $query['language'],
+					'ID' => $query['ID'],
+					//'AddDate' => $query['AddDate'],
+					'listorder' => $query['listorder'],
+					'popup' => $query['popup'],
+					'asset_id' => $query['asset_id'],
+					'catid' => $query['catid'],
+					'created_by' => $query['created_by'],
+					'gmd' =>  $query['gmd'],
+					'tmplt_id' => $query['tmplt_id']
+					);
+					$table = $wpdb->prefix . "cmog_events";
+					$format =  array( 
+							'%s', // EventText
+							'%s', // Class
+							'%d', // Year
+							'%d', // Month
+							'%d', // Day
+							'%s', // Link
+							'%s', // icon
+							'%s', // hymn
+							'%d', // published
+							'%d', // access
+							'%s', // language
+							'%d', // ID
+					//		'%d', // AddDate
+							'%d', // listorder
+							'%s', // popup
+							'%d', // asset_id
+							'%d', // catid
+							'%d', // created_by
+							'%d', // gmd
+							'%d'  // tmplt_id
+					);
+					$wpdb->replace( $table, $data, $format ); 
 					echo  '<br />update.</div>' ;
 					RETURN;
-				}
+					}
+				
 			$id = $query['event'];
 			if (is_array($id)){
 				// (code to load many row)
