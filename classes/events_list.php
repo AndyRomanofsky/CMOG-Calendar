@@ -86,23 +86,24 @@ class CMOG_Events_List_Table extends WP_List_Table {
     function column_EventText($item){
         //Build row actions
 
-		if( 0 == $item['published'] ){ 
+		if( 0 == $item['published'] ){ //draft
 		$actions = array(			
             'edit'      => sprintf('<a href="?page=%s&action=%s&event=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID']),
             'trash'    => sprintf('<a href="?page=%s&action=%s&event=%s">Trash</a>',$_REQUEST['page'],'trash',$item['ID']),
+            'publish'    => sprintf('<a href="?page=%s&action=%s&event=%s">Publish</a>',$_REQUEST['page'],'publish',$item['ID']),
         );
 		$row_status = " <b>(Draft)</b>";
-		} elseif ( -2 == $item['published'] ){
+		} elseif ( -2 == $item['published'] ){ //trash
 		$actions = array(	
             'delete'    => sprintf('<a href="?page=%s&action=%s&event=%s">Delete</a>',$_REQUEST['page'],'delete',$item['ID']),
-            'un-trash'    => sprintf('<a href="?page=%s&action=%s&event=%s">Restore</a>',$_REQUEST['page'],'restore',$item['ID']),
+            'draft'    => sprintf('<a href="?page=%s&action=%s&event=%s">Draft</a>',$_REQUEST['page'],'draft',$item['ID']),
+            'publish'    => sprintf('<a href="?page=%s&action=%s&event=%s">Publish</a>',$_REQUEST['page'],'publish',$item['ID']),
         );
 		$row_status = " <b>(In Trash)</b>";
-		} else {
+		} else { // published ( or archived)
 		$actions = array(			
             'edit'      => sprintf('<a href="?page=%s&action=%s&event=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID']),
             'trash'    => sprintf('<a href="?page=%s&action=%s&event=%s">Trash</a>',$_REQUEST['page'],'trash',$item['ID']),
-            'load'      => sprintf('<a href="?page=%s&action=%s&event=%s">Load</a>',$_REQUEST['page'],'load',$item['ID']),
         );
 		$row_status = "";
 		}
@@ -277,10 +278,42 @@ class CMOG_Events_List_Table extends WP_List_Table {
      * @return array An associative array containing all the bulk actions: 'slugs'=>'Visible Titles'
      **************************************************************************/
     function get_bulk_actions() {
-        $actions = array(
-            'trash'    => 'Trash',
-            'load'    => 'Load',
-        );
+		parse_str($_SERVER['QUERY_STRING'], $query); 
+		if (array_key_exists('published',$query)){
+			switch($query['published']){	
+			  case 0  :	//Draft
+				$actions = array(
+					'trash'   => 'Trash',
+					'publish'    => 'Publish',
+				);
+				return $actions;
+			  case 1  :	 //Published
+				$actions = array(
+					'trash'   => 'Trash',
+					'draft'    => 'Draft',
+				);
+				return $actions;
+			  case -1  :	// Archived
+				$actions = array(
+					'trash'   => 'Trash',
+					'publish'    => 'Publish',
+				);
+				return $actions;
+			  case  -2  :	// Trashed
+				$actions = array(
+					'publish'    => 'Publish',
+					'draft'    => 'Draft',
+					'delete' => 'Delete',
+				);
+				return $actions;
+			  default:
+                return ;
+			}	
+		} else {
+			$actions = array(
+					'trash'   => 'Trash',
+			);
+		}
         return $actions;
     }
     /** ********** function process_bulk_action *************************
@@ -293,29 +326,43 @@ class CMOG_Events_List_Table extends WP_List_Table {
 
     function process_bulk_action() {
 		global $wpdb;
+	
 		parse_str($_SERVER['QUERY_STRING'], $query); 
 	        if( 'trash'===$this->current_action() ) {
-				if (!isset($query['event'])) {
+				if (!isset($query['event']) and !isset($_POST['event'])) {
 					echo "<div class='notice notice-error is-dismissible'>";
 					echo  '<br />No rows are checked for the trash!</div>' ;
 					RETURN;
 				}
-			$id = $query['event'];
-			if (is_array($id)){
-			echo "<div class='notice notice-success is-dismissible'>";
-				// (code to trash many row)
-				echo  	'<br /> (bulk) <br />';
-				foreach ( $id as $value )
-					{
-					echo  "Trashed " . $value . "<br />";
-					} 
-				echo '</div>';
+			
+			if (is_array($_POST['event'])){
+				$values = $_POST['event'];
+				
+					echo "<div class='notice notice-success is-dismissible'>";
+						// (code to trash many row)
+					$table = $wpdb->prefix . "cmog_events";
+					$data	 = array( 'published' => -2);
+					$format =  array( '%d');
+					echo  	'<br /> (bulk) ';
+					foreach ( $values as $value ) {
+						$where  = array ('ID' => $value);
+						$wpdb->update( $table, $data, $where, $format ); 	
+						echo  '<br />Event ' .  $value . ' moved to the trash.' ;
+					}				 
+					echo '</div>';
 			} else {
-			echo "<div class='notice notice-success is-dismissible'>";
-				// (code to trash row)
-				echo  '<br />Trashing ' .  $id . ' (or it would be if we had a trash can)!<br /></div>' ;
+				$id = $query['event'];
+				echo "<div class='notice notice-success is-dismissible'>";
+					// (code to trash row)
+				$where  = array ('ID' => $id);
+				$table = $wpdb->prefix . "cmog_events";
+				$data	 = array( 'published' => -2);
+				$format =  array( '%d');
+				$wpdb->update( $table, $data, $where, $format ); 	
+				echo  '<br />Event ' .  $id . ' moved to the trash.<br /></div>' ;
 			} 
-        }        
+			}
+			
 	        if( 'delete'===$this->current_action() ) {
 				if (!isset($query['event'])) {
 					echo "<div class='notice notice-error is-dismissible'>";
@@ -338,6 +385,77 @@ class CMOG_Events_List_Table extends WP_List_Table {
 				echo  '<br />deleting ' .  $id . ' (or it would be if we had items to delete)!</div>' ;
 			} 
         }        
+		
+	        if( 'publish'===$this->current_action() ) {
+				if (!isset($query['event']) and !isset($_POST['event'])) {
+					echo "<div class='notice notice-error is-dismissible'>";
+					echo  '<br />No rows are checked to be publish!</div>' ;
+					RETURN;
+				}
+			
+			if (is_array($_POST['event'])){
+				$values = $_POST['event'];
+				
+					echo "<div class='notice notice-success is-dismissible'>";
+						// (code to publish many row)
+					$table = $wpdb->prefix . "cmog_events";
+					$data	 = array( 'published' => 1 );
+					$format =  array( '%d');
+					echo  	'<br /> (bulk) ';
+					foreach ( $values as $value ) {
+						$where  = array ('ID' => $value);
+						$wpdb->update( $table, $data, $where, $format ); 	
+						echo  '<br />Event ' .  $value . '   published.' ;
+					}				 
+					echo '</div>';
+			} else {
+				$id = $query['event'];
+				echo "<div class='notice notice-success is-dismissible'>";
+					// (code to publish row)
+				$where  = array ('ID' => $id);
+				$table = $wpdb->prefix . "cmog_events";
+				$data	 = array( 'published' => -2);
+				$format =  array( '%d');
+				$wpdb->update( $table, $data, $where, $format ); 	
+				echo  '<br />Event ' .  $id  . '   published.' ;
+			} 
+			}
+		
+	        if( 'draft'===$this->current_action() ) {
+				if (!isset($query['event']) and !isset($_POST['event'])) {
+					echo "<div class='notice notice-error is-dismissible'>";
+					echo  '<br />No rows are checked to be set to draft!</div>' ;
+					RETURN;
+				}
+			
+			if (is_array($_POST['event'])){
+				$values = $_POST['event'];
+				
+					echo "<div class='notice notice-success is-dismissible'>";
+						// (code to draft many row)
+					$table = $wpdb->prefix . "cmog_events";
+					$data	 = array( 'published' => 0 );
+					$format =  array( '%d');
+					echo  	'<br /> (bulk) ';
+					foreach ( $values as $value ) {
+						$where  = array ('ID' => $value);
+						$wpdb->update( $table, $data, $where, $format ); 	
+						echo  '<br />Event ' .  $value . ' set to draft.' ;
+					}				 
+					echo '</div>';
+			} else {
+				$id = $query['event'];
+				echo "<div class='notice notice-success is-dismissible'>";
+					// (code to draft row)
+				$where  = array ('ID' => $id);
+				$table = $wpdb->prefix . "cmog_events";
+				$data	 = array( 'published' => -2);
+				$format =  array( '%d');
+				$wpdb->update( $table, $data, $where, $format ); 	
+				echo  '<br />Event ' .  $id . ' set to draft.<br /></div>' ;
+			} 
+			}
+			
 		if( 'edit'===$this->current_action() ) {
 				if (!isset($query['event'])) {
 					echo "<div class='notice notice-error is-dismissible'>";
@@ -406,7 +524,7 @@ $data	 = array(
 'access' => $query['access'],
 'language' => $query['language'],
 'ID' => $query['ID'],
-'AddDate' => $query['AddDate'],
+//'AddDate' => $query['AddDate'],
 'listorder' => $query['listorder'],
 'popup' => $query['popup'],
 'asset_id' => $query['asset_id'],
@@ -429,7 +547,7 @@ $format =  array(
 		'%d', // access
 		'%s', // language
 		'%d', // ID
-		'%d', // AddDate
+//		'%d', // AddDate
 		'%d', // listorder
 		'%s', // popup
 		'%d', // asset_id
