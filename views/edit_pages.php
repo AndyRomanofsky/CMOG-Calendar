@@ -418,6 +418,7 @@ function cmog_render_edit_event($id){
 			<br />
 			Template id:<br />
 			<input type="text" name='tmplt_id'  readonly  value="<?php echo $row['tmplt_id']; ?>">
+			<?php wp_nonce_field('cmog-update'); ?>
 			<br />
 			<hr />
 			<input type="submit" value="Submit">

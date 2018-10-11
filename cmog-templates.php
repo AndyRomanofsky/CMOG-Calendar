@@ -30,7 +30,7 @@ require 'views/edit_pages.php';
  * add_submenu_page(   $parent_slug,   $page_title,   $menu_title,   $capability,   $menu_slug,  $function = '' )
  */
 function cmog_add_menu_items(){
-	//global $cmog_plugin_hook;
+	global $cmog_plugin_hook;
 	//global $cmog_plugin_hook_luke;
     add_menu_page('Template Plugin List Table', 'CMOG Templates', 'activate_plugins', 'cmog_list_test', 'cmog_render_list_page');
 	add_submenu_page('cmog_list_test', 'Add Template', '- Add Template',  'activate_plugins', 'cmog_list_test&action=add&template=0', 'cmog_render_add_page');
@@ -43,8 +43,32 @@ function cmog_add_menu_items(){
 	add_submenu_page('cmog_list_test', 'Add Movable', '- Add Movable',  'activate_plugins', 'cmog_list_movable&action=add&template=0', 'cmog_render_edit_Movable_page');
 	add_submenu_page('cmog_list_test', 'Events', 'Events',  'activate_plugins', 'cmog_list_events', 'cmog_render_events_list_page');
 	add_submenu_page('cmog_list_test', 'Add Event', '- Add Event',  'activate_plugins', 'cmog_list_events&action=add&event=0', 'cmog_render_edit_event');
-	add_submenu_page('cmog_list_test', 'Calender', 'Calender',  'activate_plugins', 'cmog_month_calendaer', 'cmog_render_events_calendar_page');
+$cmog_plugin_hook = add_submenu_page('cmog_list_test', 'Calender', 'Calender',  'activate_plugins', 'cmog_month_calendaer', 'cmog_render_events_calendar_page');
 	}
 add_action('admin_menu', 'cmog_add_menu_items');
 
+function cmog_plugin_add_help()
+{
+	// We are in the correct screen because we are taking advantage of the load-* action (below)
 
+	$screen = get_current_screen();
+	//$screen->remove_help_tabs();
+	$screen->add_help_tab( array(
+		'id'       => 'ccmog_list_test',
+		'title'    => __( 'Default' ),
+		'content'  => 'This is where I would provide tabbed help to the user on how everything in my admin panel works. Formatted HTML works fine in here too'
+	));
+	//add more help tabs as needed with unique id's
+
+	// Help sidebars are optional
+	$screen->set_help_sidebar(
+		'<p><strong>' . __( 'For more information:' ) . '</strong></p>' .
+		'<p><a href="http://wordpress.org/support/" target="_blank">' . _( 'Support Forums' ) . '</a></p>'
+	);
+}
+
+global $cmog_plugin_hook; var_dump($cmog_plugin_hook);
+if ( $cmog_plugin_hook ) {
+	add_action( 'load-' . $cmog_plugin_hook, 'cmog_plugin_add_help' );
+}
+?>
