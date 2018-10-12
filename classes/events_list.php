@@ -371,7 +371,7 @@ class CMOG_Events_List_Table extends WP_List_Table {
 					echo  '<br />No rows are checked to delete!</div>' ;
 					RETURN;
 				} 
-			if (is_array($_POST['event'])){
+			if (array_key_exists('event',$_POST)){
 				$values = $_POST['event'];
 			echo "<div class='notice notice-success is-dismissible'>";
 				// (code to delete many row)
@@ -523,6 +523,7 @@ class CMOG_Events_List_Table extends WP_List_Table {
 /** event update **/		
 		if( 'update'===$this->current_action() ) {
 				if (!isset($query['event'])) {
+					
 					echo "<div class='notice notice-success is-dismissible'>";
 					check_admin_referer( 'cmog-update');
 					$data	 = array(  
@@ -579,7 +580,9 @@ class CMOG_Events_List_Table extends WP_List_Table {
 	//exit;
 					 RETURN;
 					}
-				
+		}			
+/** event update **/	
+		if( 'edit'===$this->current_action() ) {
 			$id = $query['event'];
 			if (is_array($id)){
 				// (code to load many row)
