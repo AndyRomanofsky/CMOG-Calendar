@@ -43,32 +43,39 @@ function cmog_add_menu_items(){
 	add_submenu_page('cmog_list_test', 'Add Movable', '- Add Movable',  'activate_plugins', 'cmog_list_movable&action=add&template=0', 'cmog_render_edit_Movable_page');
 	add_submenu_page('cmog_list_test', 'Events', 'Events',  'activate_plugins', 'cmog_list_events', 'cmog_render_events_list_page');
 	add_submenu_page('cmog_list_test', 'Add Event', '- Add Event',  'activate_plugins', 'cmog_list_events&action=add&event=0', 'cmog_render_edit_event');
-$cmog_plugin_hook = add_submenu_page('cmog_list_test', 'Calender', 'Calender',  'activate_plugins', 'cmog_month_calendaer', 'cmog_render_events_calendar_page');
+	add_submenu_page('cmog_list_test', 'Calender', 'Calender',  'activate_plugins', 'cmog_month_calendaer', 'cmog_render_events_calendar_page');
 	}
 add_action('admin_menu', 'cmog_add_menu_items');
 
-function cmog_plugin_add_help()
-{
-	// We are in the correct screen because we are taking advantage of the load-* action (below)
-
-	$screen = get_current_screen();
-	//$screen->remove_help_tabs();
-	$screen->add_help_tab( array(
-		'id'       => 'ccmog_list_test',
-		'title'    => __( 'Default' ),
-		'content'  => 'This is where I would provide tabbed help to the user on how everything in my admin panel works. Formatted HTML works fine in here too'
-	));
-	//add more help tabs as needed with unique id's
-
-	// Help sidebars are optional
-	$screen->set_help_sidebar(
-		'<p><strong>' . __( 'For more information:' ) . '</strong></p>' .
-		'<p><a href="http://wordpress.org/support/" target="_blank">' . _( 'Support Forums' ) . '</a></p>'
-	);
+function cmog_plugin_add_help(){
+    global $my_admin_page;
+    $screen = get_current_screen();
+    if ( $screen->id != "toplevel_page_cmog_list_test" )
+        return;
+    $screen->add_help_tab( array(
+        'id'	=> 'my_help_tab',
+        'title'	=> __('My Help Tab'),
+        'content'	=> '<p>' . __( 'Descriptive content that will show in My Help Tab-body goes here.' ) . '</p>',
+    ) );
 }
-
-global $cmog_plugin_hook; var_dump($cmog_plugin_hook);
-if ( $cmog_plugin_hook ) {
-	add_action( 'load-' . $cmog_plugin_hook, 'cmog_plugin_add_help' );
+global $cmog_plugin_hook;
+    add_action('load-toplevel_page_cmog_list_test' , 'cmog_plugin_add_help');
+	
+function cmog_plugin_add_calendaer_help(){
+    global $my_admin_page;
+    $screen = get_current_screen();
+    if ( $screen->id != "cmog-templates_page_cmog_month_calendaer" )
+        return;
+    $screen->add_help_tab( array(
+        'id'	=> 'calendaer_tab',
+        'title'	=> __('Calendaer'),
+        'content'	=> '<p>' . __( 'Descriptive content that will show in My Help Tab-body goes here.' ) . '</p>',
+    ) );
+	//apply_filters( 'screen_options_show_screen', true, $screen )
+//	$screen->add_option( "XXXX", array('LINKS', TRUE) );
+//	$screen-> show_screen_options();
+	$screen->render_screen_options();
 }
+global $cmog_plugin_hook;
+    add_action('load-cmog-templates_page_cmog_month_calendaer' , 'cmog_plugin_add_calendaer_help');
 ?>

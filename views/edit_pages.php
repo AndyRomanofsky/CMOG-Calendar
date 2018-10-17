@@ -26,7 +26,13 @@ function cmog_render_edit_page($id){
 	if ($id) { // id  = 0 is add not edit
         global $wpdb; //This is used only if making any database queries
 				 $row = $wpdb->get_row( "SELECT * FROM `cmog66_cmog_templates` where ID = $id  ", 'ARRAY_A' ); 
-				 echo $row['gmd'] ; 
+				 if ( null == $row ) { 
+				 echo "<br />Template $id no longer exists.<br />";
+				 echo "<button onclick='history.go(-1);'>Close </button>";
+
+
+						return false;
+				 }
     } else {
 		$row['ID'] = $row['EventText'] = $row['week'] =$row['wday'] = $row['Link'] = $row['Class'] = $row['icon'] = $row['hymn'] = "";
 		$row['listorder'] = $row['popup'] = $row['asset_id'] =$row['catid'] = $row['created_by'] = $row['gmd'] = $row['published'] = $row['access'] = $row['language'] = "";
@@ -301,6 +307,7 @@ function cmog_render_edit_event($id){
 	if ( !current_user_can( 'manage_options' ) )  	{
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	} 
+	
 	if ($id) { // id  = 0 is add not edit
 		global $wpdb; //This is used only if making any database queries
 		$row = $wpdb->get_row( "SELECT * FROM `cmog66_cmog_events` where ID = $id  ", 'ARRAY_A' ); 
@@ -336,9 +343,12 @@ function cmog_render_edit_event($id){
 				}
 			}?>
 		</div>
+			<button onclick='history.go(-1);'>Close </button>
 		<!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
 		<div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">			
 			<form id="templates-edit" method="get">
+			<input type="submit" value="Submit">
+		  <br /> * required field<br />
 			<input type="hidden" name='page'   value="cmog_list_events">
 			<input type="hidden" name='action'   value="update">
 			<br />
@@ -421,9 +431,7 @@ function cmog_render_edit_event($id){
 			<?php wp_nonce_field('cmog-update'); ?>
 			<br />
 			<hr />
-			<input type="submit" value="Submit">
-			 
-  <br /> * required field<br />
+
 			</form>
 		</div>	 
 	</div>

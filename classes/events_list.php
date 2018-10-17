@@ -100,7 +100,13 @@ class CMOG_Events_List_Table extends WP_List_Table {
             'publish'    => sprintf('<a href="?page=%s&action=%s&event=%s">Publish</a>',$_REQUEST['page'],'publish',$item['ID']),
         );
 		$row_status = " <b>(In Trash)</b>";
-		} else { // published ( or archived)
+		} elseif ( -1 == $item['published'] ){ //archived
+		$actions = array(		
+            'edit'      => sprintf('<a href="?page=%s&action=%s&event=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID']),
+            'trash'    => sprintf('<a href="?page=%s&action=%s&event=%s">Trash</a>',$_REQUEST['page'],'trash',$item['ID']),
+        );
+		$row_status = " <b>(Archived)</b>";
+		} else { // published 
 		$actions = array(			
             'edit'      => sprintf('<a href="?page=%s&action=%s&event=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID']),
             'trash'    => sprintf('<a href="?page=%s&action=%s&event=%s">Trash</a>',$_REQUEST['page'],'trash',$item['ID']),
@@ -132,11 +138,16 @@ class CMOG_Events_List_Table extends WP_List_Table {
 		         //  'tmplt_id' /
 				 if (empty($item['tmplt_id']))	 RETURN ;
 		 switch($item['gmd']){
-            case -5: return "Pascha (" . $item['tmplt_id'] . ")"; 
-            case -4  : return "Triodion (" . $item['tmplt_id'] . ")"; 
-            case  -3  : return "Luke (" . $item['tmplt_id'] . ")"; 
-            case  -2  : return "Pentecost (" . $item['tmplt_id'] . ")"; 
-            case  -1  : return " <a admin.php?page=cmog_list_movable&action=edit&template=" . $item['tmplt_id'] . ">Movable (" . $item['tmplt_id'] . ")</a>"; 
+            //case -5: return "Pascha (" . $item['tmplt_id'] . ")"; 
+            case -5: return "Pascha <a href='/wp-admin/admin.php?page=cmog_list_pascha&action=edit&template=" . $item['tmplt_id'] . "'>(" . $item['tmplt_id'] . ")</a>";
+            //case -4  : return "Triodion (" . $item['tmplt_id'] . ")"; 
+            case -4  : return "Triodion <a href='/wp-admin/admin.php?page=cmog_list_triodion&action=edit&template=" . $item['tmplt_id'] . "'>(" . $item['tmplt_id'] . ")</a>";
+            //case  -3  : return "Luke (" . $item['tmplt_id'] . ")"; 
+		    case  -3  : return "Luke <a href='/wp-admin/admin.php?page=cmog_list_luke&action=edit&template=" . $item['tmplt_id'] . "'>(" . $item['tmplt_id'] . ")</a>"; 
+           // case  -2  : return "Pentecost (" . $item['tmplt_id'] . ")"; 
+            case  -2  : return "Pentecost  <a href='/wp-admin/admin.php?page=cmog_list_pentecos&action=edit&template=" . $item['tmplt_id'] . "'>(" . $item['tmplt_id'] . ")</a>";
+            //case  -1  : return " Movable (" . $item['tmplt_id'] . ")"; 
+            case  -1  : return " Movable <a href='/wp-admin/admin.php?page=cmog_list_movable&action=edit&template=" . $item['tmplt_id'] . "'>(" . $item['tmplt_id'] . ")</a>"; 
             default:
                 return print_r($item,true); //Show the item for troubleshooting purposes
         }
@@ -159,6 +170,16 @@ class CMOG_Events_List_Table extends WP_List_Table {
 		}
 		RETURN $item['Year'];
 	}	
+	
+	function column_Day($item){
+		if ($item['Year'] == -1) {
+			return $item['Day'];
+		} else {
+		$jd=gregoriantojd($item['Month'],$item['Day'],$item['Year']);
+		return    $item['Day'] . " (" . jddayofweek($jd,1) .  ") " ;
+		}
+	}	
+	
     function column_Month($item){
 		switch($item['Month']){
             case 1  : return "January";
@@ -468,7 +489,7 @@ class CMOG_Events_List_Table extends WP_List_Table {
 			}
 
 /** event edit **/
-		if( 'edit'===$this->current_action() ) {
+		if ('edit'===$this->current_action() ){
 				if (!isset($query['event'])) {
 					echo "<div class='notice notice-error is-dismissible'>";
 					echo  '<br />No rows are checked for edit!</div>' ;
@@ -486,20 +507,20 @@ class CMOG_Events_List_Table extends WP_List_Table {
         }  
 /** event add **/    
 		if( 'add'===$this->current_action() ) {
-				if (!isset($query['event'])) {
-					echo "<div class='notice notice-success is-dismissible'>";
-					echo  '<br />No rows are checked for add!</div>' ;
-					RETURN;
-				}
-			$id = $query['event'];
-			if (is_array($id)){
+				//if (!isset($query['event'])) {
+				//	echo "<div class='notice notice-success is-dismissible'>";
+				//	echo  '<br />No rows are checked for add!</div>' ;
+				//	RETURN;
+				//}
+			//$id = $query['event'];
+			//if (is_array($id)){
 				// (code to add many row)
-				echo "<div class='notice notice-error is-dismissible'>";
-				echo  	'<br /> (can not bulk add at this time) <br /></div>';
-			} else {
+			//	echo "<div class='notice notice-error is-dismissible'>";
+			//	echo  	'<br /> (can not bulk add at this time) <br /></div>';
+			//} else {
 				// (code to add row)  
 				cmog_render_edit_event(0);
-			}
+			//}
         }    
 /** event reload **/
 		if( 'reload'===$this->current_action() ) {
@@ -519,6 +540,13 @@ class CMOG_Events_List_Table extends WP_List_Table {
 				echo  	'<br /> (can not reload at this time) <br /></div>';
 			}
         } 
+/** event xupdate **/    
+		if( 'xupdate'===$this->current_action() ) {
+
+				// (code to add row)  
+				cmog_render_edit_event("update");
+
+        }    
 
 /** event update **/		
 		if( 'update'===$this->current_action() ) {
@@ -575,22 +603,13 @@ class CMOG_Events_List_Table extends WP_List_Table {
 					//$sendback = remove_query_arg( array('trashed', 'untrashed', 'deleted', 'locked', 'ids'), wp_get_referer() );
 					//$sendback = remove_query_arg( array('action' ), wp_get_referer() );
 					
-	//wp_redirect($sendback);
-	//exit;
-					 RETURN;
+ 
+ 
+ 
 					}
-				
-			$id = $query['event'];
-			if (is_array($id)){
-				// (code to load many row)
-				echo "<div class='notice notice-success is-dismissible'>";
-				echo  	'<br /> Updated  <br /></div>';
-			} else {
-				// (code to load row)  
-				echo "<div class='noticesuccess is-dismissible'>";
-				echo  	'<br />Added <br /></div>';
-			}
-        }
+		}
+
+
 	}
     /** ************* function prepare_items ********************* 
      * REQUIRED! This is where you prepare your data for display. This method will

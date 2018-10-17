@@ -428,7 +428,7 @@ $SGmd = (!empty ($_REQUEST['f_gmd'] )) ? $_REQUEST['f_gmd'] : '';
 			?><br />
         </div>
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
-        <form id="templates-filter" method="post">
+        <form id="templates-filter" method="get">
 		  <br />
 		  <?php if ( array_key_exists('published',$_REQUEST )) {
 			//$status_filter =  " and published = " . $_REQUEST['published'] . " " ;
@@ -512,7 +512,8 @@ $SMonth = (!empty($_REQUEST['f_month'] )) ? $_REQUEST['f_month'] : '';
 $SYear = (!empty ($_REQUEST['f_year'] )) ? $_REQUEST['f_year'] : '';
 $EveryYear = (!empty ($_REQUEST['f_every_year'] )) ? $_REQUEST['f_every_year'] : '';
 $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
-
+$screen = get_current_screen();
+//var_dump($screen);
  $date = getDate();
 //$state= $this->get('state');
 //$SMonth = $state->get('filter.month');  
