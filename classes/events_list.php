@@ -392,7 +392,7 @@ class CMOG_Events_List_Table extends WP_List_Table {
 					echo  '<br />No rows are checked to delete!</div>' ;
 					RETURN;
 				} 
-			if (is_array($_POST['event'])){
+			if (array_key_exists('event',$_POST)){
 				$values = $_POST['event'];
 			echo "<div class='notice notice-success is-dismissible'>";
 				// (code to delete many row)
@@ -551,6 +551,7 @@ class CMOG_Events_List_Table extends WP_List_Table {
 /** event update **/		
 		if( 'update'===$this->current_action() ) {
 				if (!isset($query['event'])) {
+					
 					echo "<div class='notice notice-success is-dismissible'>";
 					check_admin_referer( 'cmog-update');
 					$data	 = array(  
@@ -607,9 +608,26 @@ class CMOG_Events_List_Table extends WP_List_Table {
  
  
 					}
+<<<<<<< HEAD
 		}
 
 
+=======
+		}			
+/** event update **/	
+		if( 'edit'===$this->current_action() ) {
+			$id = $query['event'];
+			if (is_array($id)){
+				// (code to load many row)
+				echo "<div class='notice notice-success is-dismissible'>";
+				echo  	'<br /> Updated  <br /></div>';
+			} else {
+				// (code to load row)  
+				echo "<div class='noticesuccess is-dismissible'>";
+				echo  	'<br />Added <br /></div>';
+			}
+        }
+>>>>>>> 87fe8e15c98796f2041f884073b558e9068c84fd
 	}
     /** ************* function prepare_items ********************* 
      * REQUIRED! This is where you prepare your data for display. This method will
