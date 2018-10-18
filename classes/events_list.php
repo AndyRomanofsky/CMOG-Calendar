@@ -608,12 +608,8 @@ class CMOG_Events_List_Table extends WP_List_Table {
  
  
 					}
-<<<<<<< HEAD
 		}
-
-
-=======
-		}			
+				
 /** event update **/	
 		if( 'edit'===$this->current_action() ) {
 			$id = $query['event'];
@@ -627,7 +623,7 @@ class CMOG_Events_List_Table extends WP_List_Table {
 				echo  	'<br />Added <br /></div>';
 			}
         }
->>>>>>> 87fe8e15c98796f2041f884073b558e9068c84fd
+
 	}
     /** ************* function prepare_items ********************* 
      * REQUIRED! This is where you prepare your data for display. This method will
