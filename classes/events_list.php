@@ -357,8 +357,8 @@ class CMOG_Events_List_Table extends WP_List_Table {
 					RETURN;
 				}
 			
-			if (isset($_POST['event'])){
-				$values = $_POST['event'];
+			if (isset($_REQUEST['event'])){
+				$values = $_REQUEST['event'];
 				
 					echo "<div class='notice notice-success is-dismissible'>";
 						// (code to trash many row)
@@ -373,7 +373,7 @@ class CMOG_Events_List_Table extends WP_List_Table {
 					}				 
 					echo '</div>';
 			} else {
-				$id = $query['event'];
+				$id = $_REQUEST['event'];
 				echo "<div class='notice notice-success is-dismissible'>";
 					// (code to trash row)
 				$where  = array ('ID' => $id);
@@ -392,8 +392,8 @@ class CMOG_Events_List_Table extends WP_List_Table {
 					echo  '<br />No rows are checked to delete!</div>' ;
 					RETURN;
 				} 
-			if (array_key_exists('event',$_POST)){
-				$values = $_POST['event'];
+			if (array_key_exists('event',$_REQUEST)){
+				$values = $_REQUEST['event'];
 			echo "<div class='notice notice-success is-dismissible'>";
 				// (code to delete many row)
 				$table = $wpdb->prefix . "cmog_events";
@@ -406,7 +406,7 @@ class CMOG_Events_List_Table extends WP_List_Table {
 					} 
 				echo '</div>';
 			} else {
-			$id = $query['event'];
+			$id = $_REQUEST;
 			echo "<div class='notice notice-success is-dismissible'>";
 				// (code to delete row)
 				$where  = array ('ID' => $id);
@@ -418,14 +418,14 @@ class CMOG_Events_List_Table extends WP_List_Table {
         }   
 /** event publish **/
 	        if( 'publish'===$this->current_action() ) {
-				if (!isset($query['event']) and !isset($_POST['event'])) {
+				if (!isset($_REQUEST['event']) and !isset($_REQUEST['event'])) {
 					echo "<div class='notice notice-error is-dismissible'>";
 					echo  '<br />No rows are checked to be publish!</div>' ;
 					RETURN;
 				}
 			
-			if (is_array($_POST['event'])){
-				$values = $_POST['event'];
+			if (is_array($_REQUEST['event'])){
+				$values = $_REQUEST['event'];
 				
 					echo "<div class='notice notice-success is-dismissible'>";
 						// (code to publish many row)
@@ -440,7 +440,7 @@ class CMOG_Events_List_Table extends WP_List_Table {
 					}				 
 					echo '</div>';
 			} else {
-				$id = $query['event'];
+				$id = $_REQUEST['event'];
 				echo "<div class='notice notice-success is-dismissible'>";
 					// (code to publish row)
 				$where  = array ('ID' => $id);
@@ -454,17 +454,18 @@ class CMOG_Events_List_Table extends WP_List_Table {
 
 /** event draft **/
 	        if( 'draft'===$this->current_action() ) {
-				if (!isset($query['event']) and !isset($_POST['event'])) {
+				if (!isset($_REQUEST['event']) and !isset($_REQUEST['event'])) {
 					echo "<div class='notice notice-error is-dismissible'>";
 					echo  '<br />No rows are checked to be set to draft!</div>' ;
 					RETURN;
 				}
 			
-			if (array_key_exists('event',$_POST)){
-				$values = $_POST['event'];
+			if (array_key_exists('event',$_REQUEST)){
+				$values = $_REQUEST['event'];
+				 if (is_array($values)){
 				
-					echo "<div class='notice notice-success is-dismissible'>";
-						// (code to draft many row)
+					echo "<div class='notice notice-success is-dismissible'>b";
+						// (code to draft many row)cmog-event-update
 					$table = $wpdb->prefix . "cmog_events";
 					$data	 = array( 'published' => 0 );
 					$format =  array( '%d');
@@ -475,19 +476,19 @@ class CMOG_Events_List_Table extends WP_List_Table {
 						echo  '<br />Event ' .  $value . ' set to draft.' ;
 					}				 
 					echo '</div>';
-			} else {
-				$id = $query['event'];
-				echo "<div class='notice notice-success is-dismissible'>";
-					// (code to draft row)
-				$where  = array ('ID' => $id);
-				$table = $wpdb->prefix . "cmog_events";
-				$data	 = array( 'published' => 0);
-				$format =  array( '%d');
-				$wpdb->update( $table, $data, $where, $format ); 	
-				echo  '<br />Event ' .  $id . ' set to draft.<br /></div>' ;
-			} 
+					} else {
+					$id = $values;
+					echo "<div class='notice notice-success is-dismissible'>s";
+						// (code to draft row)
+					$where  = array ('ID' => $id);
+					$table = $wpdb->prefix . "cmog_events";
+					$data	 = array( 'published' => 0);
+					$format =  array( '%d');
+					$wpdb->update( $table, $data, $where, $format ); 	
+					echo  '<br />Event ' .  $id . ' set to draft.<br /></div>' ;
+					} 
 			}
-
+			}
 /** event edit **/
 		if ('edit'===$this->current_action() ){
 				if (!isset($query['event'])) {
@@ -502,7 +503,8 @@ class CMOG_Events_List_Table extends WP_List_Table {
 				echo  	'<br /> (can not bulk edit at this time) <br /></div>';
 			} else {
 				// (code to edit row)  
-				cmog_render_edit_event($id);
+				cmog_render_edit_event_page($id);
+				exit;
 			}
         }  
 /** event add **/    
@@ -519,7 +521,8 @@ class CMOG_Events_List_Table extends WP_List_Table {
 			//	echo  	'<br /> (can not bulk add at this time) <br /></div>';
 			//} else {
 				// (code to add row)  
-				cmog_render_edit_event(0);
+				cmog_render_edit_event_page(0);
+				exit;
 			//}
         }    
 /** event reload **/
@@ -540,16 +543,17 @@ class CMOG_Events_List_Table extends WP_List_Table {
 				echo  	'<br /> (can not reload at this time) <br /></div>';
 			}
         } 
-/** event xupdate **/    
-		if( 'xupdate'===$this->current_action() ) {
+/** event update **/    
+		if( 'update'===$this->current_action() ) {
 
 				// (code to add row)  
-				cmog_render_edit_event("update");
+				cmog_render_edit_event_page("update");
+				exit;
 
         }    
 
-/** event update **/		
-		if( 'update'===$this->current_action() ) {
+/** event xupdate **/		
+		if( 'xupdate'===$this->current_action() ) {
 				if (!isset($query['event'])) {
 					
 					echo "<div class='notice notice-success is-dismissible'>";

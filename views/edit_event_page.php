@@ -1,56 +1,41 @@
 <?php
-/** Helper functions for edit fields. **/
-/** Render a for text fields. **/
-function cmog_input_text($field, $row, $label=null, $id=null  ){
-	if ( empty($label)) $label = $field; 
-	if ( empty($id))	$id = $field; 
-	$value = $row[$field];
-    echo "<label for=$id>$label:</label><br />";
-    echo "<input type='text' name='$field' id='$id'   value='$value'  ><br />";
-}
-/** Render a for text fields. Required **/
-function cmog_input_text_r($field, $row, $label=null, $id=null  ){
-	if ( empty($label)) $label = $field; 
-	if ( empty($id))	$id = $field; 
-	$value = $row[$field];
-    echo "<label class='required' for=$id>$label:</label> *<br />";
-    echo "<input type='text' name='$field' id='$id'   value='$value' required ><br />";
-}
+
 /** cmog_render_edit_Event_page
 This is for the Events only
 */
-function cmog_render_edit_event($id){
+function cmog_render_edit_event_page($id){
 	if ( !current_user_can( 'manage_options' ) )  	{
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	} 
+	global $wpdb; //This is used only if making any database queries
+	//var_dump($_REQUEST);
 	
-	
-	/** event update **/		
-		if( 'update'===$this->current_action() ) {
-				if (!isset($query['event'])) {
+	/** event update **/
+		if ($id) {
+		 	if (!isset($query['event'])) {
 					echo "<div class='notice notice-success is-dismissible'>";
-					check_admin_referer( 'cmog-update');
+					check_admin_referer( 'cmog-event-update');
 					$data	 = array(  
-					'EventText' => $query['EventText'],
-					'Class' => $query['Class'],
-					'Year' => $query['Year'],
-					'Month' => $query['Month'],
-					'Day' => $query['Day'],
-					'Link' => $query['Link'],
-					'icon' => $query['icon'],
-					'hymn' => $query['hymn'],
-					'published' => $query['published'],
-					'access' => $query['access'],
-					'language' => $query['language'],
-					'ID' => $query['ID'],
-					//'AddDate' => $query['AddDate'],
-					'listorder' => $query['listorder'],
-					'popup' => $query['popup'],
-					'asset_id' => $query['asset_id'],
-					'catid' => $query['catid'],
-					'created_by' => $query['created_by'],
-					'gmd' =>  $query['gmd'],
-					'tmplt_id' => $query['tmplt_id']
+					'EventText' => $_REQUEST['EventText'],
+					'Class' => $_REQUEST['Class'],
+					'Year' => $_REQUEST['Year'],
+					'Month' => $_REQUEST['Month'],
+					'Day' => $_REQUEST['Day'],
+					'Link' => $_REQUEST['Link'],
+					'icon' => $_REQUEST['icon'],
+					'hymn' => $_REQUEST['hymn'],
+					'published' => $_REQUEST['published'],
+					'access' => $_REQUEST['access'],
+					'language' => $_REQUEST['language'],
+					'ID' => $_REQUEST['ID'],
+					//'AddDate' => $_REQUEST['AddDate'],
+					'listorder' => $_REQUEST['listorder'],
+					'popup' => $_REQUEST['popup'],
+					'asset_id' => $_REQUEST['asset_id'],
+					'catid' => $_REQUEST['catid'],
+					'created_by' => $_REQUEST['created_by'],
+					'gmd' =>  $_REQUEST['gmd'],
+					'tmplt_id' => $_REQUEST['tmplt_id']
 					);
 					$table = $wpdb->prefix . "cmog_events";
 					$format =  array( 
@@ -75,22 +60,22 @@ function cmog_render_edit_event($id){
 							'%d', // gmd
 							'%d'  // tmplt_id
 					);
-					$wpdb->replace( $table, $data, $format ); 
+					$rownumber = $wpdb->replace( $table, $data, $format ); 
+					if ($rownumber) { 
+						echo "<br /> row " . $rownumber . " updated.";
+					} else {
+						echo "<br />No rows updated.";
 					echo  '<br />Updated '. $query['EventText'] . '</div>' ;
 					//$sendback = remove_query_arg( array('trashed', 'untrashed', 'deleted', 'locked', 'ids'), wp_get_referer() );
 					//$sendback = remove_query_arg( array('action' ), wp_get_referer() );
-					
- 
- 
- 
 					}
+				}		 	
 		}
-	
-	
-	
+	if ($id == 'update' ) {
+		$id = $wpdb->insert_id;
+	}
 /** read from database/   ***/	
 	if ($id) { // id  = 0 is add not edit
-		global $wpdb; //This is used only if making any database queries
 		$row = $wpdb->get_row( "SELECT * FROM `cmog66_cmog_events` where ID = $id  ", 'ARRAY_A' ); 
 		if ($row == null)    echo "No data (" . $id . ")"; 
 	} else {
@@ -100,6 +85,8 @@ function cmog_render_edit_event($id){
 	} 
 	$cmog_template_type =  (int)(!empty($row['gmd'])) ? $row['gmd'] : ''; //If no sort, default to null
 	?>
+	
+	</div>
 	<div class="wrap">
 		<?php if ($id) { ?>
 		<h2>Update Event</h2>
@@ -107,7 +94,7 @@ function cmog_render_edit_event($id){
 		<h2>Add new Event</h2>
 		<?php }   ?>
 		<div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
-			<p>(Update/Add template info here) </p>
+			<p>(Update/Add template info here) new</p>
 			<p> Event </p><?php if ($id) { 
 				if (-1 == $row['Year']){
 				echo  $row['Month'] . "/" . $row['Day'] . "/(every year)<br />";
@@ -208,7 +195,7 @@ function cmog_render_edit_event($id){
 			<br />
 			Template id:<br />
 			<input type="text" name='tmplt_id'  readonly  value="<?php echo $row['tmplt_id']; ?>">
-			<?php wp_nonce_field('cmog-update'); ?>
+			<?php wp_nonce_field('cmog-event-update'); ?>
 			<br />
 			<hr />
 

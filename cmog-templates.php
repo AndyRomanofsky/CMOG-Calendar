@@ -22,6 +22,7 @@ require 'classes/events_list.php';
 /** define functions displaying pages */
 require 'views/list_pages.php';
 require 'views/edit_pages.php';
+require 'views/edit_event_page.php';
 /** ************************ REGISTER THE admin pages  ****************************
  *******************************************************************************
  * Now we just need to define an admin page. For this template, we'll add a top-level
@@ -42,7 +43,7 @@ function cmog_add_menu_items(){
 	add_submenu_page('cmog_list_test', 'Movable Templates', 'Movable  Templates',  'activate_plugins', 'cmog_list_movable', 'cmog_render_movable_list_page');
 	add_submenu_page('cmog_list_test', 'Add Movable', '- Add Movable',  'activate_plugins', 'cmog_list_movable&action=add&template=0', 'cmog_render_edit_Movable_page');
 	add_submenu_page('cmog_list_test', 'Events', 'Events',  'activate_plugins', 'cmog_list_events', 'cmog_render_events_list_page');
-	add_submenu_page('cmog_list_test', 'Add Event', '- Add Event',  'activate_plugins', 'cmog_list_events&action=add&event=0', 'cmog_render_edit_event');
+	add_submenu_page('cmog_list_test', 'Add new Event', '- Add mew Event',  'activate_plugins', 'cmog_list_events&action=add&event=0', 'cmog_render_edit_event_page');
 	add_submenu_page('cmog_list_test', 'Calender', 'Calender',  'activate_plugins', 'cmog_month_calendaer', 'cmog_render_events_calendar_page');
 	}
 add_action('admin_menu', 'cmog_add_menu_items');

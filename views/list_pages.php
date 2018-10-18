@@ -374,6 +374,9 @@ function cmog_render_events_list_page(){
 	}
 	
 global $wpdb; //This is used only if making any database queries
+echo "<br> request: " ;  var_dump($_REQUEST);
+echo "<br> post: " ;  var_dump($_POST);
+echo "<br> get: " ;  var_dump($_GET);
     //Create an instance of our package class...
     $Events_List = new CMOG_Events_List_Table();
     //Fetch, prepare, sort, and filter our data...
