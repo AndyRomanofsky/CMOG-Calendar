@@ -85,9 +85,9 @@ class CMOG_Events_List_Table extends WP_List_Table {
      **************************************************************************/
     function column_EventText($item){
         //Build row actions
-
+        $returnurl = $_SERVER['REQUEST_URI'];
 		if( 0 == $item['published'] ){ //draft
-		$actions = array(			
+		$actions = array(	
             'edit'      => sprintf('<a href="?page=%s&action=%s&event=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID']),
             'trash'    => sprintf('<a href="?page=%s&action=%s&event=%s">Trash</a>',$_REQUEST['page'],'trash',$item['ID']),
             'publish'    => sprintf('<a href="?page=%s&action=%s&event=%s">Publish</a>',$_REQUEST['page'],'publish',$item['ID']),
@@ -101,7 +101,7 @@ class CMOG_Events_List_Table extends WP_List_Table {
         );
 		$row_status = " <b>(In Trash)</b>";
 		} elseif ( -1 == $item['published'] ){ //archived
-		$actions = array(		
+		$actions = array(
             'edit'      => sprintf('<a href="?page=%s&action=%s&event=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID']),
             'trash'    => sprintf('<a href="?page=%s&action=%s&event=%s">Trash</a>',$_REQUEST['page'],'trash',$item['ID']),
         );

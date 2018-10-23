@@ -12,7 +12,7 @@ function cmog_render_edit_event_page($id){
 	
 	/** event update **/
 		if ($id) {
-		 	if (!isset($query['event'])) {
+		 	if ((isset($_REQUEST['action'])) and ($_REQUEST['action'] == 'update'   )){
 					echo "<div class='notice notice-success is-dismissible'>";
 					check_admin_referer( 'cmog-event-update');
 					$data	 = array(  
@@ -63,9 +63,9 @@ function cmog_render_edit_event_page($id){
 					$rownumber = $wpdb->replace( $table, $data, $format ); 
 					if ($rownumber) { 
 						echo "<br /> row " . $rownumber . " updated.";
+					echo  '<br />Updated '. $_REQUEST['EventText'] . '</div>' ;
 					} else {
 						echo "<br />No rows updated.";
-					echo  '<br />Updated '. $query['EventText'] . '</div>' ;
 					//$sendback = remove_query_arg( array('trashed', 'untrashed', 'deleted', 'locked', 'ids'), wp_get_referer() );
 					//$sendback = remove_query_arg( array('action' ), wp_get_referer() );
 					}
@@ -114,10 +114,12 @@ function cmog_render_edit_event_page($id){
 		<!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
 		<div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">			
 			<form id="templates-edit" method="get">
-			<input type="submit" value="Submit">
+			<input type="submit" value="Update">
+			<a class="button" href="/wp-admin/admin.php?page=cmog_list_events&published=<?php echo $row['published']?>" >Close</a>
 		  <br /> * required field<br />
 			<input type="hidden" name='page'   value="cmog_list_events">
 			<input type="hidden" name='action'   value="update">
+		 
 			<br />
 			<?php cmog_input_text_r('EventText', $row,'Event'); ?>
 			Class: *<br />
@@ -164,7 +166,7 @@ function cmog_render_edit_event_page($id){
 			<?php cmog_input_text('icon', $row,'Icon to use'); ?>
 			<?php cmog_input_text('hymn', $row,'Hymn to use'); ?>
 			Status:<br />
-			<select name='published' 
+			<select name='published' >
 				<option value= -2 <?php if  ( -2 == $row['published']) echo " selected ";?>> Trashed</option>
 				<option value= -1 <?php if  ( -1 == $row['published']) echo " selected ";?>> Archived</option>
 				<option value= 0 <?php if  ( 0 == $row['published']) echo " selected ";?>> Draft</option>
@@ -184,8 +186,8 @@ function cmog_render_edit_event_page($id){
 			<?php cmog_input_text('catid', $row); ?>
 			<?php cmog_input_text('created_by', $row,'Created by'); ?>  
 			From Template type:<br />
-			<select name='gmd' readonly >
-				<option ></option>
+			<select name='gmd' >
+				<option value="0" ></option>
 				<option value="-5" <?php if  ( -5 == $row['gmd']) echo " selected ";?>>Pascha</option>
 				<option value="-4" <?php if  ( -4 == $row['gmd']) echo " selected ";?>>Triodion</option>
 				<option value="-3" <?php if  ( -3 == $row['gmd']) echo " selected ";?>>Luke</option>
