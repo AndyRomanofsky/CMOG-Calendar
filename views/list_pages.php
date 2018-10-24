@@ -374,12 +374,13 @@ function cmog_render_events_list_page(){
 	}
 	
 global $wpdb; //This is used only if making any database queries
+/*
 echo "<br> request: " ;  var_dump($_REQUEST);
 echo "<br> post: " ;  var_dump($_POST);
 echo "<br> get: " ;  var_dump($_GET);
 echo "<br> " ;
 echo "<br> server url: " ;  var_dump($_SERVER["REQUEST_URI"]);
-
+*/
     //Create an instance of our package class...
     $Events_List = new CMOG_Events_List_Table();
     //Fetch, prepare, sort, and filter our data...
@@ -663,7 +664,7 @@ if ("Yes" == $EveryYear){
 			 // echo $day_counter;
 			 //  echo "</a></b></big></td></tr>" ;
             //echo"<tr><td border='1' ><small>data for $SMonth/$day_counter/$SYear</small></td><tr>" ;
-			echo "<tr><td border='1' ><a href='admin.php?f_year=" . $SYear . "&f_month=" . $SMonth . "&f_day=" . $day_counter . "&page=cmog_list_events'>".$day_counter."</a></td><tr>";// need to add every year flag (and class)
+			echo "<tr><td border='1' ><a href='admin.php?f_year=" . $SYear . "&f_month=" . $SMonth . "&f_day=" . $day_counter . "&page=cmog_list_events'>".$day_counter."</a></td><tr>";// need: to add every year flag (and class)
 			 
 			// data for this day
 				 foreach($items as $i => $item): 

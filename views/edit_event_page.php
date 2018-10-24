@@ -6,7 +6,17 @@ This is for the Events only
 function cmog_render_edit_event_page($id){
 	if ( !current_user_can( 'manage_options' ) )  	{
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-	} 
+	}  ?>
+	<div class="wrap">
+	<?php if ($id) {
+			$submit = "Update "?>
+	<h2>Update Event</h2>
+	<?php } else {  
+			$submit = "Add"?>
+	<h2>Add new Event</h2>
+	<?php }  ?>
+	</div>
+	<?php
 	global $wpdb; //This is used only if making any database queries
 	//var_dump($_REQUEST);
 	
@@ -28,7 +38,7 @@ function cmog_render_edit_event_page($id){
 					'access' => $_REQUEST['access'],
 					'language' => $_REQUEST['language'],
 					'ID' => $_REQUEST['ID'],
-					//'AddDate' => $_REQUEST['AddDate'],
+					'AddDate' => $_REQUEST['AddDate'],
 					'listorder' => $_REQUEST['listorder'],
 					'popup' => $_REQUEST['popup'],
 					'asset_id' => $_REQUEST['asset_id'],
@@ -51,7 +61,7 @@ function cmog_render_edit_event_page($id){
 							'%d', // access
 							'%s', // language
 							'%d', // ID
-					//		'%d', // AddDate
+					  		'%s', // AddDate
 							'%d', // listorder
 							'%s', // popup
 							'%d', // asset_id
@@ -65,7 +75,7 @@ function cmog_render_edit_event_page($id){
 						echo "<br /> row " . $rownumber . " updated.";
 					echo  '<br />Updated '. $_REQUEST['EventText'] . '</div>' ;
 					} else {
-						echo "<br />No rows updated.";
+						echo "<br />No rows updated. </div>";
 					//$sendback = remove_query_arg( array('trashed', 'untrashed', 'deleted', 'locked', 'ids'), wp_get_referer() );
 					//$sendback = remove_query_arg( array('action' ), wp_get_referer() );
 					}
@@ -85,14 +95,8 @@ function cmog_render_edit_event_page($id){
 	} 
 	$cmog_template_type =  (int)(!empty($row['gmd'])) ? $row['gmd'] : ''; //If no sort, default to null
 	?>
-	
-	</div>
+	 
 	<div class="wrap">
-		<?php if ($id) { ?>
-		<h2>Update Event</h2>
-		<?php } else {  ?>
-		<h2>Add new Event</h2>
-		<?php }   ?>
 		<div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
 			<p>(Update/Add template info here) new</p>
 			<p> Event </p><?php if ($id) { 
@@ -114,8 +118,12 @@ function cmog_render_edit_event_page($id){
 		<!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
 		<div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">			
 			<form id="templates-edit" method="get">
-			<input type="submit" value="Update">
+			<input type="submit" value="<?php echo $submit;?>">
+			<?php if ("Add" == $submit ){;?>
+			<a class="button" href="/wp-admin/admin.php?page=cmog_list_events" >Cancel</a>
+			<?php } else { ?>
 			<a class="button" href="/wp-admin/admin.php?page=cmog_list_events&published=<?php echo $row['published']?>" >Close</a>
+			<?php }  ?>
 		  <br /> * required field<br />
 			<input type="hidden" name='page'   value="cmog_list_events">
 			<input type="hidden" name='action'   value="update">
@@ -197,7 +205,14 @@ function cmog_render_edit_event_page($id){
 			<br />
 			Template id:<br />
 			<input type="text" name='tmplt_id'  readonly  value="<?php echo $row['tmplt_id']; ?>">
-			<?php wp_nonce_field('cmog-event-update'); ?>
+			<?php
+			if(! isset($_REQUEST['_wpnonce'])){
+			wp_nonce_field('cmog-event-update'); 
+			}else{ ?>
+			<input type="hidden" name='_wpnonce'   value="<?php echo $_REQUEST['_wpnonce'];?>">
+			<input type="hidden" name='_wp_http_referer'   value="<?php echo $_REQUEST['_wp_http_referer'];?>">
+			<?php }
+			?>
 			<br />
 			<hr />
 
