@@ -84,15 +84,39 @@ class CMOG_Template_List_Table extends WP_List_Table {
      **************************************************************************/
     function column_EventText($item){
         //Build row actions
-        $actions = array(
+        $returnurl = $_SERVER['REQUEST_URI'];
+		if( 0 == $item['published'] ){ //draft
+		$actions = array(	
             'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID']),
-            'delete'    => sprintf('<a href="?page=%s&action=%s&template=%s">Delete</a>',$_REQUEST['page'],'delete',$item['ID']),
-            'load'      => sprintf('<a href="?page=%s&action=%s&template=%s">Load</a>',$_REQUEST['page'],'load',$item['ID']),
+            'trash'    => sprintf('<a href="?page=%s&action=%s&template=%s">Trash</a>',$_REQUEST['page'],'trash',$item['ID']),
+            'publish'    => sprintf('<a href="?page=%s&action=%s&template=%s">Publish</a>',$_REQUEST['page'],'publish',$item['ID']),
         );
+		$row_status = " <b>(Draft)</b>";
+		} elseif ( -2 == $item['published'] ){ //trash
+		$actions = array(	
+            'delete'    => sprintf('<a href="?page=%s&action=%s&template=%s">Delete</a>',$_REQUEST['page'],'delete',$item['ID']),
+            'draft'    => sprintf('<a href="?page=%s&action=%s&template=%s">Draft</a>',$_REQUEST['page'],'draft',$item['ID']),
+            'publish'    => sprintf('<a href="?page=%s&action=%s&template=%s">Publish</a>',$_REQUEST['page'],'publish',$item['ID']),
+        );
+		$row_status = " <b>(In Trash)</b>";
+		} elseif ( -1 == $item['published'] ){ //archived
+		$actions = array(
+            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID']),
+            'trash'    => sprintf('<a href="?page=%s&action=%s&template=%s">Trash</a>',$_REQUEST['page'],'trash',$item['ID']),
+        );
+		$row_status = " <b>(Archived)</b>";
+		} else { // published 
+		$actions = array(			
+            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID']),
+            'draft'    => sprintf('<a href="?page=%s&action=%s&template=%s">Draft</a>',$_REQUEST['page'],'draft',$item['ID']),
+            'trash'    => sprintf('<a href="?page=%s&action=%s&template=%s">Trash</a>',$_REQUEST['page'],'trash',$item['ID']),
+        );
+		$row_status = "";
+		}
         //Return the title contents
-        //return '<a href="?page=' . $_REQUEST['page'] . '&action=edit&template=' . $item['ID'] . '>' . $item['EventText'] . '</a> ' ;
-        //return '<a href="?page=' . $_REQUEST['page'] . '&action=edit&template=' . $item['ID'] . '>' . $item['EventText'] . '</a> ' . $this->row_actions($actions);
-         return $item['EventText'] . $this->row_actions($actions);
+        //return '<a href="?page=' . $_REQUEST['page'] . '&action=edit&event=' . $item['ID'] . '>' . $item['EventText'] . '</a> ' ;
+        //return '<a href="?page=' . $_REQUEST['page'] . '&action=edit&event=' . $item['ID'] . '>' . $item['EventText'] . '</a> ' . $this->row_actions($actions);
+         return $item['EventText'] . $row_status . $this->row_actions($actions);
     }
     /** ************ function column_cb **********************
      * REQUIRED if displaying checkboxes or using bulk actions! The 'cb' column
@@ -251,10 +275,42 @@ class CMOG_Template_List_Table extends WP_List_Table {
      * @return array An associative array containing all the bulk actions: 'slugs'=>'Visible Titles'
      **************************************************************************/
     function get_bulk_actions() {
-        $actions = array(
-            'delete'    => 'Delete',
-            'load'    => 'Load',
-        );
+		parse_str($_SERVER['QUERY_STRING'], $query); 
+		if (array_key_exists('published',$query)){
+			switch($query['published']){	
+			  case 0  :	//Draft
+				$actions = array(
+					'trash'   => 'Trash',
+					'publish'    => 'Publish',
+				);
+				return $actions;
+			  case 1  :	 //Published
+				$actions = array(
+					'trash'   => 'Trash',
+					'draft'    => 'Draft',
+				);
+				return $actions;
+			  case -1  :	// Archived
+				$actions = array(
+					'trash'   => 'Trash',
+					'publish'    => 'Publish',
+				);
+				return $actions;
+			  case  -2  :	// Trashed
+				$actions = array(
+					'publish'    => 'Publish',
+					'draft'    => 'Draft',
+					'delete' => 'Delete',
+				);
+				return $actions;
+			  default:
+                return ;
+			}	
+		} else {
+			$actions = array(
+					'trash'   => 'Trash',
+			);
+		}
         return $actions;
     }
     /** ********** function process_bulk_action *************************
@@ -264,31 +320,154 @@ class CMOG_Template_List_Table extends WP_List_Table {
      * (For now all actions processed here)
      * @see $this->prepare_items()
      **************************************************************************/
+
     function process_bulk_action() {
+		global $wpdb;
+	
 		parse_str($_SERVER['QUERY_STRING'], $query); 
-	        if( 'delete'===$this->current_action() ) {
-				if (!isset($query['template'])) {
+/** template trash **/		
+	        if( 'trash'===$this->current_action() ) {
+				if (!isset($query['template']) and !isset($_POST['template'])) {
 					echo "<div class='notice notice-error is-dismissible'>";
-					echo  '<br />No rows are checked for delete!</div>' ;
+					echo  '<br />No rows are checked for the trash!</div>' ;
 					RETURN;
 				}
-			$id = $query['template'];
-			if (is_array($id)){
+			
+			if (is_array($_REQUEST['template'])){
+				$values = $_REQUEST['template'];
+				
+					echo "<div class='notice notice-success is-dismissible'>";
+						// (code to trash many row)
+					$table = $wpdb->prefix . "cmog_templates";
+					$data	 = array( 'published' => -2);
+					$format =  array( '%d');
+					echo  	'<br /> (bulk) ';
+					foreach ( $values as $value ) {
+						$where  = array ('ID' => $value);
+						$wpdb->update( $table, $data, $where, $format ); 	
+						echo  '<br />template ' .  $value . ' moved to the trash.' ;
+					}				 
+					echo '</div>';
+			} else {
+				$id = $_REQUEST['template'];
+				echo "<div class='notice notice-success is-dismissible'>";
+					// (code to trash row)
+				$where  = array ('ID' => $id);
+				$table = $wpdb->prefix . "cmog_templates";
+				$data	 = array( 'published' => -2);
+				$format =  array( '%d');
+				$wpdb->update( $table, $data, $where, $format ); 	
+			 	echo  '<br />template ' .  $id . ' moved to the trash.</div>' ;
+			} 
+			}
+
+/** template delete **/		
+	        if( 'delete'===$this->current_action() ) {
+				if (!isset($query['template']) and !isset($_POST['template'])) {
+					echo "<div class='notice notice-error is-dismissible'>";
+					echo  '<br />No rows are checked to delete!</div>' ;
+					RETURN;
+				} 
+			if (array_key_exists('template',$_REQUEST)){
+				$values = $_REQUEST['template'];
 			echo "<div class='notice notice-success is-dismissible'>";
 				// (code to delete many row)
+				$table = $wpdb->prefix . "cmog_templates";
+				$format =  array( '%d');
 				echo  	'<br /> (bulk) <br />';
-				foreach ( $id as $value )
-					{
-					echo  "Deleted " . $value . "<br />";
+				foreach ( $values as $value ){
+					$where  = array ('ID' => $value);
+					$wpdb->delete( $table,  $where, $format ); 					
+					echo  "<br />Deleted " . $value . "!";
 					} 
 				echo '</div>';
 			} else {
+			$id = $_REQUEST;
 			echo "<div class='notice notice-success is-dismissible'>";
 				// (code to delete row)
-				echo  '<br />deleting ' .  $id . ' (or it would be if we had items to delete)!</div>' ;
+				$where  = array ('ID' => $id);
+				$table = $wpdb->prefix . "cmog_templates";
+				$format =  array( '%d');
+				$wpdb->delete( $table,  $where, $format ); 
+				echo  '<br />deleted ' .  $id . ' !</div>' ;
 			} 
-        }        
-		if( 'edit'===$this->current_action() ) {
+        }   
+/** template publish **/
+	        if( 'publish'===$this->current_action() ) {
+				if (!isset($_REQUEST['template']) and !isset($_REQUEST['template'])) {
+					echo "<div class='notice notice-error is-dismissible'>";
+					echo  '<br />No rows are checked to be publish!</div>' ;
+					RETURN;
+				}
+			
+			if (is_array($_REQUEST['template'])){
+				$values = $_REQUEST['template'];
+				
+					echo "<div class='notice notice-success is-dismissible'>";
+						// (code to publish many row)
+					$table = $wpdb->prefix . "cmog_templates";
+					$data	 = array( 'published' => 1 );
+					$format =  array( '%d');
+					echo  	'<br /> (bulk) ';
+					foreach ( $values as $value ) {
+						$where  = array ('ID' => $value);
+						$wpdb->update( $table, $data, $where, $format ); 	
+						echo  '<br />template ' .  $value . '   published.' ;
+					}				 
+					echo '</div>';
+			} else {
+				$id = $_REQUEST['template'];
+				echo "<div class='notice notice-success is-dismissible'>";
+					// (code to publish row)
+				$where  = array ('ID' => $id);
+				$table = $wpdb->prefix . "cmog_templates";
+				$data	 = array( 'published' => 1);
+				$format =  array( '%d');
+				$wpdb->update( $table, $data, $where, $format ); 	
+				echo  '<br />template ' .  $id  . '   published.' ;	 
+				echo '</div>';
+			} 
+			}
+
+/** template draft **/
+	        if( 'draft'===$this->current_action() ) {
+				if (!isset($_REQUEST['template']) and !isset($_REQUEST['template'])) {
+					echo "<div class='notice notice-error is-dismissible'>";
+					echo  '<br />No rows are checked to be set to draft!</div>' ;
+					RETURN;
+				}
+			
+			if (array_key_exists('template',$_REQUEST)){
+				$values = $_REQUEST['template'];
+				 if (is_array($values)){
+				
+					echo "<div class='notice notice-success is-dismissible'>b";
+						// (code to draft many row)cmog-template-update
+					$table = $wpdb->prefix . "cmog_templates";
+					$data	 = array( 'published' => 0 );
+					$format =  array( '%d');
+					echo  	'<br /> (bulk) ';
+					foreach ( $values as $value ) {
+						$where  = array ('ID' => $value);
+						$wpdb->update( $table, $data, $where, $format ); 	
+						echo  '<br />template ' .  $value . ' set to draft.' ;
+					}				 
+					echo '</div>';
+					} else {
+					$id = $values;
+					echo "<div class='notice notice-success is-dismissible'>s";
+						// (code to draft row)
+					$where  = array ('ID' => $id);
+					$table = $wpdb->prefix . "cmog_templates";
+					$data	 = array( 'published' => 0);
+					$format =  array( '%d');
+					$wpdb->update( $table, $data, $where, $format ); 	
+					echo  '<br />template ' .  $id . ' set to draft.<br /></div>' ;
+					} 
+			}
+			}
+/** template edit **/
+		if ('edit'===$this->current_action() ){
 				if (!isset($query['template'])) {
 					echo "<div class='notice notice-error is-dismissible'>";
 					echo  '<br />No rows are checked for edit!</div>' ;
@@ -296,65 +475,62 @@ class CMOG_Template_List_Table extends WP_List_Table {
 				}
 			$id = $query['template'];
 			if (is_array($id)){
-				// (code to delete many row)
+				// (code to edit many row)
 				echo "<div class='notice notice-error is-dismissible'>";
 				echo  	'<br /> (can not bulk edit at this time) <br /></div>';
 			} else {
 				// (code to edit row)  
-				cmog_render_edit_page($id);
+				cmog_render_edit_luke_page($id);
+				exit;
 			}
-        }      
+        }  
+/** template add **/    
 		if( 'add'===$this->current_action() ) {
-				if (!isset($query['template'])) {
-					echo "<div class='notice notice-success is-dismissible'>";
-					echo  '<br />No rows are checked for add!</div>' ;
-					RETURN;
-				}
-			$id = $query['template'];
-			if (is_array($id)){
+				//if (!isset($query['template'])) {
+				//	echo "<div class='notice notice-success is-dismissible'>";
+				//	echo  '<br />No rows are checked for add!</div>' ;
+				//	RETURN;
+				//}
+			//$id = $query['template'];
+			//if (is_array($id)){
 				// (code to add many row)
-				echo "<div class='notice notice-error is-dismissible'>";
-				echo  	'<br /> (can not bulk add at this time) <br /></div>';
-			} else {
+			//	echo "<div class='notice notice-error is-dismissible'>";
+			//	echo  	'<br /> (can not bulk add at this time) <br /></div>';
+			//} else {
 				// (code to add row)  
-				cmog_render_edit_page(0);
-			}
+				cmog_render_edit_luke_page(0);
+				exit;
+			//}
         }    
-		if( 'load'===$this->current_action() ) {
+/** template reload **/
+		if( 'reload'===$this->current_action() ) {
 				if (!isset($query['template'])) {
 					echo "<div class='notice notice-error is-dismissible'>";
-					echo  '<br />No rows are checked for load!</div>' ;
+					echo  '<br />No rows are checked for reload!</div>' ;
 					RETURN;
 				}
 			$id = $query['template'];
 			if (is_array($id)){
-				// (code to load many row)
+				// (code to reload many row)
 				echo "<div class='notice notice-error is-dismissible'>";
-				echo  	'<br /> (can not bulk load at this time) <br /></div>';
+				echo  	'<br /> (can not bulk reload at this time) <br /></div>';
 			} else {
-				// (code to load row)  
+				// (code to reload row)  
 				echo "<div class='notice notice-error is-dismissible'>";
-				echo  	'<br /> (can not load at this time) <br /></div>';
+				echo  	'<br /> (can not reload at this time) <br /></div>';
 			}
-        }    
+        } 
+/** template update **/    
 		if( 'update'===$this->current_action() ) {
-				if (!isset($query['template'])) {
-					echo "<div class='notice notice-error is-dismissible'>";
-					echo  '<br />update</div>' ;
-					RETURN;
-				}
-			$id = $query['template'];
-			if (is_array($id)){
-				// (code to load many row)
-				echo "<div class='notice notice-success is-dismissible'>";
-				echo  	'<br /> Updated <br /></div>';
-			} else {
-				// (code to load row)  
-				echo "<div class='noticesuccess is-dismissible'>";
-				echo  	'<br />Added <br /></div>';
-			}
-        }
-    }
+
+				// (code to add row)  
+				cmog_render_edit_luke_page("update");
+				exit;
+
+        }    
+
+
+	}
     /** ************* function prepare_items ********************* 
      * REQUIRED! This is where you prepare your data for display. This method will
      * usually be used to query the database, sort and filter the data, and generally
