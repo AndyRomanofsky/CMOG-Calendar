@@ -207,7 +207,88 @@ This is for the Movable template only
 function cmog_render_edit_Movable_page($id){
 	if ( !current_user_can( 'manage_options' ) )  	{
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-	} 
+	} ?>
+	
+	 <div class="wrap">
+	<?php if ($id) {
+			$submit = "Update "?> 
+		<h2>Update Movable Template</h2>
+	<?php } else { 
+			$submit = "Add"?>
+		<h2>Add new Movable Template</h2>
+	<?php }   ?>
+	</div>
+	
+	
+	
+	<?php
+	global $wpdb; //This is used only if making any database queries
+	//var_dump($_REQUEST);
+	
+	/** Luke templateLuke template update **/
+		if ($id) {
+		 	if ((isset($_REQUEST['action'])) and ($_REQUEST['action'] == 'update'   )){
+					echo "<div class='notice notice-success is-dismissible'>";
+					check_admin_referer( 'cmog_movable-update');
+					$data	 = array(  
+					'EventText' => $_REQUEST['EventText'],
+					'Class' => $_REQUEST['Class'],
+					'Offset' => $_REQUEST['Offset'],
+					'Length' => $_REQUEST['Length'],
+					'Link' => $_REQUEST['Link'],
+					'icon' => $_REQUEST['icon'],
+					'hymn' => $_REQUEST['hymn'],
+					'published' => $_REQUEST['published'],
+					'access' => $_REQUEST['access'],
+					'language' => $_REQUEST['language'],
+					'ID' => $_REQUEST['ID'],
+					'AddDate' => $_REQUEST['AddDate'],
+					'listorder' => $_REQUEST['listorder'],
+					'popup' => $_REQUEST['popup'],
+					'asset_id' => $_REQUEST['asset_id'],
+					'catid' => $_REQUEST['catid'],
+					'created_by' => $_REQUEST['created_by'],
+					'gmd' =>  $_REQUEST['gmd'],
+					);
+					$table = $wpdb->prefix . "cmog_moveableevent";
+					$format =  array( 
+							'%s', // EventText
+							'%s', // Class
+							'%d', // Offset
+							'%d', // Length
+							'%s', // Link
+							'%s', // icon
+							'%s', // hymn
+							
+							'%d', // published
+							'%d', // access
+							'%s', // language
+							'%d', // ID
+					  		'%s', // AddDate
+							'%d', // listorder
+							'%s', // popup
+							'%d', // asset_id
+							'%d', // catid
+							'%d', // created_by
+							'%d', // gmd
+					);
+					$rownumber = $wpdb->replace( $table, $data, $format ); 
+					if ($rownumber) { 
+						echo "<br /> row " . $rownumber . " updated.";
+					echo  '<br />Updated '. $_REQUEST['EventText'] . '</div>' ;
+					} else {
+						echo "<br />No rows updated. </div>";
+					//$sendback = remove_query_arg( array('trashed', 'untrashed', 'deleted', 'locked', 'ids'), wp_get_referer() );
+					//$sendback = remove_query_arg( array('action' ), wp_get_referer() );
+					}
+				}		 	
+		}
+	if ($id == 'update' ) {
+		$id = $wpdb->insert_id;
+	}
+/** read from database/   ***/	
+	
+	
 	if ($id) { // id  = 0 is add not edit
         global $wpdb; //This is used only if making any database queries
 				 $row = $wpdb->get_row( "SELECT * FROM `cmog66_cmog_moveableevent` where ID = $id  ", 'ARRAY_A' ); 
@@ -219,12 +300,7 @@ function cmog_render_edit_Movable_page($id){
 	} 
     //$cmog_template_type =  (int)(!empty($row['gmd'])) ? $row['gmd'] : ''; //If no sort, default to null
     ?>
-    <div class="wrap">
-	<?php if ($id) { ?>
-		<h2>Update Movable Template</h2>
-	<?php } else {  ?>
-		<h2>Add new Movable Template</h2>
-	<?php }   ?>
+
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(Update/Add template info here) </p>
 			<p> Template type is Movable  </p>
@@ -261,7 +337,16 @@ function cmog_render_edit_Movable_page($id){
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
 	<div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">			
 			<form id="templates-edit" method="get">
+
+			<input type="submit" value="<?php echo $submit;?>">
+			<?php if ("Add" == $submit ){;?>
+			<a class="button" href="/wp-admin/admin.php?page=cmog_list_movable" >Cancel</a>
+			<?php } else { ?>
+			<a class="button" href="/wp-admin/admin.php?page=cmog_list_movable&published=<?php echo $row['published']?>" >Close</a>
+			<?php }  ?>
   <br />
+  		   <input type="hidden" id="page" name="page" value="cmog_list_movable">
+		   <input type="hidden" id="action" name="action" value="update">
 	<?php cmog_input_text_r('EventText', $row,'Event'); ?>
 	<?php cmog_input_text_r('Offset', $row,'Offset'); ?>
 	<?php cmog_input_text_r('Length', $row,'Length'); ?>
@@ -290,7 +375,7 @@ function cmog_render_edit_Movable_page($id){
     <?php cmog_input_text('catid', $row); ?>
     <?php cmog_input_text('created_by', $row,'Created by'); ?>  
 	Template type:<br />
-  <select name='gmd' disabled >
+  <select name='gmd'   >
 				 <option value=" -1"  selected >Movable</option>
   </select>	
   <br />
@@ -307,7 +392,15 @@ function cmog_render_edit_Movable_page($id){
 			<br />
     <?php cmog_input_text('access', $row,'Access'); ?>
     <?php cmog_input_text('language', $row,'Language'); ?>
-    <input type="submit" value="Submit">
+            <?php
+  			if(! isset($_REQUEST['_wpnonce'])){
+			wp_nonce_field('cmog_movable-update'); 
+			}else{ ?>
+			<input type="hidden" name='_wpnonce'   value="<?php echo $_REQUEST['_wpnonce'];?>">
+			<input type="hidden" name='_wp_http_referer'   value="<?php echo $_REQUEST['_wp_http_referer'];?>">
+			<?php }
+			?>
+
  
   <br /> * required field<br />
 			</form>
@@ -346,9 +439,8 @@ function cmog_render_edit_luke_page($id){
 					$data	 = array(  
 					'EventText' => $_REQUEST['EventText'],
 					'Class' => $_REQUEST['Class'],
-					'Year' => $_REQUEST['Year'],
-					'Month' => $_REQUEST['Month'],
-					'Day' => $_REQUEST['Day'],
+					'week' => $_REQUEST['week'],
+					'wday' => $_REQUEST['wday'],
 					'Link' => $_REQUEST['Link'],
 					'icon' => $_REQUEST['icon'],
 					'hymn' => $_REQUEST['hymn'],
@@ -363,15 +455,13 @@ function cmog_render_edit_luke_page($id){
 					'catid' => $_REQUEST['catid'],
 					'created_by' => $_REQUEST['created_by'],
 					'gmd' =>  $_REQUEST['gmd'],
-					'tmplt_id' => $_REQUEST['tmplt_id']
 					);
-					$table = $wpdb->prefix . "cmog_events";
+					$table = $wpdb->prefix . "cmog_templates";
 					$format =  array( 
 							'%s', // EventText
 							'%s', // Class
-							'%d', // Year
-							'%d', // Month
-							'%d', // Day
+							'%d', // week
+							'%d', // wday
 							'%s', // Link
 							'%s', // icon
 							'%s', // hymn
@@ -386,7 +476,6 @@ function cmog_render_edit_luke_page($id){
 							'%d', // catid
 							'%d', // created_by
 							'%d', // gmd
-							'%d'  // tmplt_id
 					);
 					$rownumber = $wpdb->replace( $table, $data, $format ); 
 					if ($rownumber) { 
@@ -498,6 +587,14 @@ function cmog_render_edit_luke_page($id){
     <?php cmog_input_text('access', $row,'Access'); ?>
     <?php cmog_input_text('language', $row,'Language'); ?>
   <br />	
+            <?php
+  			if(! isset($_REQUEST['_wpnonce'])){
+			wp_nonce_field('cmog-luke-update'); 
+			}else{ ?>
+			<input type="hidden" name='_wpnonce'   value="<?php echo $_REQUEST['_wpnonce'];?>">
+			<input type="hidden" name='_wp_http_referer'   value="<?php echo $_REQUEST['_wp_http_referer'];?>">
+			<?php }
+			?>
   </fieldset>
   <br /> * required field<br />
 			</form>
