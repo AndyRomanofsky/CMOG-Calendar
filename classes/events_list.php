@@ -357,8 +357,11 @@ class CMOG_Events_List_Table extends WP_List_Table {
 					RETURN;
 				}
 			
-			if (isset($_REQUEST['event'])){
-				$values = $_REQUEST['event'];
+
+				if (is_array($_REQUEST['event'])){
+				$values = $_REQUEST['event'];	
+				
+				
 				
 					echo "<div class='notice notice-success is-dismissible'>";
 						// (code to trash many row)
