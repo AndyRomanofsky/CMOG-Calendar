@@ -31,7 +31,7 @@ require 'views/edit_event_page.php';
  * add_submenu_page(   $parent_slug,   $page_title,   $menu_title,   $capability,   $menu_slug,  $function = '' )
  */
 function cmog_add_menu_items(){
-	global $cmog_plugin_hook;
+	global $cmog_events_page;
 	//global $cmog_plugin_hook_luke;
     add_menu_page('Template Plugin List Table', 'CMOG Templates', 'activate_plugins', 'cmog_list_test', 'cmog_render_list_page');
 	add_submenu_page('cmog_list_test', 'Add Template', '- Add Template',  'activate_plugins', 'cmog_list_test&action=add&template=0', 'cmog_render_add_page');
@@ -42,12 +42,41 @@ function cmog_add_menu_items(){
 	add_submenu_page('cmog_list_test', 'Triodion Templates', 'Triodion Templates',  'activate_plugins', 'cmog_list_triodion', 'cmog_render_triodion_list_page');
 	add_submenu_page('cmog_list_test', 'Movable Templates', 'Movable  Templates',  'activate_plugins', 'cmog_list_movable', 'cmog_render_movable_list_page');
 	add_submenu_page('cmog_list_test', 'Add Movable', '- Add Movable',  'activate_plugins', 'cmog_list_movable&action=add&template=0', 'cmog_render_edit_Movable_page');
-	add_submenu_page('cmog_list_test', 'Events', 'Events',  'activate_plugins', 'cmog_list_events', 'cmog_render_events_list_page');
+	$cmog_events_page = add_submenu_page('cmog_list_test', 'Events', 'Events',  'activate_plugins', 'cmog_list_events', 'cmog_render_events_list_page');
 	add_submenu_page('cmog_list_test', 'Add new Event', '- Add new Event',  'activate_plugins', 'cmog_list_events&action=add&event=0', 'cmog_render_edit_event_page');
 	add_submenu_page('cmog_list_test', 'Calender', 'Calender',  'activate_plugins', 'cmog_month_calendaer', 'cmog_render_events_calendar_page');
+	
+	add_action("load-$cmog_events_page", "cmog_events_screen_options");
 	}
 add_action('admin_menu', 'cmog_add_menu_items');
+//Option  tab
+function cmog_events_screen_options() {
+ 
+	global $cmog_events_page;
+ 
+	$screen = get_current_screen();
+ 
+	// get out of here if we are not on our settings page
+	if(!is_object($screen) || $screen->id != $cmog_events_page)
+		return;
+ 
+	$args = array(
+		'label' => __('Events per page', 'cmog'),
+		'default' => 10,
+		'option' => 'cmog_per_page',
+	);
+	add_screen_option( 'per_page', $args );
+}
 
+///this was put in theme for now
+//function cmog_set_screen_option($status, $option, $value) {
+//	if ( 'cmog_per_page' == $option ) return $value;
+//}
+//add_filter('set-screen-option', 'cmog_set_screen_option', 10, 3); 
+ 
+
+
+//Help tab
 function cmog_plugin_add_help(){
     global $my_admin_page;
     $screen = get_current_screen();

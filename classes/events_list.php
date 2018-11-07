@@ -653,7 +653,24 @@ class CMOG_Events_List_Table extends WP_List_Table {
         /**
          * First, lets decide how many records per page to show
          */
-        $per_page = 25;
+		 
+		 // get the current user ID
+$user = get_current_user_id();
+// get the current admin screen
+$screen = get_current_screen();
+// retrieve the "per_page" option
+$screen_option = $screen->get_option('per_page', 'option');
+// retrieve the value of the option stored for the current user
+$per_page = get_user_meta($user, $screen_option, true);
+		 //var_dump($per_page);
+if ( empty ( $per_page) || $per_page < 1 ) {
+	// get the default value if none is set
+	$per_page = $screen->get_option( 'per_page', 'default' );
+}
+// now use $per_page to set the number of items displayed
+		// var_dump($screen_option);
+		 
+      //  $per_page = 25;
         /**
          * REQUIRED. Now we need to define our column headers. This includes a complete
          * array of columns to be displayed (slugs & titles), a list of columns
