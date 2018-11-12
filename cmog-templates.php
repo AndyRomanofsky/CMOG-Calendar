@@ -14,17 +14,69 @@ defined( 'ABSPATH' ) or die( 'Do not!' );
 if(!class_exists('WP_List_Table')){
     require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 }
-
+if (isset($_REQUEST['page'])) {
+	$cmog_page = $_REQUEST['page'];
+}
 require 'cmog-helper.php';
 /** load calsses for list table pages */
+
+if ($cmog_page == "cmog_list_test" ) {   
+/** load calsses for list table pages */
 require 'classes/template_list.php';
-require 'classes/movable_list.php';
-require 'classes/events_list.php';
-/*************************** LOAD THE Views ********************************/
-/** define functions displaying pages */
+/**load views*/
+require 'views/list_pages.php';
+require 'views/edit_pages.php';
+} elseif ($cmog_page == "cmog_list_luke" ) {
+/** load calsses for list table pages */
+require 'classes/template_list.php';
+/**load views*/
 require 'views/list_pages.php';
 require 'views/edit_pages.php';
 require 'views/edit_event_page.php';
+} elseif ($cmog_page == "cmog_list_pentecos" ) {
+/** load calsses for list table pages */
+require 'classes/template_list.php';
+/**load views*/
+require 'views/list_pages.php';
+require 'views/edit_pages.php';
+require 'views/edit_event_page.php';
+} elseif ($cmog_page == "cmog_list_pascha" ) {
+/** load calsses for list table pages */
+require 'classes/template_list.php';
+/**load views*/
+require 'views/list_pages.php';
+require 'views/edit_pages.php';
+require 'views/edit_event_page.php';
+} elseif ($cmog_page == "cmog_list_triodion" ) {
+/** load calsses for list table pages */
+require 'classes/template_list.php';
+/**load views*/
+require 'views/list_pages.php';
+require 'views/edit_pages.php';
+require 'views/edit_event_page.php';
+} elseif ($cmog_page == "cmog_list_movable" ) {
+/** load calsses for list table pages */
+require 'classes/movable_list.php';
+/**load views*/
+require 'views/list_pages.php';
+require 'views/edit_pages.php';
+require 'views/edit_event_page.php';
+} elseif ($cmog_page == "cmog_list_events" ) {
+/** load calsses for list table pages */
+require 'classes/events_list.php';
+/**load views*/
+require 'views/list_pages.php';
+require 'views/edit_pages.php';
+require 'views/edit_event_page.php';
+} elseif ($cmog_page == "cmog_month_calendaer" ) {
+/** load calsses for list table pages */
+require 'classes/events_list.php';
+/**load views*/
+require 'views/list_pages.php';
+require 'views/edit_pages.php';
+require 'views/edit_event_page.php';
+	
+}
 /** ************************ REGISTER THE admin pages  ****************************
  *******************************************************************************
  * Now we just need to define an admin page. For this template, we'll add a top-level
@@ -88,13 +140,13 @@ function cmog_luke_screen_options() {
  	$args = array(
 		'label' => __('Templates per page', 'cmog'),
 		'default' => 2,
-		'option' => 'cmog_templates_per_page',
+		'option' => 'cmog_lukes_per_page',
 	);
 	add_screen_option( 'per_page', $args );
 }
 
- function cmog_set_luke_screen_option($status, $option, $value) {
- 	if ( 'cmog_templates_per_page' == $option ) return $value;
+ function cmog_set_luke_screen_option($status, $option, $value) { 
+ 	if ( 'cmog_lukes_per_page' == $option ) return $value;
  }
 //Option  tab for pentecost
 function cmog_pentecost_screen_options() {
@@ -106,13 +158,13 @@ function cmog_pentecost_screen_options() {
  	$args = array(
 		'label' => __('Templates per page', 'cmog'),
 		'default' => 3,
-		'option' => 'cmog_templates_per_page',
+		'option' => 'cmog_pentecosts_per_page',
 	);
 	add_screen_option( 'per_page', $args );
 }
 
  function cmog_set_pentecost_screen_option($status, $option, $value) {
- 	if ( 'cmog_templates_per_page' == $option ) return $value;
+ 	if ( 'cmog_pentecosts_per_page' == $option ) return $value;
  }
 //Option  tab for pascha
 function cmog_pascha_screen_options() {
@@ -124,13 +176,13 @@ function cmog_pascha_screen_options() {
  	$args = array(
 		'label' => __('Templates per page', 'cmog'),
 		'default' => 4,
-		'option' => 'cmog_templates_per_page',
+		'option' => 'cmog_paschas_per_page',
 	);
 	add_screen_option( 'per_page', $args );
 }
 
  function cmog_set_pascha_screen_option($status, $option, $value) {
- 	if ( 'cmog_templates_per_page' == $option ) return $value;
+ 	if ( 'cmog_paschas_per_page' == $option ) return $value;
  }
 //Option  tab for triodion
 function cmog_triodion_screen_options() {
@@ -142,13 +194,13 @@ function cmog_triodion_screen_options() {
  	$args = array(
 		'label' => __('Templates per page', 'cmog'),
 		'default' => 5,
-		'option' => 'cmog_templates_per_page',
+		'option' => 'cmog_triodions_per_page',
 	);
 	add_screen_option( 'per_page', $args );
 }
 
  function cmog_set_triodion_screen_option($status, $option, $value) {
- 	if ( 'cmog_templates_per_page' == $option ) return $value;
+ 	if ( 'cmog_triodions_per_page' == $option ) return $value;
  }
 //Option  tab for movable
 function cmog_movable_screen_options() {
@@ -166,8 +218,6 @@ function cmog_movable_screen_options() {
 }
 
  function cmog_set_movable_screen_option($status, $option, $value) {
-	 var_dump($option);
-	 var_dump($value);
  	if ( 'cmog_movables' == $option ) return $value;
  }
 //Option  tab for events
@@ -211,13 +261,34 @@ function cmog_calendaer_screen_options() {
  
  
 function cmog_load_setfilters (){
+	
+if (isset($_REQUEST['page'])) {
+	$cmog_page = $_REQUEST['page'];	
+}
+switch ($cmog_page) {	
+case "cmog_list_events":
+ add_filter('set-screen-option', 'cmog_set_event_screen_option', 10, 3);
+ break;
+case "cmog_list_test":
  add_filter('set-screen-option', 'cmog_set_top_screen_option', 10, 3); 
+ break;
+case "cmog_list_luke":
  add_filter('set-screen-option', 'cmog_set_luke_screen_option', 10, 3); 
+ break;
+case "cmog_list_pentecos":
  add_filter('set-screen-option', 'cmog_set_pentecost_screen_option', 10, 3); 
+ break;
+case "cmog_list_pascha":
  add_filter('set-screen-option', 'cmog_set_pascha_screen_option', 10, 3); 
+ break;
+case "cmog_list_triodion":
  add_filter('set-screen-option', 'cmog_set_triodion_screen_option', 10, 3); 
+ break;
+case "cmog_list_movable":
  add_filter('set-screen-option', 'cmog_set_movable_screen_option', 10, 3); 
- add_filter('set-screen-option', 'cmog_set_event_screen_option', 10, 3); 
+ break;
+ default:
+}
 }
 add_action( 'init', 'cmog_load_setfilters' );
 

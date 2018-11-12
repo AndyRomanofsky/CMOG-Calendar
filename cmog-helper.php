@@ -2,6 +2,26 @@
 /**
  * cmog helper
  */
+ 
+/** Helper functions for edit fields. **/
+/** Render a for text fields. **/
+function cmog_input_text($field, $row, $label=null, $id=null  ){
+	if ( empty($label)) $label = $field; 
+	if ( empty($id))	$id = $field; 
+	$value = $row[$field];
+    echo "<label for=$id>$label:</label><br />";
+    echo "<input type='text' name='$field' id='$id'   value='$value'  ><br />";
+}
+/** Render a for text fields. Required **/
+function cmog_input_text_r($field, $row, $label=null, $id=null  ){
+	if ( empty($label)) $label = $field; 
+	if ( empty($id))	$id = $field; 
+	$value = $row[$field];
+    echo "<label class='required' for=$id>$label:</label> *<br />";
+    echo "<input type='text' name='$field' id='$id'   value='$value' required ><br />";
+}
+
+
   function number_suffix($number){
 // this Function Puts the  'th'  'nd' 'st'  or 'rd' after the number 
     // Validate and translate our input
