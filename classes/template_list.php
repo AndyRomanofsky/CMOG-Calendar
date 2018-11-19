@@ -498,10 +498,28 @@ class CMOG_Template_List_Table extends WP_List_Table {
 			//	echo  	'<br /> (can not bulk add at this time) <br /></div>';
 			//} else {
 				// (code to add row)  
+					if (array_key_exists('gmd',$_REQUEST)){
+				$gmd = $_REQUEST['gmd'];
+				switch($gmd){
+				case -3 :	
 				cmog_render_edit_luke_page(0);
-				exit;
+				break;
+				case -2 :	
+				cmog_render_edit_page(0,$gmd);
+				break;
+				case -4 :	
+				cmog_render_edit_page(0,$gmd);
+				break;
+				case -5 :	
+				cmog_render_edit_page(0,$gmd);
+				break;
+				default: 
+				var_dump($gmd);
+				}
+				//exit;
 			//}
-        }    
+			}    
+		}
 /** template reload **/
 		if( 'reload'===$this->current_action() ) {
 				if (!isset($query['template'])) {

@@ -706,19 +706,19 @@ function cmog_top_menu($addtype = 0 ){
         echo '<a href="/wp-admin?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New</a>';
         break;
     case -1:
-        echo '<a href="/wp-admin?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New Movable</a>';
+        echo '<a href="/wp-admin?page=cmog_list_movable&action=add&template=0&gmd=-1" class="page-title-action">Add New Movable</a>';
         break;
     case -2:
-        echo '<a href="/wp-admin?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New Pentecost</a>';
+        echo '<a href="/wp-admin?page=cmog_list_test&action=add&template=0&gmd=-2" class="page-title-action">Add New Pentecost</a>';
         break;
     case -3:
-        echo '<a href="/wp-admin?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New Luke</a>';
+        echo '<a href="/wp-admin?page=cmog_list_test&action=add&template=0&gmd=-3" class="page-title-action">Add New Luke</a>';
         break;
     case -4:
-        echo '<a href="/wp-admin?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New Triodion</a>';
+        echo '<a href="/wp-admin?page=cmog_list_test&action=add&template=0&gmd=-4" class="page-title-action">Add New Triodion</a>';
         break;
     case -5:
-        echo '<a href="/wp-admin?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New Pascha</a>';
+        echo '<a href="/wp-admin?page=cmog_list_test&action=add&template=&gmd=-5" class="page-title-action">Add New Pascha</a>';
         break;
 	 default:
         echo '<a href="/wp-admin?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New ?</a>';

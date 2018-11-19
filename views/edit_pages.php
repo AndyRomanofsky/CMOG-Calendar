@@ -6,6 +6,8 @@ function cmog_render_edit_page($id){
 	if ( !current_user_can( 'manage_options' ) )  	{
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	} 
+	
+    $cmog_template_type =  (int)(!empty($_REQUEST['gmd'])) ? $_REQUEST['gmd'] : ''; //If no sort, default to null
 	if ($id) { // id  = 0 is add not edit
         global $wpdb; //This is used only if making any database queries
 				 $row = $wpdb->get_row( "SELECT * FROM `cmog66_cmog_templates` where ID = $id  ", 'ARRAY_A' ); 
@@ -18,10 +20,10 @@ function cmog_render_edit_page($id){
 				 }
     } else {
 		$row['ID'] = $row['EventText'] = $row['week'] =$row['wday'] = $row['Link'] = $row['Class'] = $row['icon'] = $row['hymn'] = "";
-		$row['listorder'] = $row['popup'] = $row['asset_id'] =$row['catid'] = $row['created_by'] = $row['gmd'] = $row['published'] = $row['access'] = $row['language'] = "";
+		$row['listorder'] = $row['popup'] = $row['asset_id'] =$row['catid'] = $row['created_by'] = $row['published'] = $row['access'] = $row['language'] = "";
 		$row['AddDate'] = "?"; 
+		$row['gmd'] = $cmog_template_type;
 	} 
-    $cmog_template_type =  (int)(!empty($_REQUEST['gmd'])) ? $_REQUEST['gmd'] : ''; //If no sort, default to null
     ?>
     <div class="wrap">
 	<?php if ($id) { ?>
@@ -431,7 +433,7 @@ function cmog_render_edit_luke_page($id){
 					'access' => $_REQUEST['access'],
 					'language' => $_REQUEST['language'],
 					'ID' => $_REQUEST['ID'],
-					'AddDate' => $_REQUEST['AddDate'],
+					//'AddDate' => $_REQUEST['AddDate'],
 					'listorder' => $_REQUEST['listorder'],
 					'popup' => $_REQUEST['popup'],
 					'asset_id' => $_REQUEST['asset_id'],
@@ -452,7 +454,7 @@ function cmog_render_edit_luke_page($id){
 							'%d', // access
 							'%s', // language
 							'%d', // ID
-					  		'%s', // AddDate
+					  		//'%s', // AddDate
 							'%d', // listorder
 							'%s', // popup
 							'%d', // asset_id
