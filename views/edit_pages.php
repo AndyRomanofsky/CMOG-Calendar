@@ -8,8 +8,98 @@ function cmog_render_edit_page($id){
 	} 
 	
     $cmog_template_type =  (int)(!empty($_REQUEST['gmd'])) ? $_REQUEST['gmd'] : ''; //If no sort, default to null
+	
+	?>
+	<div class="wrap">
+	<?php if ($id) {
+			$submit = "Update "?>
+	<h2>Update ? template</h2>
+	<?php } else {  
+			$submit = "Add"?>
+	<h2>Add new ? template</h2>
+	<?php }  ?>
+	</div>
+	<?php
+	
+
+ $type["-5"] = "pascha";
+ $type["-4"] = "triodion";
+ $type["-3"] = "luke";
+ $type["-2"] = "pentecost";
+ $type["-1"] = "movable";
+	
+
+	global $wpdb; //This is used only if making any database queries
+	//var_dump($_REQUEST);
+	
+	/** Luke templateLuke template update **/
+		if ($id) {
+		 	if ((isset($_REQUEST['action'])) and ($_REQUEST['action'] == 'update'   )){
+					echo "<div class='notice notice-success is-dismissible'>";
+					check_admin_referer( 'cmog-template-update');
+					$data	 = array(  
+					'EventText' => $_REQUEST['EventText'],
+					'Class' => $_REQUEST['Class'],
+					'week' => $_REQUEST['week'],
+					'wday' => $_REQUEST['wday'],
+					'Link' => $_REQUEST['Link'],
+					'icon' => $_REQUEST['icon'],
+					'hymn' => $_REQUEST['hymn'],
+					'published' => $_REQUEST['published'],
+					'access' => $_REQUEST['access'],
+					'language' => $_REQUEST['language'],
+					'ID' => $_REQUEST['ID'],
+					'AddDate' => $_REQUEST['AddDate'],   
+					'listorder' => $_REQUEST['listorder'],
+					'popup' => $_REQUEST['popup'],
+					'asset_id' => $_REQUEST['asset_id'],
+					'catid' => $_REQUEST['catid'],
+					'created_by' => $_REQUEST['created_by'],
+					'gmd' =>  $_REQUEST['gmd'],
+					);
+					$table = $wpdb->prefix . "cmog_templates";
+					$format =  array( 
+							'%s', // EventText
+							'%s', // Class
+							'%d', // week
+							'%d', // wday
+							'%s', // Link
+							'%s', // icon
+							'%s', // hymn
+							'%d', // published
+							'%d', // access
+							'%s', // language
+							'%d', // ID
+					  		'%s', // AddDate
+							'%d', // listorder
+							'%s', // popup
+							'%d', // asset_id
+							'%d', // catid
+							'%d', // created_by
+							'%d', // gmd
+					);
+					$rownumber = $wpdb->replace( $table, $data, $format ); 
+					if ($rownumber) { 
+						echo "<br /> row " . $rownumber . " updated.";
+					echo  '<br />Updated '. $_REQUEST['EventText'] . '</div>' ;
+					} else {
+						echo "<br />No rows updated. </div>";
+					//$sendback = remove_query_arg( array('trashed', 'untrashed', 'deleted', 'locked', 'ids'), wp_get_referer() );
+					//$sendback = remove_query_arg( array('action' ), wp_get_referer() );
+					}
+				}		 	
+		}
+	if ($id == 'update' ) {
+		$id = $wpdb->insert_id;
+	}	
+	
+	
+	
+	
+	
+	
+	
 	if ($id) { // id  = 0 is add not edit
-        global $wpdb; //This is used only if making any database queries
 				 $row = $wpdb->get_row( "SELECT * FROM `cmog66_cmog_templates` where ID = $id  ", 'ARRAY_A' ); 
 				 if ( null == $row ) { 
 				 echo "<br />Template $id no longer exists.<br />";
@@ -21,9 +111,11 @@ function cmog_render_edit_page($id){
     } else {
 		$row['ID'] = $row['EventText'] = $row['week'] =$row['wday'] = $row['Link'] = $row['Class'] = $row['icon'] = $row['hymn'] = "";
 		$row['listorder'] = $row['popup'] = $row['asset_id'] =$row['catid'] = $row['created_by'] = $row['published'] = $row['access'] = $row['language'] = "";
-		$row['AddDate'] = "?"; 
+		$row['AddDate'] = date("Y-m-d"); 
 		$row['gmd'] = $cmog_template_type;
 	} 
+	
+	
     ?>
     <div class="wrap">
 	<?php if ($id) { ?>
@@ -33,7 +125,7 @@ function cmog_render_edit_page($id){
 	<?php }   ?>
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(Update/Add template info here) </p>
-			<p> Template type is <?php echo $cmog_template_type; ?>  </p>
+			<p> Template type is <?php echo $type[ $cmog_template_type]; ?>  </p>
 			
 			
 			
@@ -106,6 +198,12 @@ function cmog_render_edit_page($id){
         <!-- Form Add/Edit template-->
 	<div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">			
 			<form id="templates-edit" method="get"	>
+						<input type="submit" value="<?php echo $submit;?>">
+			<?php if ("Add" == $submit ){;?>
+			<a class="button" href="/wp-admin/admin.php?page=cmog_list_<?php echo $type[ $cmog_template_type]?>" >Cancel</a>
+			<?php } else { ?>
+			<a class="button" href="/wp-admin/admin.php?page=cmog_list_<?php echo $type[ $cmog_template_type]?>&published=<?php echo $row['published']?>" >Close</a>
+			<?php }  ?>
        <fieldset>
           <legend>Selecting elements</legend>
 		   <input type="hidden" id="page" name="page" value="cmog_list_luke">
@@ -177,8 +275,15 @@ function cmog_render_edit_page($id){
   <br />
     <?php cmog_input_text('access', $row,'Access'); ?>
     <?php cmog_input_text('language', $row,'Language'); ?>
-    <input type="submit" value="Submit">
-  <br />	
+
+  <br />	            <?php
+  			if(! isset($_REQUEST['_wpnonce'])){
+			wp_nonce_field('cmog-template-update'); 
+			}else{ ?>
+			<input type="hidden" name='_wpnonce'   value="<?php echo $_REQUEST['_wpnonce'];?>">
+			<input type="hidden" name='_wp_http_referer'   value="<?php echo $_REQUEST['_wp_http_referer'];?>">
+			<?php }
+			?>
   </fieldset>
   <br /> * required field<br />
 			</form>
@@ -203,14 +308,10 @@ function cmog_render_edit_Movable_page($id){
 		<h2>Add new Movable Template</h2>
 	<?php }   ?>
 	</div>
-	
-	
-	
 	<?php
 	global $wpdb; //This is used only if making any database queries
 	//var_dump($_REQUEST);
-	
-	/** Luke templateLuke template update **/
+	/**  template update **/
 		if ($id) {
 		 	if ((isset($_REQUEST['action'])) and ($_REQUEST['action'] == 'update'   )){
 					echo "<div class='notice notice-success is-dismissible'>";
@@ -433,7 +534,7 @@ function cmog_render_edit_luke_page($id){
 					'access' => $_REQUEST['access'],
 					'language' => $_REQUEST['language'],
 					'ID' => $_REQUEST['ID'],
-					//'AddDate' => $_REQUEST['AddDate'],
+					'AddDate' => $_REQUEST['AddDate'],   
 					'listorder' => $_REQUEST['listorder'],
 					'popup' => $_REQUEST['popup'],
 					'asset_id' => $_REQUEST['asset_id'],
@@ -454,7 +555,7 @@ function cmog_render_edit_luke_page($id){
 							'%d', // access
 							'%s', // language
 							'%d', // ID
-					  		//'%s', // AddDate
+					  		'%s', // AddDate
 							'%d', // listorder
 							'%s', // popup
 							'%d', // asset_id
@@ -483,7 +584,7 @@ function cmog_render_edit_luke_page($id){
 	} else {
 		$row['ID'] = $row['EventText'] = $row['week'] =$row['wday'] = $row['Link'] = $row['Class'] = $row['icon'] = $row['hymn'] = "";
 		$row['listorder'] = $row['popup'] = $row['asset_id'] =$row['catid'] = $row['created_by'] = $row['gmd'] = $row['published'] = $row['access'] = $row['language'] = "";
-		$row['AddDate'] = "?"; 
+		$row['AddDate'] = date("Y-m-d"); 
 	} 
 	$cmog_template_type =  (int)(!empty($row['gmd'])) ? $row['gmd'] : ''; //If no sort, default to null
 	?>

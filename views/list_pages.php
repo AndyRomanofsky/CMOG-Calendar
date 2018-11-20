@@ -322,7 +322,7 @@ global $wpdb; //This is used only if making any database queries
     ?>
     <div class="wrap">
         <h2>Movable Templates</h2> 
-		<?php cmog_top_menu(); ?>
+		<?php cmog_top_menu(-1); ?>
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(template info here) </p>
 			<p> Template type is the Movable Templates </p>
@@ -703,25 +703,25 @@ function cmog_top_menu($addtype = 0 ){
 	switch($addtype){
 	
     case 0:
-        echo '<a href="/wp-admin?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New</a>';
+        echo '<a href="/wp-admin/admin.php?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New</a>';
         break;
     case -1:
-        echo '<a href="/wp-admin?page=cmog_list_movable&action=add&template=0&gmd=-1" class="page-title-action">Add New Movable</a>';
+        echo '<a href="/wp-admin/admin.php?page=cmog_list_movable&action=add&template=0&gmd=-1" class="page-title-action">Add New Movable</a>';
         break;
     case -2:
-        echo '<a href="/wp-admin?page=cmog_list_test&action=add&template=0&gmd=-2" class="page-title-action">Add New Pentecost</a>';
+        echo '<a href="/wp-admin/admin.php?page=cmog_list_test&action=add&template=0&gmd=-2" class="page-title-action">Add New Pentecost</a>';
         break;
     case -3:
-        echo '<a href="/wp-admin?page=cmog_list_test&action=add&template=0&gmd=-3" class="page-title-action">Add New Luke</a>';
+        echo '<a href="/wp-admin/admin.php?page=cmog_list_test&action=add&template=0&gmd=-3" class="page-title-action">Add New Luke</a>';
         break;
     case -4:
-        echo '<a href="/wp-admin?page=cmog_list_test&action=add&template=0&gmd=-4" class="page-title-action">Add New Triodion</a>';
+        echo '<a href="/wp-admin/admin.php?page=cmog_list_test&action=add&template=0&gmd=-4" class="page-title-action">Add New Triodion</a>';
         break;
     case -5:
-        echo '<a href="/wp-admin?page=cmog_list_test&action=add&template=&gmd=-5" class="page-title-action">Add New Pascha</a>';
+        echo '<a href="/wp-admin/admin.php?page=cmog_list_test&action=add&template=&gmd=-5" class="page-title-action">Add New Pascha</a>';
         break;
 	 default:
-        echo '<a href="/wp-admin?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New ?</a>';
+        echo '<a href="/wp-admin/admin.php?page=cmog_list_test&action=add&template=0" class="page-title-action">Add New ?</a>';
 	} ?>
 		<a href="/wp-admin/admin.php?page=cmog_list_luke" class="page-title-action">Luke Templates</a>
 		<a href="/wp-admin/admin.php?page=cmog_list_pentecos" class="page-title-action">Pentecost Templates</a>

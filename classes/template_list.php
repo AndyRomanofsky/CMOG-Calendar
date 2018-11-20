@@ -87,7 +87,7 @@ class CMOG_Template_List_Table extends WP_List_Table {
         $returnurl = $_SERVER['REQUEST_URI'];
 		if( 0 == $item['published'] ){ //draft
 		$actions = array(	
-            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID']),
+            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s&gmd=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID'],$item['gmd']),
             'trash'    => sprintf('<a href="?page=%s&action=%s&template=%s">Trash</a>',$_REQUEST['page'],'trash',$item['ID']),
             'publish'    => sprintf('<a href="?page=%s&action=%s&template=%s">Publish</a>',$_REQUEST['page'],'publish',$item['ID']),
         );
@@ -101,13 +101,13 @@ class CMOG_Template_List_Table extends WP_List_Table {
 		$row_status = " <b>(In Trash)</b>";
 		} elseif ( -1 == $item['published'] ){ //archived
 		$actions = array(
-            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID']),
+            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s&gmd=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID'],$item['gmd']),
             'trash'    => sprintf('<a href="?page=%s&action=%s&template=%s">Trash</a>',$_REQUEST['page'],'trash',$item['ID']),
         );
 		$row_status = " <b>(Archived)</b>";
 		} else { // published 
-		$actions = array(			
-            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID']),
+		$actions = array(	
+            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s&gmd=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID'],$item['gmd']),
             'draft'    => sprintf('<a href="?page=%s&action=%s&template=%s">Draft</a>',$_REQUEST['page'],'draft',$item['ID']),
             'trash'    => sprintf('<a href="?page=%s&action=%s&template=%s">Trash</a>',$_REQUEST['page'],'trash',$item['ID']),
         );
@@ -480,7 +480,29 @@ class CMOG_Template_List_Table extends WP_List_Table {
 				echo  	'<br /> (can not bulk edit at this time) <br /></div>';
 			} else {
 				// (code to edit row)  
+					if (array_key_exists('gmd',$_REQUEST)){
+				$gmd = $_REQUEST['gmd'];
+				
+				switch($gmd){
+				case -3 :	
 				cmog_render_edit_luke_page($id);
+				break;
+				case -2 :	
+				cmog_render_edit_page($id,$gmd);
+				break;
+				case -4 :	
+				cmog_render_edit_page($id,$gmd);
+				break;
+				case -5 :	
+				cmog_render_edit_page($id,$gmd);
+				break;
+				default: 
+				var_dump($gmd);
+				}
+			}		
+			 	
+						
+				
 				exit;
 			}
         }  

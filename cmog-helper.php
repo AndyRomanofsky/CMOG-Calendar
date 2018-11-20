@@ -10,7 +10,7 @@ function cmog_input_text($field, $row, $label=null, $id=null  ){
 	if ( empty($id))	$id = $field; 
 	$value = $row[$field];
     echo "<label for=$id>$label:</label><br />";
-    echo "<input type='text' name='$field' id='$id'   value='$value'  ><br />";
+    echo "<input type='text' name='$field' id='$id'   value='$value' style='width: 500px;' ><br />";
 }
 /** Render a for text fields. Required **/
 function cmog_input_text_r($field, $row, $label=null, $id=null  ){
@@ -18,7 +18,7 @@ function cmog_input_text_r($field, $row, $label=null, $id=null  ){
 	if ( empty($id))	$id = $field; 
 	$value = $row[$field];
     echo "<label class='required' for=$id>$label:</label> *<br />";
-    echo "<input type='text' name='$field' id='$id'   value='$value' required ><br />";
+    echo "<input type='text' name='$field' id='$id'   value='$value' required style='width: 500px;' ><br />";
 }
 
 
