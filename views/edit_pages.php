@@ -7,26 +7,26 @@ function cmog_render_edit_page($id){
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	} 
 	
+	
+
+	 $type["-5"] = "pascha";
+	 $type["-4"] = "triodion";
+	 $type["-3"] = "luke";
+	 $type["-2"] = "pentecost";
+	 $type["-1"] = "movable";
     $cmog_template_type =  (int)(!empty($_REQUEST['gmd'])) ? $_REQUEST['gmd'] : ''; //If no sort, default to null
 	
 	?>
 	<div class="wrap">
 	<?php if ($id) {
 			$submit = "Update "?>
-	<h2>Update ? template</h2>
+	<h2>Update <?php echo $type[ $cmog_template_type]; ?> template</h2>
 	<?php } else {  
 			$submit = "Add"?>
-	<h2>Add new ? template</h2>
+	<h2>Add new <?php echo $type[ $cmog_template_type]; ?> template</h2>
 	<?php }  ?>
 	</div>
 	<?php
-	
-
- $type["-5"] = "pascha";
- $type["-4"] = "triodion";
- $type["-3"] = "luke";
- $type["-2"] = "pentecost";
- $type["-1"] = "movable";
 	
 
 	global $wpdb; //This is used only if making any database queries
@@ -35,7 +35,6 @@ function cmog_render_edit_page($id){
 	/** Luke templateLuke template update **/
 		if ($id) {
 		 	if ((isset($_REQUEST['action'])) and ($_REQUEST['action'] == 'update'   )){
-					echo "<div class='notice notice-success is-dismissible'>";
 					check_admin_referer( 'cmog-template-update');
 					$data	 = array(  
 					'EventText' => $_REQUEST['EventText'],
@@ -80,12 +79,11 @@ function cmog_render_edit_page($id){
 					);
 					$rownumber = $wpdb->replace( $table, $data, $format ); 
 					if ($rownumber) { 
-						echo "<br /> row " . $rownumber . " updated.";
-					echo  '<br />Updated '. $_REQUEST['EventText'] . '</div>' ;
+					echo "<div class='notice notice-success is-dismissible'>";
+					echo  '<br />Updated '. $_REQUEST['EventText'] . '<br /></div>' ;
 					} else {
-						echo "<br />No rows updated. </div>";
-					//$sendback = remove_query_arg( array('trashed', 'untrashed', 'deleted', 'locked', 'ids'), wp_get_referer() );
-					//$sendback = remove_query_arg( array('action' ), wp_get_referer() );
+					echo "<div class='notice notice-error is-dismissible'>";
+						echo "<br />No templates updated. <br /></div>";
 					}
 				}		 	
 		}
@@ -118,11 +116,7 @@ function cmog_render_edit_page($id){
 	
     ?>
     <div class="wrap">
-	<?php if ($id) { ?>
-		<h2>Update CMOG Template</h2>
-	<?php } else {  ?>
-		<h2>Add new CMOG Template</h2>
-	<?php }   ?>
+
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(Update/Add template info here) </p>
 			<p> Template type is <?php echo $type[ $cmog_template_type]; ?>  </p>
@@ -206,7 +200,7 @@ function cmog_render_edit_page($id){
 			<?php }  ?>
        <fieldset>
           <legend>Selecting elements</legend>
-		   <input type="hidden" id="page" name="page" value="cmog_list_luke">
+		   <input type="hidden" id="page" name="page" value="cmog_list_<?php echo $type[ $cmog_template_type]; ?>">
 		   <input type="hidden" id="action" name="action" value="update">
   <br />
   <?php cmog_input_text_r('EventText', $row,'Event'); ?>
@@ -359,13 +353,12 @@ function cmog_render_edit_Movable_page($id){
 							'%d', // gmd
 					);
 					$rownumber = $wpdb->replace( $table, $data, $format ); 
-					if ($rownumber) { 
-						echo "<br /> row " . $rownumber . " updated.";
-					echo  '<br />Updated '. $_REQUEST['EventText'] . '</div>' ;
+					if ($rownumber) {
+					echo "<div class='notice notice-success is-dismissible'>";
+					echo  '<br />Updated '. $_REQUEST['EventText'] . '<br /></div>' ;
 					} else {
-						echo "<br />No rows updated. </div>";
-					//$sendback = remove_query_arg( array('trashed', 'untrashed', 'deleted', 'locked', 'ids'), wp_get_referer() );
-					//$sendback = remove_query_arg( array('action' ), wp_get_referer() );
+					echo "<div class='notice notice-error is-dismissible'>";
+					echo "<br />No templates updated. <br /></div>";
 					}
 				}		 	
 		}
@@ -504,6 +497,7 @@ function cmog_render_edit_luke_page($id){
 	if ( !current_user_can( 'manage_options' ) )  	{
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	}  ?>
+	wp_die( __( 'cmog_render_edit_luke_page no longer used.' ) 
 	<div class="wrap">
 	<?php if ($id) {
 			$submit = "Update "?>
@@ -520,7 +514,6 @@ function cmog_render_edit_luke_page($id){
 	/** Luke templateLuke template update **/
 		if ($id) {
 		 	if ((isset($_REQUEST['action'])) and ($_REQUEST['action'] == 'update'   )){
-					echo "<div class='notice notice-success is-dismissible'>";
 					check_admin_referer( 'cmog-luke-update');
 					$data	 = array(  
 					'EventText' => $_REQUEST['EventText'],
@@ -565,12 +558,11 @@ function cmog_render_edit_luke_page($id){
 					);
 					$rownumber = $wpdb->replace( $table, $data, $format ); 
 					if ($rownumber) { 
-						echo "<br /> row " . $rownumber . " updated.";
-					echo  '<br />Updated '. $_REQUEST['EventText'] . '</div>' ;
+					echo "<div class='notice notice-success is-dismissible'>";
+					echo  '<br />Updated '. $_REQUEST['EventText'] . '<br /></div>' ;
 					} else {
-						echo "<br />No rows updated. </div>";
-					//$sendback = remove_query_arg( array('trashed', 'untrashed', 'deleted', 'locked', 'ids'), wp_get_referer() );
-					//$sendback = remove_query_arg( array('action' ), wp_get_referer() );
+					echo "<div class='notice notice-error is-dismissible'>";
+					echo "<br />No templates updated. <br /></div>";
 					}
 				}		 	
 		}

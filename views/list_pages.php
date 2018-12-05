@@ -132,6 +132,10 @@ function cmog_render_pentecost_list_page(){
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	}
 	
+//$screen = get_current_screen();
+//var_dump($screen);
+ 
+ 
 global $wpdb; //This is used only if making any database queries
     //Create an instance of our package class...
     $TemplateListTable = new CMOG_Template_List_Table();

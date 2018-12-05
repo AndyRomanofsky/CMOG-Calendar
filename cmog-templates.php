@@ -21,7 +21,7 @@ function cmog_add_menu_items(){
 	$cmog_admin_pages['top'] = add_menu_page('Template Plugin List Table', 'CMOG Templates', 'activate_plugins', 'cmog_list_test', 'cmog_render_list_page');
 								add_submenu_page('cmog_list_test', 'Add Template', '- Add Template',  'activate_plugins', 'cmog_list_test&action=add&template=0', 'cmog_render_add_page');
 	$cmog_admin_pages['luke'] = add_submenu_page('cmog_list_test', 'Luke Templates', 'Luke Templates',  'activate_plugins', 'cmog_list_luke', 'cmog_render_luke_list_page');
-								add_submenu_page('cmog_list_test', 'Add Luke Template', '- Add Luke Template',  'activate_plugins', 'cmog_list_luke&action=add&template=0', 'cmog_render_add_luke_page');
+								add_submenu_page('cmog_list_test', 'Add Luke Template', '- Add Luke Template',  'activate_plugins', 'cmog_list_test&action=add&template=0&gmd=-3', 'cmog_render_add_page');
 	$cmog_admin_pages['pentecos'] = add_submenu_page('cmog_list_test', 'Pentecost Templates', 'Pentecost Templates',  'activate_plugins', 'cmog_list_pentecos', 'cmog_render_pentecost_list_page');
 	$cmog_admin_pages['pascha'] = add_submenu_page('cmog_list_test', 'Pascha Templates', 'Pascha Templates',  'activate_plugins', 'cmog_list_pascha', 'cmog_render_pascha_list_page');
 	$cmog_admin_pages['triodion'] = add_submenu_page('cmog_list_test', 'Triodion Templates', 'Triodion Templates',  'activate_plugins', 'cmog_list_triodion', 'cmog_render_triodion_list_page');

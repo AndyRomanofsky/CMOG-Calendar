@@ -485,7 +485,8 @@ class CMOG_Template_List_Table extends WP_List_Table {
 				
 				switch($gmd){
 				case -3 :	
-				cmog_render_edit_luke_page($id);
+				//cmog_render_edit_luke_page($id);
+				cmog_render_edit_page($id,$gmd);
 				break;
 				case -2 :	
 				cmog_render_edit_page($id,$gmd);
@@ -524,7 +525,8 @@ class CMOG_Template_List_Table extends WP_List_Table {
 				$gmd = $_REQUEST['gmd'];
 				switch($gmd){
 				case -3 :	
-				cmog_render_edit_luke_page(0);
+				//cmog_render_edit_luke_page(0);
+				cmog_render_edit_page(0,$gmd);
 				break;
 				case -2 :	
 				cmog_render_edit_page(0,$gmd);
@@ -564,7 +566,29 @@ class CMOG_Template_List_Table extends WP_List_Table {
 		if( 'update'===$this->current_action() ) {
 
 				// (code to add row)  
-				cmog_render_edit_luke_page("update");
+				//cmog_render_edit_luke_page("update");
+				
+					if (array_key_exists('gmd',$_REQUEST)){
+				$gmd = $_REQUEST['gmd'];
+				switch($gmd){
+				case -3 :	
+				//cmog_render_edit_luke_page("update");
+				cmog_render_edit_page("update",$gmd);
+				break;
+				case -2 :	
+				cmog_render_edit_page("update",$gmd);
+				break;
+				case -4 :	
+				cmog_render_edit_page("update",$gmd);
+				break;
+				case -5 :	
+				cmog_render_edit_page("update",$gmd);
+				break;
+				default: 
+				var_dump($gmd);
+				}
+					}
+				
 				exit;
 
         }    
