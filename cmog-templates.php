@@ -6,8 +6,8 @@ Version: 0.0.1
 License: GPL2
 */
 defined( 'ABSPATH' ) or die( 'Do not!' );
-
-
+require 'cmog-helper.php';
+require 'shortcodes/monthly-calendar.php';
 /** ************************ REGISTER THE admin pages  ****************************
  *******************************************************************************
  * Now we just need to define an admin page. For this template, we'll add a top-level
@@ -338,4 +338,6 @@ function cmog_plugin_add_calendaer_help(){
 }
 global $cmog_plugin_hook;
     add_action('load-cmog-templates_page_cmog_month_calendaer' , 'cmog_plugin_add_calendaer_help');
+	
+
 ?>
