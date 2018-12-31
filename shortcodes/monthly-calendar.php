@@ -24,14 +24,13 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
     ?>
     <?php $outputcal .= "<div class='wrap'>";?>
         <?php $outputcal .= "<h2>Events</h2>";?>
-		<?php //cmog_top_menu(); ?>
         <?php $outputcal .= "<div style='background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;'>";?>
         <?php $outputcal .= "<p>(some text) </p>";?>
 		<?php $outputcal .= "<p> Events </p>";?>
         <?php $outputcal .= "</div>";?>
 		<?php $outputcal .= "<div style='background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;'>";?>
         <?php $outputcal .= "</div>";?>
-        <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
+      
         <?php $outputcal .= "<form id='templates-filter' method='get'>";?>
 		  <?php $outputcal .= "<br />";?>
 		  <?php if ( array_key_exists('published',$_REQUEST )) {
@@ -43,7 +42,7 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
 			<?php
 			$years = $wpdb->get_results( "SELECT DISTINCT `Year` FROM `" . $wpdb->prefix . "cmog_events`", 'ARRAY_A' ); 
 			?>
-			<select name='f_year' >	
+			<?php $outputcal .= "<select name='f_year' >";?>	
 			<?php		
 			foreach($years as  $y): 
 			$outputcal .= "<option value=" . $y['Year'] ; 
@@ -85,9 +84,9 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
 			<?php $outputcal .= "</select> ";?>
 		  <?php $outputcal .= "<input type='submit' value='Filter'>";?>
 		  <?php $outputcal .= "<br />";?>
-            <!-- For plugins, we also need to ensure that the form posts back to our current page -->
-			<?php //$outputcal .= " <input type='hidden' name='page' value=''";?><?php// $outputcal .= $_REQUEST['page'] ?><?php //$outputcal .= " />";?>
-            <!-- Now we can render the completed list table -->
+            
+			<?php //$outputcal .= " <input type='hidden' name='page' value=''";?><?php // $outputcal .= $_REQUEST['page'] ?><?php //$outputcal .= " />";?>
+            
 			<?php $outputcal .= "<table class='adminlist' style='border-collapse: collapse; border: 1px solid black;'>";?>
 				<?php $outputcal .= "<thead><tr>";?>
 					<?php $outputcal .= "<td  width='2%' class='dayhead'><small> </small></td>";?>
@@ -156,8 +155,8 @@ if ("Yes" == $EveryYear){
 				 foreach($items as $i => $item): 
 				// var_dump($item);
 					if ( $item['Day'] == $day_counter) {
-						$outputcal .= "<tr><td><span class='" . $item['Class'] . "'>      " ;
-						$outputcal .= "<a href='/wp-admin/admin.php?page=cmog_list_events&action=edit&event=". $item['ID']  ."'>";
+						$outputcal .= "<tr><td><span class='" . $item['Class'] . "'> " ;
+						$outputcal .= "<a href=' " . $item['Link'] ."'>";
 						$outputcal .= $item['EventText'] . "</a></span></td><tr>";
 					}
 				endforeach;  
@@ -169,5 +168,6 @@ if ("Yes" == $EveryYear){
 			<?php $outputcal .= "</table>";?>
        <?php $outputcal .= " </form>";?>
     <?php $outputcal .= "</div>";?>
+	<?php return $outputcal;?>
     <?php
 }
