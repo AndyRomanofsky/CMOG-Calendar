@@ -8,6 +8,7 @@ License: GPL2
 defined( 'ABSPATH' ) or die( 'Do not!' );
 require_once 'cmog-helper.php';
 require_once 'shortcodes/monthly-calendar.php';
+require_once 'shortcodes/daily-calendar.php';
 /** ************************ REGISTER THE admin pages  ****************************
  *******************************************************************************
  * Now we just need to define an admin page. For this template, we'll add a top-level

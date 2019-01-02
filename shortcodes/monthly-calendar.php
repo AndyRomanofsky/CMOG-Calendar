@@ -3,15 +3,13 @@
  
 add_shortcode( 'cmog_calendar', 'cmog_monthly_calendar' );
 function cmog_monthly_calendar(){
-	if ( !current_user_can( 'manage_options' ) )  	{
-		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-	}
 
 global $wpdb; //This is used for database queries
 $SMonth = (!empty($_REQUEST['f_month'] )) ? $_REQUEST['f_month'] : '';
 $SYear = (!empty ($_REQUEST['f_year'] )) ? $_REQUEST['f_year'] : '';
 $EveryYear = (!empty ($_REQUEST['f_every_year'] )) ? $_REQUEST['f_every_year'] : '';
 $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
+
 
 
  $date = getDate();
@@ -149,7 +147,7 @@ if ("Yes" == $EveryYear){
             $outputcal .= "<td class=weeklable><small>".Pentecost_offset($SYear,$SMonth,$day_counter) . "</small></td>" ;
                                }
                $outputcal .= "<td  valign='top' class='day' border='1' ><table hight='100%'class='daytable' ><tr border='1' valign='top'><td border='1' valign='top'>" ;
-			$outputcal .= "<tr><td border='1' ><a href='admin.php?f_year=" . $SYear . "&f_month=" . $SMonth . "&f_day=" . $day_counter . "&page=cmog_list_events'>".$day_counter."</a></td><tr>";// need: to add every year flag (and class)
+			$outputcal .= "<tr><td border='1' ><a href='/day?f_year=" . $SYear . "&f_month=" . $SMonth . "&f_day=" . $day_counter . "'>".$day_counter."</a></td><tr>";// need: to add every year flag (and class)
 			 
 			// data for this day
 				 foreach($items as $i => $item): 
