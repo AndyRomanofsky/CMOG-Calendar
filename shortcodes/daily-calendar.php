@@ -26,29 +26,29 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
 
  $date = getDate();
 
- 
- if ($SDay == "") $SMonth = $date["mday"];
+ var_dump($date);
+ if ($SDay == "") $SDay = $date["mday"];
  
  if ($SMonth == "") $SMonth = $date["mon"];
 
  if ($SYear == "") $SYear = $date["year"];
+ 
+ $display_date =   getDate(mktime(0,0,0,$SMonth,$SDay,$SYear));
+ 
     $outputcal = '';
     ?>
-    <?php $outputcal .= "<div class='wrap'>";?>
-        <?php $outputcal .= "<h2>Events</h2>";?>
-        <?php $outputcal .= "<div style='background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;'>";?>
-        <?php $outputcal .= "<p>(some text) </p>";?>
-		<?php $outputcal .= "<p> Events </p>";?>
-        <?php $outputcal .= "</div>";?>
-		<?php $outputcal .= "<div style='background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;'>";?>
-        <?php $outputcal .= "</div>";?>
+    <?php $outputcal .= "<div class='wrap'>\n";?>
+        <?php $outputcal .= "<h2>Events - " . $display_date["weekday"] . ", " .   $display_date["month"] . " "  .$display_date["mday"] . ", " . $display_date["year"] . "</h2>\n";?>
+        <?php $outputcal .= "<div style='background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;'>\n";?>
+        <?php $outputcal .= "<p>(some text) </p>\n";?>
+		<?php $outputcal .= "<p> Events </p>\n";?>
+        <?php $outputcal .= "</div>\n";?>
+		<?php $outputcal .= "<div style='background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;'>\n";?>
+        <?php $outputcal .= "</div>\n";?>
       
-        <?php $outputcal .= "<form id='templates-filter' method='get'>";?>
-		  <?php $outputcal .= "<br />";?>
-		  <?php if ( array_key_exists('published',$_REQUEST )) {
-			//$status_filter =  " and published = " . $_REQUEST['published'] . " " ;
-		 $outputcal .= "<input type='hidden' id='published' name='published' value='" . $_REQUEST['published'] . "'>"; 
-		} ?>
+        <?php $outputcal .= "<form id='templates-filter' method='get'>\n";?>
+		  <?php $outputcal .= "<br />\n";?>
+
 		<?php $outputcal .= "Show Every Year: <input type='checkbox' name='f_every_year' value='Yes'";?> <?php if ('Yes' == $EveryYear  ) $outputcal .= ' checked';?>  <?php $outputcal .= ">";?>
 		<?php $outputcal .= "Year: ";?> 
 			<?php
@@ -59,45 +59,46 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
 			foreach($years as  $y): 
 			$outputcal .= "<option value=" . $y['Year'] ; 
 			if (  $SYear == $y['Year']  )  $outputcal .= " selected "; 
-			$outputcal .= ">" . $y['Year'] . "</option>;";	
+			$outputcal .= ">" . $y['Year'] . "</option>\n";	
 			endforeach; 
 			?>
 			<?php $outputcal .= "</select>";?>		
 		  
 		 <?php $outputcal .= " Month:";?> 
 			<?php $outputcal .= "<select name='f_month' >";?>	
-			<?php $outputcal .= "<option value= '' ";?><?php if (  $SMonth == null  )  $outputcal .= " selected ";?><?php $outputcal .= "></option>;	  ";?>
-			<?php $outputcal .= "<option value= 1 ";?><?php if (   $SMonth == 1  )  $outputcal .= " selected ";?><?php $outputcal .= ">January</option>;";?>
-			<?php $outputcal .= "<option value= 2 ";?><?php if (   $SMonth == 2  )  $outputcal .= " selected ";?><?php $outputcal .= ">February</option>;";?>
-			<?php $outputcal .= "<option value= 3 ";?><?php if (   $SMonth == 3  )  $outputcal .= " selected ";?><?php $outputcal .= ">March</option>;";?>
-			<?php $outputcal .= "<option value= 4 ";?><?php if (   $SMonth == 4  )  $outputcal .= " selected ";?><?php $outputcal .= ">April</option>;";?>
-			<?php $outputcal .= "<option value= 5 ";?><?php if (  $SMonth == 5  )  $outputcal .= " selected ";?><?php $outputcal .= ">May</option>;";?>
-			<?php $outputcal .= "<option value= 6 ";?><?php if (  $SMonth == 6  )  $outputcal .= " selected ";?><?php $outputcal .= ">June</option>;";?>
-			<?php $outputcal .= "<option value= 7 ";?><?php if (  $SMonth == 7  )  $outputcal .= " selected ";?><?php $outputcal .= ">July</option>;";?>
-			<?php $outputcal .= "<option value= 8 ";?><?php if (  $SMonth == 8  )  $outputcal .= " selected ";?><?php $outputcal .= ">August</option>;";?>
-			<?php $outputcal .= "<option value= 9 ";?><?php if (  $SMonth == 9  )  $outputcal .= " selected ";?><?php $outputcal .= ">September</option>;";?>
-			<?php $outputcal .= "<option value= 10 ";?><?php if (  $SMonth == 10  )  $outputcal .= " selected ";?><?php $outputcal .= ">October</option>;";?>
-			<?php $outputcal .= "<option value= 11 ";?><?php if (  $SMonth == 11  )  $outputcal .= " selected ";?><?php $outputcal .= ">November</option>;";?>
-			<?php $outputcal .= "<option value= 12 ";?><?php if (  $SMonth == 12  )  $outputcal .= " selected ";?><?php $outputcal .= ">December</option>;";?>
-			<?php $outputcal .= "</select>		";?>
-		<?php $outputcal .= " Day: <input type='text' name='f_day' value='" . $SDay . "'>"      ?>     	
+			<?php $outputcal .= "<option value= '' ";?><?php if (  $SMonth == null  )  $outputcal .= " selected ";?><?php $outputcal .= "></option>\n	  ";?>
+			<?php $outputcal .= "<option value= 1 ";?><?php if (   $SMonth == 1  )  $outputcal .= " selected ";?><?php $outputcal .= ">January</option>\n";?>
+			<?php $outputcal .= "<option value= 2 ";?><?php if (   $SMonth == 2  )  $outputcal .= " selected ";?><?php $outputcal .= ">February</option>\n";?>
+			<?php $outputcal .= "<option value= 3 ";?><?php if (   $SMonth == 3  )  $outputcal .= " selected ";?><?php $outputcal .= ">March</option>\n";?>
+			<?php $outputcal .= "<option value= 4 ";?><?php if (   $SMonth == 4  )  $outputcal .= " selected ";?><?php $outputcal .= ">April</option>\n";?>
+			<?php $outputcal .= "<option value= 5 ";?><?php if (  $SMonth == 5  )  $outputcal .= " selected ";?><?php $outputcal .= ">May</option>\n";?>
+			<?php $outputcal .= "<option value= 6 ";?><?php if (  $SMonth == 6  )  $outputcal .= " selected ";?><?php $outputcal .= ">June</option>\n";?>
+			<?php $outputcal .= "<option value= 7 ";?><?php if (  $SMonth == 7  )  $outputcal .= " selected ";?><?php $outputcal .= ">July</option>\n";?>
+			<?php $outputcal .= "<option value= 8 ";?><?php if (  $SMonth == 8  )  $outputcal .= " selected ";?><?php $outputcal .= ">August</option>\n";?>
+			<?php $outputcal .= "<option value= 9 ";?><?php if (  $SMonth == 9  )  $outputcal .= " selected ";?><?php $outputcal .= ">September</option>\n";?>
+			<?php $outputcal .= "<option value= 10 ";?><?php if (  $SMonth == 10  )  $outputcal .= " selected ";?><?php $outputcal .= ">October</option>\n";?>
+			<?php $outputcal .= "<option value= 11 ";?><?php if (  $SMonth == 11  )  $outputcal .= " selected ";?><?php $outputcal .= ">November</option>\n";?>
+			<?php $outputcal .= "<option value= 12 ";?><?php if (  $SMonth == 12  )  $outputcal .= " selected ";?><?php $outputcal .= ">December</option>\n";?>
+			<?php $outputcal .= "</select>		\n";?>
+			
+		<?php $outputcal .= " Day: <input type='text' name='f_day' value='" . $SDay . "'>\n"      ?>     	
 			
 		<?php $outputcal .= "Class:";?>  
 			<?php
 			$classes = $wpdb->get_results( "SELECT DISTINCT `Class` FROM `" . $wpdb->prefix . "cmog_events`", 'ARRAY_A' ); 
 			?> 
 			<?php $outputcal .= "<select name='f_class' >";?>		
-			<?php $outputcal .= " <option value=''></option>;	";?>
+			<?php $outputcal .= " <option value=''></option>\n	";?>
 			<?php
 			foreach($classes as  $c): 
 			$outputcal .= "<option value=" . $c['Class'] ; 
 			if (  $SClass == $c['Class']  )  $outputcal .= " selected "; 
-			$outputcal .= ">" . $c['Class'] . "</option>;";	
+			$outputcal .= ">" . $c['Class'] . "</option>\n";	
 			endforeach; 
 			?>
-			<?php $outputcal .= "</select> ";?>
-		  <?php $outputcal .= "<input type='submit' value='Filter'>";?>
-		  <?php $outputcal .= "<br />";?>
+			<?php $outputcal .= "</select> \n";?>
+		  <?php $outputcal .= "<input type='submit' value='Filter'>\n";?>
+		  <?php $outputcal .= "<br />\n";?>
             
 		
 				
@@ -108,7 +109,7 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
 
 				 $items = $wpdb->get_results( "SELECT * FROM `" . $wpdb->prefix . "cmog_events` WHERE (Year = $SYear or Year = -1 ) and Month = $SMonth and Day = $SDay ORDER  BY Day asc", 'ARRAY_A' ); 
 
-
+//var_dump($items);
 			// data for this day
 //				 foreach($items as $i => $item): 
 				// var_dump($item);
@@ -135,14 +136,14 @@ $event=$row['ID'];
     if ($eventHymn <> "") {
 		   $hymn_html .= "<li class='read'><A HREF='$eventHymn' target='_blank'>$eventText</A>";
 		   if ($canedit)  {
-        	$hymn_html .=  ae($event) ."</li>";
-		}else{
-		   $hymn_html .=  "</li>";
+        	$hymn_html .=  ae($event) ."</li>\n";
+			}else{
+		   $hymn_html .=  "</li>\n";
 		 }
 		} 
 	  if ($eventIcon <> "") {
 		  //if ((JURI::base( true ) == "") & ($eventIcon[0] == "/")) {
-						   $icon_html .= "<img class='icon'src='" . $eventIcon . "' alt='$eventText' title='$eventText' height='150' > ";
+						   $icon_html .= "<img class='icon' src='" . $eventIcon . "' alt='$eventText' title='$eventText' height='150' > ";
 						  //} else {
 							//$icon_html .= "<img class='icon'src='" . JURI::base( true ) . "/" . $eventIcon . "' alt='$eventText' title='$eventText' height='150' > ";
 						  //}
@@ -158,9 +159,9 @@ $event=$row['ID'];
         $ser_html .=  $eventText ;
            }
 		if ($canedit)  {
-        $ser_html .=  ae($event) ."</li>";
+        $ser_html .=  ae($event) ."</li>\n";
 		}else{
-        $ser_html .=  "</li>";
+        $ser_html .=  "</li>\n";
 		}
         break;  
     case "fast":
@@ -180,9 +181,9 @@ $event=$row['ID'];
         $fast_html .=  $eventText ;
            }
         if ($canedit)  {
-        $fast_html .=  ae($event) ."</li>";
+        $fast_html .=  ae($event) ."</li>\n";
 		}else{
-        $fast_html .=  "</li>";
+        $fast_html .=  "</li>\n";
 		}
         break;      
     case "fastfree":
@@ -202,9 +203,9 @@ $event=$row['ID'];
         $fast_html .=  $eventText ;
            }
 		if ($canedit)  {
-        $fast_html .=  ae($event) ."</li>";
+        $fast_html .=  ae($event) ."</span>\n";
 		}else{
-        $fast_html .=  "</li>";
+        $fast_html .=  "</span>\n";
 		}
         break;      
     case "gf":
@@ -223,9 +224,9 @@ $event=$row['ID'];
         $gf_html .=  $eventText ;
            }
         if ($canedit)  {
-        $gf_html .=  ae($event) ."</li>";
+        $gf_html .=  ae($event) ."</li>\n";
 		}else{
-        $gf_html .=  "</li>";
+        $gf_html .=  "</li>\n";
 		}
         break;  
     case "lf":
@@ -244,9 +245,9 @@ $event=$row['ID'];
         $lf_html .=  $eventText ;
            }
      if ($canedit)  {
-        $lf_html .=  ae($event) ."</li>";
+        $lf_html .=  ae($event) ."</li>\n";
 		}else{
-        $lf_html .=  "</li>";
+        $lf_html .=  "</li>\n";
 		}
         break;  
     case "evt":
@@ -262,9 +263,9 @@ $event=$row['ID'];
           $event_html .=  $eventText ;
            }
        if ($canedit)  {
-        $event_html .=  ae($event) ."</li>";
+        $event_html .=  ae($event) ."</li>\n";
 		}else{
-        $event_html .=  "</li>";
+        $event_html .=  "</li>\n";
 		}
         break;  
     case "read":
@@ -280,9 +281,9 @@ $event=$row['ID'];
           $read_html .=  $eventText ;
            }
         if ($canedit)  {
-        $read_html .=  ae($event) ."</li>";
+        $read_html .=  ae($event) ."</li>\n";
 		}else{
-        $read_html .=  "</li>";
+        $read_html .=  "</li>\n";
 		}
         break;  
     default:
@@ -301,9 +302,9 @@ $event=$row['ID'];
         $more_html .=  $eventText ;
            }
         if ($canedit)  {
-        $more_html .=  ae($event) ."</li>";
+        $more_html .=  ae($event) ."</li>\n";
 		}else{
-        $more_html .=  "</li>";
+        $more_html .=  "</li>\n";
 		}
         break;  
       }//	switch	
@@ -314,28 +315,32 @@ endforeach;
 		if ($hymn_html <> "") {
 				$hymn_html = "<h4>Hymns:</h4>$hymn_html";
 				}
-    if (( $service == 0) and ($Week_day_n == 0 ))  {
-         $ser_html .=  "<h4>Sunday service:</h4><li class='ser'> 9:40 AM - Hours</li>";
-         $ser_html .=  "<li class='ser'> 10:00 AM - Divine Liturgy</li>";
+    if (( $service == 0) and ($display_date["weekday"] == "Sunday" ))  {
+         $ser_html .=  "<h4>Sunday service:</h4>\n<li class='ser'> 9:40 AM - Hours</li>\n";
+         $ser_html .=  "<li class='ser'> 10:00 AM - Divine Liturgy</li>\n";
          } 
-    if (($fastfree == 0 and $fast == 0) and (($Week_day_n == 3 ) or ($Week_day_n == 5)) ) {
-         $fast_html  =  " <span class='fast'>fast day</span>";
+    if (($fastfree == 0 and $fast == 0) and (($display_date["weekday"] == "Wednesday" ) or ($display_date["weekday"] == "Friday")) ) {
+         $fast_html  =  " <span class='fast'>fast day</span>\n";
          } 
 // Print the output ---------------------------------------------------------------------------------------------------------
 //
-       $outputcal .= "<center>" . $fast_html . "</center>" ; 
-       $outputcal .= "<ul>" . $ser_html ."</ul><ul>" . $event_html . "</ul>" ;  
+       $outputcal .= "<br /> - " .  Pentecost_offset($SYear,$SMonth,$SDay,TRUE) . " = <br />" ; 
+       $outputcal .= "<center>" . $fast_html . "</center>\n" ; 
+       $outputcal .= "<ul>\n" . $ser_html ."\n</ul>\n<ul>" . $event_html . "\n</ul>\n" ;  
  // temp test code
  $ChurchDates = Pentecost_offset($SYear,$SMonth,$SDay,TRUE); 
    if (!isset($read_html)) $read_html = lookup_read($ChurchDates);
-       $outputcal .= "<ul>" . $read_html. "</ul>"; 
+       $outputcal .= "<ul>\n" . $read_html. "\n</ul>\n"; 
 
 //  This section will list the Kathisma that are read. (It now is fixed for Bright week) ------------------------------------------
 //	 STILL NEEDED
-?>
-	
-				
-       <?php $outputcal .= " </form>";?>
+
+       $outputcal .= "<ul>\n<h4>On this day the Church remembers:</h4>\n";
+       $outputcal .= $gf_html . $lf_html . $more_html . "\n</ul>\n" ;
+       $outputcal .= "<ul>\n" . $hymn_html . "\n</ul>\n" ;
+       $outputcal .= "<center>". $icon_html . "</center>\n";
+?>				
+       <?php $outputcal .= " </form>\n";?>
     <?php $outputcal .= "</div>";?>
 	<?php return $outputcal;?>
     <?php
