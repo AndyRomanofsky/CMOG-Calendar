@@ -25,8 +25,8 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
 
 
  $date = getDate();
-
- var_dump($date);
+//$yesterday = new MOGDate;
+//var_dump($yesterday->getTextofday());
  if ($SDay == "") $SDay = $date["mday"];
  
  if ($SMonth == "") $SMonth = $date["mon"];
@@ -34,7 +34,6 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
  if ($SYear == "") $SYear = $date["year"];
  
  $display_date =   getDate(mktime(0,0,0,$SMonth,$SDay,$SYear));
- 
     $outputcal = '';
     ?>
     <?php $outputcal .= "<div class='wrap'>\n";?>
@@ -105,6 +104,7 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
 	<?php	
 
 //get data
+
 
 
 				 $items = $wpdb->get_results( "SELECT * FROM `" . $wpdb->prefix . "cmog_events` WHERE (Year = $SYear or Year = -1 ) and Month = $SMonth and Day = $SDay ORDER  BY Day asc", 'ARRAY_A' ); 
@@ -324,7 +324,10 @@ endforeach;
          } 
 // Print the output ---------------------------------------------------------------------------------------------------------
 //
-       $outputcal .= "<br /> - " .  Pentecost_offset($SYear,$SMonth,$SDay,TRUE) . " = <br />" ; 
+// $dday = new MOGDate(getDate(mktime(0,0,0,$SMonth,$SDay,$SYear)));
+  $dday = new MOGDate;
+
+       $outputcal .= "<center> " .  $dday->getTextofday() . " </center>" ; 
        $outputcal .= "<center>" . $fast_html . "</center>\n" ; 
        $outputcal .= "<ul>\n" . $ser_html ."\n</ul>\n<ul>" . $event_html . "\n</ul>\n" ;  
  // temp test code
