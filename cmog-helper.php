@@ -330,7 +330,7 @@ if (($Pascha_date['yday'] - 16) == $March25['yday']) 	$Pentecost_day_week['Annun
 //          $Pentecost_day_week['week_of_Triodion'] - week number of readings form Triodion
 //          $Pentecost_day_week['week_of_Pascha'] -  week number of readings form Pascha to Pentecost
 //
-function Pentecost_offset($I_year, $I_month, $I_day) {
+function Pentecost_offset($I_year, $I_month, $I_day, $everything = FALSE) {
  
  $I_date = getDate(mktime(0, 0, 0, $I_month, $I_day, $I_year));
  $Week_day_n = $I_date['wday'];
@@ -557,9 +557,10 @@ if (($Pascha_date['yday'] - 16) == $March25['yday']) 	$Pentecost_day_week['Annun
 	;
  endif;   
 //newend	
-	
-  
-   if ($Pentecost_day_week['week_of_Pascha'] == 1 ){
+	if ($everything = TRUE) {
+	 return $Pentecost_day_week;
+	}
+     if ($Pentecost_day_week['week_of_Pascha'] == 1 ){
    return ("P<br />a<br />s<br />c<br />h<br />a");
    } elseif ($Pentecost_day_week['week_of_Pascha'] == 8 ){
    return ("P<br />e<br />n<br />t<br />e<br />c<br />o<br />s<br />t");
@@ -604,7 +605,7 @@ if (($Pascha_date['yday'] - 16) == $March25['yday']) 	$Pentecost_day_week['Annun
   
   return($PDate);
 }
-/**
+ 
 //-----------------------------------------------------------------
 function  lookup_read($ChurchDates) {
 //  input: $ChurchDates['day']  - 7 (or 0) is Sunday , 1 is Mon, 2 is Tues, ect.
@@ -616,13 +617,13 @@ function  lookup_read($ChurchDates) {
 //          $ChurchDates['week_of_Pascha'] - week between Pascha and Pentecaost
 // if ($ChurchDates['day'] ==  0) $ChurchDates['day'] = 7;
 $lookup = "<small><small>+ (sorry no readings were entered for this day and year) +</small></small>";
- 
-//Lent?
+$read_html = '';
+global $wpdb; 
+ //Lent?
 if ($ChurchDates['week_of_Triodion'] <> 0) {
 //$lookup .= "<br>Look up Triodion reading week " . $ChurchDates['week_of_Triodion'] . " day " . $ChurchDates['day']; 
-      $result = mysql_query("SELECT * FROM TriodionWeeks WHERE ((`week` = '$ChurchDates['week_of_Triodion']') and (`wday` = '$ChurchDates['day']' ))
-             ORDER BY `listorder` DESC ");
- 
+      $result = $wpdb->get_results("SELECT * FROM cmog66_cmog_templates WHERE (( `gmd` = -4 ) and (`week` = '" .$ChurchDates['week_of_Triodion'] ."') and (`wday` = '" .$ChurchDates['day'] ."' )) ORDER BY `listorder` DESC ", 'ARRAY_A');
+
     if (!$result) {
       echo("<P>Error performing query: " .
            mysql_error() . "</P>");
@@ -632,8 +633,8 @@ if ($ChurchDates['week_of_Triodion'] <> 0) {
 //Pascha? 
 elseif ($ChurchDates['week_of_Pascha'] <> 0) {
 //$lookup .= "<br>Look up Pascha reading week " . $ChurchDates['week_of_Pascha'] . " day " . $ChurchDates['day']; 
-      $result = mysql_query("SELECT * FROM PaschaWeeks WHERE ((`week` = '$ChurchDates['week_of_Pascha']') and (`wday` = '$ChurchDates['day']' ))
-             ORDER BY `listorder` DESC ");
+      $result = $wpdb->get_results("SELECT * FROM cmog66_cmog_templates WHERE (( `gmd` = -5 ) and (`week` = '" . $ChurchDates['week_of_Pascha'] . "') and (`wday` = '" . $ChurchDates['day'] . "' ))
+             ORDER BY `listorder` DESC ", 'ARRAY_A');
  
     if (!$result) {
       echo("<P>Error performing query: " .
@@ -641,12 +642,12 @@ elseif ($ChurchDates['week_of_Pascha'] <> 0) {
       exit();
     }
 }
-//(must be after Pentecost of Luke)
+//(must be after Pentecost or Luke)
 else {
 if ($ChurchDates['day'] ==  0) $ChurchDates['day'] = 7;
  //$lookup .= "<br>Look up Pentecost reading week " . $ChurchDates['week'] . " day " . $ChurchDates['day']; 
-     $result = mysql_query("SELECT * FROM PentecostWeeks WHERE ((`week` = '$ChurchDates['week']') and (`wday` = '$ChurchDates['day']' ))
-             ORDER BY `listorder` DESC ");
+     $result = $wpdb->get_results("SELECT * FROM cmog66_cmog_templates WHERE (( `gmd` = -2 ) and (`week` = '" . $ChurchDates['week'] . "') and (`wday` = '" . $ChurchDates['day'] . "' ))
+             ORDER BY `listorder` DESC ", 'ARRAY_A');
  
     if (!$result) {
       echo("<P>Error performing query: " .
@@ -656,8 +657,8 @@ if ($ChurchDates['day'] ==  0) $ChurchDates['day'] = 7;
     
   if  ($ChurchDates['lukew'] <> 0) {
       //$lookup .= " and for Luke reading week " . $ChurchDates['lukew'] . " day " . $ChurchDates['day']; 
-           $result2 = mysql_query("SELECT * FROM LukeWeeks WHERE ((`week` = '$ChurchDates['lukew']') and (`wday` = '$ChurchDates['day']' ))
-             ORDER BY `listorder` DESC ");
+           $result2 = $wpdb->get_results("SELECT * FROM cmog66_cmog_templates WHERE (( `gmd` = -3 ) and (`week` = '" . $ChurchDates['lukew'] . "') and (`wday` = '" . $ChurchDates['day'] . "' ))
+             ORDER BY `listorder` DESC ", 'ARRAY_A');
  
     if (!$result) {
       echo("<P>Error performing query: " .
@@ -670,7 +671,8 @@ if ($ChurchDates['day'] ==  0) $ChurchDates['day'] = 7;
  if (isset($result)) {
 $lookup .= "<small><small><br>+ (using calculated readings:) +</small></small><h4>Readings:</h4>";
  //  get the defaults
-     while ( $row = mysql_fetch_array($result) ) { 
+ //    while ( $row = mysql_fetch_array($result) ) { 
+foreach($result as $i => $row): 
       $event=$row["ID"];
       $eventclass=$row["Class"];
       $eventLink=$row["Link"];
@@ -698,13 +700,15 @@ switch ($eventclass) {
     default:
         break;  
       }//	switch	
-    }// while
+    //}// while
+	endforeach; 
  $lookup .=  $read_html;
  }// if result
         $read_html = "";
 //  get the defaults (if LUKE)
 if  ($ChurchDates['lukew'] <> 0) {
-     while ( $row = mysql_fetch_array($result2) ) { 
+   //  while ( $row = mysql_fetch_array($result2) ) { 
+foreach($result as $i => $row): 
       $event=$row["ID"];
       $eventclass=$row["Class"];
       $eventLink=$row["Link"];
@@ -731,7 +735,8 @@ switch ($eventclass) {
     default:
         break;  
       }//	switch	
-    }// while
+   // }// while
+	endforeach; 
     $read_html .= "<small><small>+ (the gospel reading from Luke replaces the pentecost gospel reading) +</small></small>";
     }// if luke
  $lookup .=  $read_html;
@@ -745,8 +750,8 @@ switch ($eventclass) {
 //                   $lookup .= "</table>";   
  //            // end of debug  
 return $lookup;   
-} **/
-
+} 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class MOGDate extends  DateTime {
  var $Calendar = "new";
 // HTML text for day

@@ -317,7 +317,7 @@ endforeach;
 				}
     if (( $service == 0) and ($display_date["weekday"] == "Sunday" ))  {
          $ser_html .=  "<h4>Sunday service:</h4>\n<li class='ser'> 9:40 AM - Hours</li>\n";
-         $ser_html .=  "<li class='ser'> 10:00 AM - Divine Liturgy</li>\n";
+         $ser_html .=  "<li class='ser'> 10:00 AM - Divine Liturgy</li>\n"; 
          } 
     if (($fastfree == 0 and $fast == 0) and (($display_date["weekday"] == "Wednesday" ) or ($display_date["weekday"] == "Friday")) ) {
          $fast_html  =  " <span class='fast'>fast day</span>\n";
@@ -325,14 +325,15 @@ endforeach;
 // Print the output ---------------------------------------------------------------------------------------------------------
 //
 // $dday = new MOGDate(getDate(mktime(0,0,0,$SMonth,$SDay,$SYear)));
-  $dday = new MOGDate;
-
+  $dday = new MOGDate($display_date["year"] . "-".   $display_date["mon"] . "-"  . $display_date["mday"]);
+//$display_date["year"] . "-".   $display_date["mon"] . "-"  . $display_date["mday"] 
        $outputcal .= "<center> " .  $dday->getTextofday() . " </center>" ; 
        $outputcal .= "<center>" . $fast_html . "</center>\n" ; 
        $outputcal .= "<ul>\n" . $ser_html ."\n</ul>\n<ul>" . $event_html . "\n</ul>\n" ;  
  // temp test code
  $ChurchDates = Pentecost_offset($SYear,$SMonth,$SDay,TRUE); 
-   if (!isset($read_html)) $read_html = lookup_read($ChurchDates);
+// var_dump($read_html);
+   if (empty($read_html)) $read_html = lookup_read($ChurchDates);
        $outputcal .= "<ul>\n" . $read_html. "\n</ul>\n"; 
 
 //  This section will list the Kathisma that are read. (It now is fixed for Bright week) ------------------------------------------

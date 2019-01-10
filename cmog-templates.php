@@ -7,8 +7,22 @@ License: GPL2
 */
 defined( 'ABSPATH' ) or die( 'Do not!' );
 require_once 'cmog-helper.php';
+
 require_once 'shortcodes/monthly-calendar.php';
 require_once 'shortcodes/daily-calendar.php';
+require_once 'shortcodes/allfixedreadings.php';
+
+require_once 'shortcodes/tridion-readings.php';
+require_once 'shortcodes/readings_by_date.php';
+require_once 'shortcodes/pascha-to-pentecost-readings.php';
+require_once 'shortcodes/movable-feast-by-year.php';
+require_once 'shortcodes/luke-readings.php';
+require_once 'shortcodes/fixed-feasts-by-month.php';
+require_once 'shortcodes/after-pentecost-readings.php';
+
+
+
+
 /** ************************ REGISTER THE admin pages  ****************************
  *******************************************************************************
  * Now we just need to define an admin page. For this template, we'll add a top-level
