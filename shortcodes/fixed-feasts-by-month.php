@@ -37,19 +37,7 @@ $lastEventDay = 0;
 		 $outputcal .= "<input type='hidden' id='published' name='published' value='" . $_REQUEST['published'] . "'>\n"; 
 		} ?>
 
-		<?php $outputcal .= "Year: \n";?> 
-			<?php
-			$years = $wpdb->get_results( "SELECT DISTINCT `Year` FROM `" . $wpdb->prefix . "cmog_events`", 'ARRAY_A' ); 
-			?>
-			<?php $outputcal .= "<select name='f_year' >\n";?>	
-			<?php		
-			foreach($years as  $y): 
-			$outputcal .= "<option value=" . $y['Year'] ; 
-			if (  $SYear == $y['Year']  )  $outputcal .= " selected "; 
-			$outputcal .= ">" . $y['Year'] . "</option>\n";	
-			endforeach; 
-			?>
-			<?php $outputcal .= "</select>\n";?>		
+
 		  
 		 <?php $outputcal .= " Month:\n";?> 
 			<?php $outputcal .= "<select name='f_month' >\n";?>	
@@ -67,20 +55,7 @@ $lastEventDay = 0;
 			<?php $outputcal .= "<option value= 11 ";?><?php if (  $SMonth == 11  )  $outputcal .= " selected ";?><?php $outputcal .= ">November</option>\n";?>
 			<?php $outputcal .= "<option value= 12 ";?><?php if (  $SMonth == 12  )  $outputcal .= " selected ";?><?php $outputcal .= ">December</option>\n";?>
 			<?php $outputcal .= "</select>		\n";?>
-		<?php $outputcal .= "Class:\n";?>  
-			<?php
-			$classes = $wpdb->get_results( "SELECT DISTINCT `Class` FROM `" . $wpdb->prefix . "cmog_events`", 'ARRAY_A' ); 
-			?> 
-			<?php $outputcal .= "<select name='f_class' >";?>		
-			<?php $outputcal .= " <option value=''></option>\n";?>
-			<?php
-			foreach($classes as  $c): 
-			$outputcal .= "<option value=" . $c['Class'] ; 
-			if (  $SClass == $c['Class']  )  $outputcal .= " selected "; 
-			$outputcal .= ">" . $c['Class'] . "</option>\n";	
-			endforeach; 
-			?>
-			<?php $outputcal .= "</select> ";?>
+
 		  <?php $outputcal .= "<input type='submit' value='Filter'>\n";?>
 		  <?php $outputcal .= "<br />\n";?>
             
@@ -92,13 +67,13 @@ $lastEventDay = 0;
 
 //get data
 
-if (!empty($SClass) ) {
-	$WhereClass = " and Class = '" . $SClass . "' ";
-	} else {
-	$WhereClass = "";
-	}
 
-	$items = $wpdb->get_results( "SELECT * FROM `" . $wpdb->prefix . "cmog_events` WHERE (Year = $SYear or Year = -1 ) and Month = $SMonth $WhereClass ORDER  BY Day asc", 'ARRAY_A' ); 
+	$WhereClass = " and ((Class = 'saint') or (Class = 'gf') or (Class = 'lf')) ";
+
+
+	 
+// needs to be just feasts (saints)
+	$items = $wpdb->get_results( "SELECT * FROM `" . $wpdb->prefix . "cmog_events` WHERE  Year = -1  and Month = $SMonth $WhereClass ORDER  BY Day asc", 'ARRAY_A' ); 
 
 
 	// Build  the report
