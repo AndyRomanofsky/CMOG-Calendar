@@ -645,9 +645,7 @@ if ("Yes" == $EveryYear){
 //Fill the first week of the month with the appropriate number of blanks if needed.
          if ($first_week_day <> 0) {
          echo("<tr>");
-     //    echo("Year = ". $last_sunday["year"]." month = " . $last_sunday["mon"] . "day = " . $last_sunday["mday"]. "</small></td>");
-        //  echo("<td class=weeklable><small>" . $SYear . $SMonth . "1"  . "</small></td>");
-          echo("<td class=weeklable><small>".Pentecost_offset($last_sunday["year"],$last_sunday["mon"], $last_sunday["mday"]) . "</small></td>");
+         echo("<td class=weeklable><small>".Pentecost_offset($last_sunday["year"],$last_sunday["mon"], $last_sunday["mday"]) . "</small></td>"); 
      $top_skip = $first_week_day;
      echo("<td  colspan=\"$top_skip\" class=\"blank\"> </td>");
          }
@@ -657,11 +655,9 @@ if ("Yes" == $EveryYear){
             $week_day %= 7;
 
             if($week_day == 0){
-               echo "</tr><tr border='0'>" ;
-			   //Pentecost_offset($I_year, $I_month, $I_day)
-             //   echo("<td class=weeklable><small>" . $SYear . $SMonth . $day_counter . "</small></td>");
-            echo "<td class=weeklable><small>".Pentecost_offset($SYear,$SMonth,$day_counter) . "</small></td>" ;
-                               }
+            echo "</tr><tr border='0'>" ;
+            echo "<td class=weeklable><small>".Pentecost_offset($SYear,$SMonth,$day_counter) . "</small></td>" ; 
+		    }
                echo "<td  valign='top' class='day' border='1' ><table hight='100%'class='daytable' ><tr border='1' valign='top'><td border='1' valign='top'>" ;
             // echo "<big><b><A HREF=" ;
 			//   echo(JRoute::_('index.php?option=com_cmogcal&view=events&filter_year='.$SYear.'&filter_month='.$SMonth.'&filter_day='.$day_counter ).">");

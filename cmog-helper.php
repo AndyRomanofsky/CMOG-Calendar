@@ -557,7 +557,7 @@ if (($Pascha_date['yday'] - 16) == $March25['yday']) 	$Pentecost_day_week['Annun
 	;
  endif;   
 //newend	
-	if ($everything = TRUE) {
+	if ( TRUE == $everything ) {
 	 return $Pentecost_day_week;
 	}
      if ($Pentecost_day_week['week_of_Pascha'] == 1 ){

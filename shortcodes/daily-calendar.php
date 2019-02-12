@@ -48,7 +48,7 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
         <?php $outputcal .= "<form id='templates-filter' method='get'>\n";?>
 		  <?php $outputcal .= "<br />\n";?>
 
-		<?php $outputcal .= "Show Every Year: <input type='checkbox' name='f_every_year' value='Yes'";?> <?php if ('Yes' == $EveryYear  ) $outputcal .= ' checked';?>  <?php $outputcal .= ">";?>
+	
 		<?php $outputcal .= "Year: ";?> 
 			<?php
 			$years = $wpdb->get_results( "SELECT DISTINCT `Year` FROM `" . $wpdb->prefix . "cmog_events`", 'ARRAY_A' ); 
@@ -82,20 +82,7 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
 			
 		<?php $outputcal .= " Day: <input type='text' name='f_day' value='" . $SDay . "'>\n"      ?>     	
 			
-		<?php $outputcal .= "Class:";?>  
-			<?php
-			$classes = $wpdb->get_results( "SELECT DISTINCT `Class` FROM `" . $wpdb->prefix . "cmog_events`", 'ARRAY_A' ); 
-			?> 
-			<?php $outputcal .= "<select name='f_class' >";?>		
-			<?php $outputcal .= " <option value=''></option>\n	";?>
-			<?php
-			foreach($classes as  $c): 
-			$outputcal .= "<option value=" . $c['Class'] ; 
-			if (  $SClass == $c['Class']  )  $outputcal .= " selected "; 
-			$outputcal .= ">" . $c['Class'] . "</option>\n";	
-			endforeach; 
-			?>
-			<?php $outputcal .= "</select> \n";?>
+
 		  <?php $outputcal .= "<input type='submit' value='Filter'>\n";?>
 		  <?php $outputcal .= "<br />\n";?>
             
@@ -331,8 +318,8 @@ endforeach;
        $outputcal .= "<center>" . $fast_html . "</center>\n" ; 
        $outputcal .= "<ul>\n" . $ser_html ."\n</ul>\n<ul>" . $event_html . "\n</ul>\n" ;  
  // temp test code
- $ChurchDates = Pentecost_offset($SYear,$SMonth,$SDay,TRUE); 
-// var_dump($read_html);
+ $ChurchDates = Pentecost_offset($SYear, $SMonth, $SDay, TRUE ); 
+ 
    if (empty($read_html)) $read_html = lookup_read($ChurchDates);
        $outputcal .= "<ul>\n" . $read_html. "\n</ul>\n"; 
 

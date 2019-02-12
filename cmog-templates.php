@@ -79,7 +79,7 @@ if(!class_exists('WP_List_Table')){
 if (isset($_REQUEST['page'])) {
 	$cmog_page = $_REQUEST['page'];
 }
-require 'cmog-helper.php';
+//require 'cmog-helper.php';
 /** load calsses for list table pages */
 
 if ($cmog_page == "cmog_list_test" ) {   
