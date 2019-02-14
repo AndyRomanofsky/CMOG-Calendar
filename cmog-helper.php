@@ -59,7 +59,7 @@ function cmog_input_text_r($field, $row, $label=null, $id=null  ){
 }
  
 
-function getDate_of_Pascha($P_year) {
+function getDate_of_Pascha($P_year) {  // use Date_of_Pascha
   $R1 =  $P_year % 19;
   $R2 =  $P_year % 4;
   $R3 =  $P_year % 7;
@@ -70,6 +70,15 @@ function getDate_of_Pascha($P_year) {
   $RC =  $R4 + $R5;
  return getDate(mktime(0, 0, 0, 3 ,($RC + 34) , $P_year));
 }
+
+function Weeks_of_Pentecost($C_year) {
+	$PDate = Date_of_Pascha ($C_year + 1) ;
+	$Pascha_date_next_year = $PDate['Pascha_date'];
+	$Pentecost_date = $PDate['Pen_date_lastyear'];
+	//Return((($PDate[Pascha_date] - $PDate[Pen_date_lastyear])/ 604800 ) - 10);
+	Return       ((floor((($Pascha_date_next_year[0] -  $Pentecost_date[0])) / 604800))   - 10);   
+}
+
 function _Loaddates($I_year, $I_month, $I_day) {
  
  $I_date = getDate(mktime(0, 0, 0, $I_month, $I_day, $I_year));
