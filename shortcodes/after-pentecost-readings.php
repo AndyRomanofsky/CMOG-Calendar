@@ -1,8 +1,8 @@
 <?php
 //cmog_after-pentecost-readings
  
-add_shortcode( 'after_pentecost_readings', 'cmog_afterpentecostreadings' );
-function cmog_afterpentecostreadings(){
+add_shortcode( 'cmog_pentecost_readings', 'cmog_pentecostreadings' );
+function cmog_pentecostreadings(){
 $outputcal = "";
 global $wpdb; //This is used for database queries
 	
