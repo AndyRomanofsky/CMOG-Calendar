@@ -122,7 +122,7 @@ if  ($T_date['wday'] <> 0) {
      }
 $outputcal .= "</ul><hr />" . PHP_EOL ; 
 $outputcal .= "<ul>". PHP_EOL ;     
-				$data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_moveableevent ORDER BY Offset  "); 
+				$data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_moveableevent ORDER BY Offset"); 
 foreach($data as $i => $row){
       $offset=$row->Offset;
       $length=$row->Length;
