@@ -84,10 +84,12 @@ class CMOG_Template_List_Table extends WP_List_Table {
      **************************************************************************/
     function column_EventText($item){
         //Build row actions
+		
+		$paged = (int) (!empty($_REQUEST['paged'])) ? $_REQUEST['paged'] : 1;  
         $returnurl = $_SERVER['REQUEST_URI'];
 		if( 0 == $item['published'] ){ //draft
 		$actions = array(	
-            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s&gmd=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID'],$item['gmd']),
+            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s&gmd=%s&rpagenum=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID'],$item['gmd'],$paged),
             'trash'    => sprintf('<a href="?page=%s&action=%s&template=%s">Trash</a>',$_REQUEST['page'],'trash',$item['ID']),
             'publish'    => sprintf('<a href="?page=%s&action=%s&template=%s">Publish</a>',$_REQUEST['page'],'publish',$item['ID']),
         );
@@ -101,13 +103,13 @@ class CMOG_Template_List_Table extends WP_List_Table {
 		$row_status = " <b>(In Trash)</b>";
 		} elseif ( -1 == $item['published'] ){ //archived
 		$actions = array(
-            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s&gmd=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID'],$item['gmd']),
+            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s&gmd=%s&rpagenum=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID'],$item['gmd'],$paged),
             'trash'    => sprintf('<a href="?page=%s&action=%s&template=%s">Trash</a>',$_REQUEST['page'],'trash',$item['ID']),
         );
 		$row_status = " <b>(Archived)</b>";
 		} else { // published 
 		$actions = array(	
-            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s&gmd=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID'],$item['gmd']),
+            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s&gmd=%s&rpagenum=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID'],$item['gmd'],$paged),
             'draft'    => sprintf('<a href="?page=%s&action=%s&template=%s">Draft</a>',$_REQUEST['page'],'draft',$item['ID']),
             'trash'    => sprintf('<a href="?page=%s&action=%s&template=%s">Trash</a>',$_REQUEST['page'],'trash',$item['ID']),
         );

@@ -17,14 +17,7 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
  if ($SYear == "") $SYear = $date["year"];
     $outputcal = '';
     ?>
-    <?php $outputcal .= "<div class='wrap'>\n";?>
-        <?php $outputcal .= "<h2>Events</h2>\n";?>
-        <?php $outputcal .= "<div style='background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;'>\n";?>
-        <?php $outputcal .= "<p>(some text) </p>\n";?>
-		<?php $outputcal .= "<p> Events </p>\n";?>
-        <?php $outputcal .= "</div>\n";?>
-		<?php $outputcal .= "<div style='background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;'>\n";?>
-        <?php $outputcal .= "</div>\n";?>
+
       
         <?php $outputcal .= "<form id='templates-filter' method='get'>\n";?>
 		  <?php $outputcal .= "<br />\n";?>

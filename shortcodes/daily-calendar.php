@@ -36,14 +36,8 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
  $display_date =   getDate(mktime(0,0,0,$SMonth,$SDay,$SYear));
     $outputcal = '';
     ?>
-    <?php $outputcal .= "<div class='wrap'>\n";?>
-        <?php $outputcal .= "<h2>Events - " . $display_date["weekday"] . ", " .   $display_date["month"] . " "  .$display_date["mday"] . ", " . $display_date["year"] . "</h2>\n";?>
-        <?php $outputcal .= "<div style='background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;'>\n";?>
-        <?php $outputcal .= "<p>(some text) </p>\n";?>
-		<?php $outputcal .= "<p> Events </p>\n";?>
-        <?php $outputcal .= "</div>\n";?>
-		<?php $outputcal .= "<div style='background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;'>\n";?>
-        <?php $outputcal .= "</div>\n";?>
+	<?php $outputcal .= "<h2>" . $display_date["weekday"] . ", " .   $display_date["month"] . " "  .$display_date["mday"] . ", " . $display_date["year"] . "</h2>\n";?>
+    
       
         <?php $outputcal .= "<form id='templates-filter' method='get'>\n";?>
 		  <?php $outputcal .= "<br />\n";?>
@@ -80,7 +74,7 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
 			<?php $outputcal .= "<option value= 12 ";?><?php if (  $SMonth == 12  )  $outputcal .= " selected ";?><?php $outputcal .= ">December</option>\n";?>
 			<?php $outputcal .= "</select>		\n";?>
 			
-		<?php $outputcal .= " Day: <input type='text' name='f_day' value='" . $SDay . "'>\n"      ?>     	
+		<?php $outputcal .= " Day: <input type='number' name='f_day'  min='0' max='31'  value='" . $SDay . "'>\n"      ?>     	
 			
 
 		  <?php $outputcal .= "<input type='submit' value='Filter'>\n";?>

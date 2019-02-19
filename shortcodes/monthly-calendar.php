@@ -19,15 +19,12 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
 
  if ($SYear == "") $SYear = $date["year"];
     $outputcal = '';
+  
+	$display_date =   getDate(mktime(0,0,0,$SMonth,1,$SYear));
+    $outputcal = '';
     ?>
-    <?php $outputcal .= "<div class='wrap'>\n";?>
-        <?php $outputcal .= "<h2>Events</h2>\n";?>
-        <?php $outputcal .= "<div style='background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;'>\n";?>
-        <?php $outputcal .= "<p>(some text) </p>\n";?>
-		<?php $outputcal .= "<p> Events </p>\n";?>
-        <?php $outputcal .= "</div>\n";?>
-		<?php $outputcal .= "<div style='background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;'>\n";?>
-        <?php $outputcal .= "</div>\n";?>
+	<?php $outputcal .= "<h2>" .   $display_date["month"]     . ", " . $display_date["year"] . "</h2>\n";?>
+ 
       
         <?php $outputcal .= "<form id='templates-filter' method='get'>\n";?>
 		  <?php $outputcal .= "<br />\n";?>

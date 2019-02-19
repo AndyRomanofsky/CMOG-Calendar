@@ -15,7 +15,7 @@ function cmog_render_edit_page($id){
 	 $type["-2"] = "pentecost";
 	 $type["-1"] = "movable";
     $cmog_template_type =  (int)(!empty($_REQUEST['gmd'])) ? $_REQUEST['gmd'] : ''; //If no sort, default to null
-	
+	$paged = (int) (!empty($_REQUEST['rpagenum'])) ? $_REQUEST['rpagenum'] : 1;  
 	?>
 	<div class="wrap">
 	<?php if ($id) {
@@ -196,12 +196,13 @@ function cmog_render_edit_page($id){
 			<?php if ("Add" == $submit ){;?>
 			<a class="button" href="/wp-admin/admin.php?page=cmog_list_<?php echo $type[ $cmog_template_type]?>" >Cancel</a>
 			<?php } else { ?>
-			<a class="button" href="/wp-admin/admin.php?page=cmog_list_<?php echo $type[ $cmog_template_type]?>&published=<?php echo $row['published']?>" >Close</a>
+			<a class="button" href="/wp-admin/admin.php?page=cmog_list_<?php echo $type[ $cmog_template_type]?>&published=<?php echo $row['published']?>&paged=<?php echo $paged ?>" >Close</a>
 			<?php }  ?>
        <fieldset>
           <legend>Selecting elements</legend>
 		   <input type="hidden" id="page" name="page" value="cmog_list_<?php echo $type[ $cmog_template_type]; ?>">
 		   <input type="hidden" id="action" name="action" value="update">
+		   <input type="hidden" id="rpagenum" name="rpagenum" value=<?php echo $paged ?> >
   <br />
   <?php cmog_input_text_r('EventText', $row,'Event'); ?>
   week:<br />
@@ -491,7 +492,7 @@ function cmog_render_edit_Movable_page($id){
 
 
 /** cmog_render_edit_luke_page
-This is for the Luke templates only
+This was for the Luke templates only  -- now see function cmog_render_edit_page
 */
 function cmog_render_edit_luke_page($id){
 	if ( !current_user_can( 'manage_options' ) )  	{
@@ -596,7 +597,7 @@ function cmog_render_edit_luke_page($id){
 			<?php if ("Add" == $submit ){;?>
 			<a class="button" href="/wp-admin/admin.php?page=cmog_list_luke" >Cancel</a>
 			<?php } else { ?>
-			<a class="button" href="/wp-admin/admin.php?page=cmog_list_luke&published=<?php echo $row['published']?>" >Close</a>
+			<a class="button" href="/wp-admin/admin.php?page=cmog_list_luke&published=<?php echo $row['published']?>%paged=<?php echo $paged ?>" >Close</a>
 			<?php }  ?>
        <fieldset>
           <legend>Selecting elements</legend>

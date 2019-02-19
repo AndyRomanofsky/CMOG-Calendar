@@ -20,15 +20,14 @@ $lastEventDay = 0;
 
  if ($SYear == "") $SYear = $date["year"];
     $outputcal = '';
+ 
+	
+	 $display_date =   getDate(mktime(0,0,0,$SMonth,1,$SYear));
+    $outputcal = '';
     ?>
-    <?php $outputcal .= "<div class='wrap'>\n";?>
-        <?php $outputcal .= "<h2>Events</h2>\n";?>
-        <?php $outputcal .= "<div style='background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;'>\n";?>
-        <?php $outputcal .= "<p>(some text) </p>\n";?>
-		<?php $outputcal .= "<p> Events </p>\n";?>
-        <?php $outputcal .= "</div>\n";?>
-		<?php $outputcal .= "<div style='background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;'>\n";?>
-        <?php $outputcal .= "</div>\n";?>
+	<?php $outputcal .= "<br /><h2>" .   $display_date["month"] . "</h2>\n";?>
+
+
       
         <?php $outputcal .= "<form id='templates-filter' method='get'>\n";?>
 		  <?php $outputcal .= "<br />\n";?>
@@ -92,7 +91,9 @@ $lastEventDay = 0;
 		if ($eventDay <> $lastEventDay	) {
 			$lastEventDay =  $eventDay;
 			$outputcal .= "</ul><hr /><ul>" ;
+			if (29 == $eventDay and  2 == $SMonth) $outputcal .= "(Leap years only)<br />" . PHP_EOL;
 		}
+
 		$outputcal .= "<li class=".$eventclass."> " . $eventDay . " - " ;
 		if ($eventLink <> "") {
 			if (substr($eventLink,0,12) == "http://ocafs") {
