@@ -105,7 +105,7 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
 if (!empty($SClass) ) {
 	$WhereClass = " and Class = '" . $SClass . "' ";
 	} else {
-	$WhereClass = "";
+	$WhereClass = " and ((`Class` = 'gf' ) or (`Class` = 'lf' ) or (`Class` = 'evt' ) or (`Class` = 'ser' ) or (`Class` = 'fast' ) or (`Class` = 'fastfree') ) ";
 	}
 if ("Yes" == $EveryYear){
 				 $items = $wpdb->get_results( "SELECT * FROM `" . $wpdb->prefix . "cmog_events` WHERE (Year = $SYear or Year = -1 ) and Month = $SMonth $WhereClass ORDER  BY Day asc", 'ARRAY_A' ); 
