@@ -70,7 +70,7 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
 			<?php $outputcal .= " <option value=''></option>" . PHP_EOL;?>
 			<?php
 			foreach($classes as  $c): 
-			$outputcal .= "<option value=" . $c['Class'] ; 
+			$outputcal .= "<option value='" . $c['Class'] . "'"; 
 			if (  $SClass == $c['Class']  )  $outputcal .= " selected "; 
 			$outputcal .= ">" . $c['Class'] . "</option>" . PHP_EOL;	
 			endforeach; 
@@ -125,7 +125,7 @@ if (!empty($SClass) ) {
          if ($first_week_day <> 0) {
          $outputcal .=("<tr>" . PHP_EOL);
 		 
-          $outputcal .=("<td class=weeklable><small>".Pentecost_offset($last_sunday["year"],$last_sunday["mon"], $last_sunday["mday"]) . "</small></td>" . PHP_EOL);
+          $outputcal .=("<td class='weeklable'><small>".Pentecost_offset($last_sunday["year"],$last_sunday["mon"], $last_sunday["mday"]) . "</small></td>" . PHP_EOL);
      $top_skip = $first_week_day;
      $outputcal .=("<td  colspan=\"$top_skip\" class=\"blank\"> </td>" . PHP_EOL);
          }
@@ -135,8 +135,8 @@ if (!empty($SClass) ) {
             $week_day %= 7;
 
             if($week_day == 0){
-               $outputcal .= "</tr>". PHP_EOL . PHP_EOL . "<tr border='0'>" ;
-            $outputcal .= "<td class=weeklable><small>".Pentecost_offset($SYear,$SMonth,$day_counter) . "</small></td>" . PHP_EOL ;
+               $outputcal .= "</tr>". PHP_EOL . PHP_EOL . PHP_EOL . "<tr border='0'>" ;
+            $outputcal .= "<td class='weeklable'><small>".Pentecost_offset($SYear,$SMonth,$day_counter) . "</small></td>" . PHP_EOL . PHP_EOL;
                                }
 			// data for this day
 			$service = 0;
@@ -169,10 +169,11 @@ if (!empty($SClass) ) {
 				 $saveevts .= "<tr><td><span class='ser'> 9:40 AM - Hours</span></td></tr>"  . PHP_EOL;
 				 $saveevts .= "<tr><td><span class='ser'> 10:00 AM - Divine Liturgy</span></td></tr>"  . PHP_EOL;
 			 } 		
-            $outputcal .= "<td  valign='top' class='day " . $fastbox . "' border='1' ><a href='/day?f_year=" . $SYear . "&f_month=" . $SMonth . "&f_day=" . $day_counter . "'><table hight='100%'class='daytable' >" . PHP_EOL ;
+            $outputcal .= "<td  valign='top' class='day " . $fastbox . "' border='1' ><a href='/day?f_year=" . $SYear . "&f_month=" . $SMonth . "&f_day=" . $day_counter . "'>"   . PHP_EOL; 
+			$outputcal .= "<table hight='100%'class='daytable' >" . PHP_EOL ;
 			$outputcal .= "<tr><td border='1' >".$day_counter."</td></tr>" . PHP_EOL;    
 				$outputcal .= $saveevts;
-             $outputcal .=  "</table></a></td></td>" . PHP_EOL; 
+             $outputcal .=  "</table></a></td>" . PHP_EOL . PHP_EOL;; 
             $week_day++;
             }		
 	?>			
