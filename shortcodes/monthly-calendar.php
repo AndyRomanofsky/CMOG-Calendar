@@ -135,7 +135,7 @@ if (!empty($SClass) ) {
             $week_day %= 7;
 
             if($week_day == 0){
-               $outputcal .= "</tr>\n<tr border='0'>" ;
+               $outputcal .= "</tr>". PHP_EOL . PHP_EOL . "<tr border='0'>" ;
             $outputcal .= "<td class=weeklable><small>".Pentecost_offset($SYear,$SMonth,$day_counter) . "</small></td>" . PHP_EOL ;
                                }
 			// data for this day
@@ -148,7 +148,7 @@ if (!empty($SClass) ) {
 				// var_dump($item);
 					if ( $item['Day'] == $day_counter) {
 						$saveevts .= "<tr><td><span class='" . $item['Class'] . "'> " ;
-						$saveevts .= $item['EventText'] . "</span></td><tr>" . PHP_EOL;
+						$saveevts .= $item['EventText'] . "</span></td></tr>" . PHP_EOL;
 					  if ($item['Class'] == "gf") $grate_feast = ' feast';
 					  if ($item['Class'] == "ser") $service = 1;
 					  if ($item['Class'] == "fast") {
@@ -169,10 +169,10 @@ if (!empty($SClass) ) {
 				 $saveevts .= "<tr><td><span class='ser'> 9:40 AM - Hours</span></td></tr>"  . PHP_EOL;
 				 $saveevts .= "<tr><td><span class='ser'> 10:00 AM - Divine Liturgy</span></td></tr>"  . PHP_EOL;
 			 } 		
-            $outputcal .= "<td  valign='top' class='day " . $fastbox . "' border='1' ><a href='/day?f_year=" . $SYear . "&f_month=" . $SMonth . "&f_day=" . $day_counter . "'><table hight='100%'class='daytable' ><tr border='1' valign='top'><td border='1' valign='top'>" . PHP_EOL ;
-			$outputcal .= "<tr><td border='1' >".$day_counter."</td><tr>" . PHP_EOL;    
+            $outputcal .= "<td  valign='top' class='day " . $fastbox . "' border='1' ><a href='/day?f_year=" . $SYear . "&f_month=" . $SMonth . "&f_day=" . $day_counter . "'><table hight='100%'class='daytable' >" . PHP_EOL ;
+			$outputcal .= "<tr><td border='1' >".$day_counter."</td></tr>" . PHP_EOL;    
 				$outputcal .= $saveevts;
-             $outputcal .=( "</table></a></td>"); 
+             $outputcal .=  "</table></a></td></td>" . PHP_EOL; 
             $week_day++;
             }		
 	?>			
