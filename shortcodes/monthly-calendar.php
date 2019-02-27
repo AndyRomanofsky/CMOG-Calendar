@@ -32,7 +32,6 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
 			//$status_filter =  " and published = " . $_REQUEST['published'] . " " ;
 		 $outputcal .= "<input type='hidden' id='published' name='published' value='" . $_REQUEST['published'] . "'>" . PHP_EOL; 
 		} ?>
-		<?php $outputcal .= "Show Every Year: <input type='checkbox' name='f_every_year' value='Yes'";?> <?php if ('Yes' == $EveryYear  ) $outputcal .= ' checked';?>  <?php $outputcal .= ">" . PHP_EOL;?>
 		<?php $outputcal .= "Year: " . PHP_EOL;?> 
 			<?php
 			$years = $wpdb->get_results( "SELECT DISTINCT `Year` FROM `" . $wpdb->prefix . "cmog_events`", 'ARRAY_A' ); 
@@ -80,8 +79,6 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
 		  <?php $outputcal .= "<input type='submit' value='Filter'>" . PHP_EOL;?>
 		  <?php $outputcal .= "<br />" . PHP_EOL;?>
             
-			<?php //$outputcal .= " <input type='hidden' name='page' value=''";?><?php // $outputcal .= $_REQUEST['page'] ?><?php //$outputcal .= " />";?>
-            
 			<?php $outputcal .= "<table class='adminlist' style='border-collapse: collapse; border: 1px solid black;'>" . PHP_EOL;?>
 				<?php $outputcal .= "<thead><tr>" . PHP_EOL;?>
 					<?php $outputcal .= "<td  width='2%' class='dayhead'><small> </small></td>" . PHP_EOL;?>
@@ -107,11 +104,9 @@ if (!empty($SClass) ) {
 	} else {
 	$WhereClass = " and ((`Class` = 'gf' ) or (`Class` = 'lf' ) or (`Class` = 'evt' ) or (`Class` = 'ser' ) or (`Class` = 'fast' ) or (`Class` = 'fastfree') ) ";
 	}
-if ("Yes" == $EveryYear){
-				 $items = $wpdb->get_results( "SELECT * FROM `" . $wpdb->prefix . "cmog_events` WHERE (Year = $SYear or Year = -1 ) and Month = $SMonth $WhereClass ORDER  BY Day asc", 'ARRAY_A' ); 
-} else {
-				 $items = $wpdb->get_results( "SELECT * FROM `" . $wpdb->prefix . "cmog_events` WHERE Year = $SYear  and Month = $SMonth $WhereClass ORDER BY Day asc", 'ARRAY_A' ); 
-}
+
+	 $items = $wpdb->get_results( "SELECT * FROM `" . $wpdb->prefix . "cmog_events` WHERE (Year = $SYear or Year = -1 ) and Month = $SMonth $WhereClass ORDER  BY Day asc", 'ARRAY_A' ); 
+
 //var_dump($items);
          $this_month = getDate(mktime(0, 0, 0, $SMonth, 1, $SYear));
          $next_month = getDate(mktime(0, 0, 0, $SMonth + 1, 1, $SYear));
@@ -143,19 +138,41 @@ if ("Yes" == $EveryYear){
                $outputcal .= "</tr>\n<tr border='0'>" ;
             $outputcal .= "<td class=weeklable><small>".Pentecost_offset($SYear,$SMonth,$day_counter) . "</small></td>" . PHP_EOL ;
                                }
-               $outputcal .= "<td  valign='top' class='day' border='1' ><table hight='100%'class='daytable' ><tr border='1' valign='top'><td border='1' valign='top'>" . PHP_EOL ;
-			$outputcal .= "<tr><td border='1' ><a href='/day?f_year=" . $SYear . "&f_month=" . $SMonth . "&f_day=" . $day_counter . "'>".$day_counter."</a></td><tr>" . PHP_EOL;// need: to add every year flag (and class)
-			 
 			// data for this day
+			$service = 0;
+			$fastent = 0;
+			$grate_feast = '';
+			$fastbox = '';
+			$saveevts = "";
 				 foreach($items as $i => $item): 
 				// var_dump($item);
 					if ( $item['Day'] == $day_counter) {
-						$outputcal .= "<tr><td><span class='" . $item['Class'] . "'> " ;
-						$outputcal .= "<a href=' " . $item['Link'] ."'>";
-						$outputcal .= $item['EventText'] . "</a></span></td><tr>" . PHP_EOL;
-					}
-				endforeach;  
-             $outputcal .=( "</table></td>"); 
+						$saveevts .= "<tr><td><span class='" . $item['Class'] . "'> " ;
+						$saveevts .= $item['EventText'] . "</span></td><tr>" . PHP_EOL;
+					  if ($item['Class'] == "gf") $grate_feast = ' feast';
+					  if ($item['Class'] == "ser") $service = 1;
+					  if ($item['Class'] == "fast") {
+						   $fastent = 1;
+						   $fastbox = 'fastbox';
+					  }
+					  if ($item['Class'] == "fastfree") $fastent= 1;
+				   }
+					
+				endforeach;   
+				if (( $fastent == 0) and (($week_day == 3 ) or ($week_day == 5 )))  {
+						   $fastbox= 'fastbox';
+			 }
+			 if (( $service == 0) and ($week_day == 6 ))  {
+				 $saveevts .= "<tr><td><span class='ser'> 6:30 PM - Vespers</span></td></tr>"  . PHP_EOL;
+			 }
+			 if (( $service == 0) and ($week_day == 0 ))  {
+				 $saveevts .= "<tr><td><span class='ser'> 9:40 AM - Hours</span></td></tr>"  . PHP_EOL;
+				 $saveevts .= "<tr><td><span class='ser'> 10:00 AM - Divine Liturgy</span></td></tr>"  . PHP_EOL;
+			 } 		
+            $outputcal .= "<td  valign='top' class='day " . $fastbox . "' border='1' ><a href='/day?f_year=" . $SYear . "&f_month=" . $SMonth . "&f_day=" . $day_counter . "'><table hight='100%'class='daytable' ><tr border='1' valign='top'><td border='1' valign='top'>" . PHP_EOL ;
+			$outputcal .= "<tr><td border='1' >".$day_counter."</td><tr>" . PHP_EOL;    
+				$outputcal .= $saveevts;
+             $outputcal .=( "</table></a></td>"); 
             $week_day++;
             }		
 	?>			
