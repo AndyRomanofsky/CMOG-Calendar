@@ -1,6 +1,5 @@
 <?php
 //cmog_daily_calendar    
-
 require_once 'C:\wamp64a\www\cmog\wp-content\plugins\CMOG-templates\/cmog-helper.php';
     function ae($id, $dateparms="" ){
        //  $Print= JRequest::getCmd('print'); 
@@ -13,36 +12,24 @@ require_once 'C:\wamp64a\www\cmog\wp-content\plugins\CMOG-templates\/cmog-helper
 add_shortcode( 'cmog_day', 'cmog_daily_calendar' );
 function cmog_daily_calendar(){
 $read = $read_html = $hymn_htm = $more_html = $service = $Week_day_n = $ser_html = $fastfree = $fast = $fast_html = $hymn_html= $event_html = $icon_html = $gf_html = $lf_html = "";
-
- 
 global $wpdb; //This is used for database queries
 $SDay = (!empty($_REQUEST['f_day'] )) ? $_REQUEST['f_day'] : '';
 $SMonth = (!empty($_REQUEST['f_month'] )) ? $_REQUEST['f_month'] : '';
 $SYear = (!empty ($_REQUEST['f_year'] )) ? $_REQUEST['f_year'] : '';
 $EveryYear = (!empty ($_REQUEST['f_every_year'] )) ? $_REQUEST['f_every_year'] : '';
 $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
-
-
-
  $date = getDate();
 //$yesterday = new MOGDate;
 //var_dump($yesterday->getTextofday());
  if ($SDay == "") $SDay = $date["mday"];
- 
  if ($SMonth == "") $SMonth = $date["mon"];
-
  if ($SYear == "") $SYear = $date["year"];
- 
  $display_date =   getDate(mktime(0,0,0,$SMonth,$SDay,$SYear));
     $outputcal = '';
     ?>
 	<?php $outputcal .= "<h2>" . $display_date["weekday"] . ", " .   $display_date["month"] . " "  .$display_date["mday"] . ", " . $display_date["year"] . "</h2>" . PHP_EOL;?>
-    
-      
         <?php $outputcal .= "<form id='templates-filter' method='get'>" . PHP_EOL;?>
 		  <?php $outputcal .= "<br />" . PHP_EOL;?>
-
-	
 		<?php $outputcal .= "Year: ";?> 
 			<?php
 			$years = $wpdb->get_results( "SELECT DISTINCT `Year` FROM `" . $wpdb->prefix . "cmog_events`", 'ARRAY_A' ); 
@@ -56,7 +43,6 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
 			endforeach; 
 			?>
 			<?php $outputcal .= "</select>";?>		
-		  
 		 <?php $outputcal .= " Month:";?> 
 			<?php $outputcal .= "<select name='f_month' >";?>	
 			<?php $outputcal .= "<option value= '' ";?><?php if (  $SMonth == null  )  $outputcal .= " selected ";?><?php $outputcal .= "></option>\n	  ";?>
@@ -73,35 +59,13 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
 			<?php $outputcal .= "<option value= 11 ";?><?php if (  $SMonth == 11  )  $outputcal .= " selected ";?><?php $outputcal .= ">November</option>" . PHP_EOL;?>
 			<?php $outputcal .= "<option value= 12 ";?><?php if (  $SMonth == 12  )  $outputcal .= " selected ";?><?php $outputcal .= ">December</option>" . PHP_EOL;?>
 			<?php $outputcal .= "</select>		" . PHP_EOL;?>
-			
 		<?php $outputcal .= " Day: <input type='number' name='f_day'  min='0' max='31'  value='" . $SDay . "'>" . PHP_EOL      ?>     	
-			
-
 		  <?php $outputcal .= "<input type='submit' value='Filter'>" . PHP_EOL;?>
 		  <?php $outputcal .= "<br />" . PHP_EOL;?>
-            
-		
-				
 	<?php	
-
 //get data
-
-
-
 				 $items = $wpdb->get_results( "SELECT * FROM `" . $wpdb->prefix . "cmog_events` WHERE (Year = $SYear or Year = -1 ) and Month = $SMonth and Day = $SDay ORDER  BY Day asc", 'ARRAY_A' ); 
-
-//var_dump($items);
-			// data for this day
-//				 foreach($items as $i => $item): 
-				// var_dump($item);
-					 
-////						$outputcal .= "<br> <span class='" . $item['Class'] . "'> " ;
-//						$outputcal .= "<a href=' " . $item['Link'] ."'>";
-////						$outputcal .= $item['EventText'] . "</a></span>";
-//					 
-// 				endforeach;  
 	?>		
-
 <?php
 foreach($items as $i => $row): 
 $event=$row['ID'];
@@ -111,8 +75,6 @@ $event=$row['ID'];
       $eventHymn=$row['hymn'];
       $eventText=$row['EventText'];
       $eventPopup=$row['popup'];
-      //$this->canDo = CmogCalHelper::getActions($event,'event');
-	  //$canedit=$this->canDo->get('core.edit');
 	  $canedit = false;
     if ($eventHymn <> "") {
 		   $hymn_html .= "<li class='read'><A HREF='$eventHymn' target='_blank'>$eventText</A>";
@@ -123,11 +85,7 @@ $event=$row['ID'];
 		 }
 		} 
 	  if ($eventIcon <> "") {
-		  //if ((JURI::base( true ) == "") & ($eventIcon[0] == "/")) {
-						   $icon_html .= "<img class='icon' src='" . $eventIcon . "' alt='$eventText' title='$eventText' height='150' > ";
-						  //} else {
-							//$icon_html .= "<img class='icon'src='" . JURI::base( true ) . "/" . $eventIcon . "' alt='$eventText' title='$eventText' height='150' > ";
-						  //}
+			$icon_html .= "<img class='icon' src='" . $eventIcon . "' alt='$eventText' title='$eventText' height='150' > ";
 			 }
     switch ($eventclass) {
     case "ser":
@@ -162,9 +120,9 @@ $event=$row['ID'];
         $fast_html .=  $eventText ;
            }
         if ($canedit)  {
-        $fast_html .=  ae($event) ."</li>" . PHP_EOL;
+        $fast_html .=  ae($event) ."</span>" . PHP_EOL;
 		}else{
-        $fast_html .=  "</li>" . PHP_EOL;
+        $fast_html .=  "</span>" . PHP_EOL;
 		}
         break;      
     case "fastfree":
@@ -291,13 +249,13 @@ $event=$row['ID'];
       }//	switch	
 endforeach; 
     if ( $read == 1) {
-         $read_html =  "<h4>Readings:</h4>$read_html";
+         $read_html =  "<h4>Readings:</h4>" . PHP_EOL . $read_html;
          } 
 		if ($hymn_html <> "") {
-				$hymn_html = "<h4>Hymns:</h4>$hymn_html";
+				$hymn_html = "<h4>Hymns:</h4>" . PHP_EOL .  $hymn_html ;
 				}
     if (( $service == 0) and ($display_date["weekday"] == "Sunday" ))  {
-         $ser_html .=  "<h4>Sunday service:</h4>\n<li class='ser'> 9:40 AM - Hours</li>" . PHP_EOL;
+         $ser_html .=  "<h4>Sunday service:</h4>" . PHP_EOL . "<li class='ser'> 9:40 AM - Hours</li>" . PHP_EOL;
          $ser_html .=  "<li class='ser'> 10:00 AM - Divine Liturgy</li>" . PHP_EOL; 
          } 
     if (($fastfree == 0 and $fast == 0) and (($display_date["weekday"] == "Wednesday" ) or ($display_date["weekday"] == "Friday")) ) {
@@ -310,26 +268,21 @@ endforeach;
 //$display_date["year"] . "-".   $display_date["mon"] . "-"  . $display_date["mday"] 
        $outputcal .= "<center> " .  $dday->getTextofday() . " </center>" ; 
        $outputcal .= "<center>" . $fast_html . "</center>" . PHP_EOL ; 
-       $outputcal .= "<ul>" . PHP_EOL . $ser_html ."\n</ul>\n<ul>" . $event_html . "\n</ul>" . PHP_EOL ;  
+       $outputcal .= "<ul>" . PHP_EOL . $ser_html . PHP_EOL ."</ul>\n<ul>" . $event_html . PHP_EOL . "</ul>" . PHP_EOL ;  
  // temp test code
  $ChurchDates = Pentecost_offset($SYear, $SMonth, $SDay, TRUE ); 
- var_dump($ChurchDates);
+ //var_dump($ChurchDates);
+ $Week_day_n = $ChurchDates['day']; //day of the week, 1 is Monday
    if (empty($read_html)) $read_html = lookup_read($ChurchDates);
-       $outputcal .= "<ul>" . PHP_EOL . $read_html. "\n</ul>" . PHP_EOL; 
-
+       $outputcal .= "<ul>" . PHP_EOL . $read_html . PHP_EOL . "</ul>" . PHP_EOL; 
 //  This section will list the Kathisma that are read. (It now is fixed for Bright week) ------------------------------------------
-//	 STILL NEEDED
-
-
- 
-//  This section will list the Kathisma that are read. (It now is fixed for Bright week) ------------------------------------------
-//	  
-     $psalter = "<a target='oca' href='/prayers/";
+//
+     $psalter = "<a target='prayers' href='/prayers/";
 //	$popup = "?tmpl=component&print=1&page=' onclick=\"return hs.htmlExpand(this,{objectType: 'iframe', width: '678', headingText: 'Kathisma', wrapperClassName: 'titlebar' } )\" ";
 		$popup = "'";
 		 $outputcal .="<ul><h4>Psalter:</h4><li class='read'>" . PHP_EOL;
-		if ($ChurchDates[week_of_Pascha] == 1) : 
-		    $outputcal .=" no Kathisma reading, <a target='oca' href='/prayers/brightweek-prayers/'>Brightweek Prayers</a>" . PHP_EOL;
+		if ($ChurchDates[week_of_Pascha] == 1) : //Bright week
+		    $outputcal .=" No Kathisma reading, <a target='prayers' href='/prayers/brightweek-prayers/'>Brightweek Prayers</a>" . PHP_EOL;
 		elseif ($ChurchDates[holyweek] == 1): //Holyweek	
     switch ($Week_day_n) {
     case 1:   //Monday  Holyweek
@@ -378,7 +331,7 @@ endforeach;
         if ($ChurchDates[normal] == 1):  //Monday normal
         $outputcal .=  $psalter . "kathisma-4".$popup.">Kathisma 4</a>, " . PHP_EOL;
         $outputcal .=  $psalter . "kathisma-5".$popup.">Kathisma 5</a> (Matins)</li><li class='read'>" . PHP_EOL;
-        $outputcal .=  $psalter . "kathisma-6".$popup.">Kathisma 6</a> (Vespers)</li>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-6".$popup.">Kathisma 6</a> (Vespers)" . PHP_EOL;
         else:           //Monday  
         $outputcal .=  $psalter . "kathisma-4".$popup.">Kathisma 4</a>, " . PHP_EOL;
         $outputcal .=  $psalter . "kathisma-5".$popup.">Kathisma 5</a>, " . PHP_EOL;
@@ -390,7 +343,7 @@ endforeach;
         if ($ChurchDates[normal] == 1): //Tuesday normal
         $outputcal .=  $psalter . "kathisma-7".$popup.">Kathisma 7</a>, " . PHP_EOL;
         $outputcal .=  $psalter . "kathisma-8".$popup.">Kathisma 8</a> (Matins)</li><li class='read'>" . PHP_EOL;
-        $outputcal .=  $psalter . "kathisma-9".$popup.">Kathisma 9</a> (Vespers)</li>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-9".$popup.">Kathisma 9</a> (Vespers)" . PHP_EOL;
         else: //Tuesday  
         $outputcal .=  $psalter . "kathisma-7".$popup.">Kathisma 7</a>, " . PHP_EOL;
         $outputcal .=  $psalter . "kathisma-8".$popup.">Kathisma 8</a>, " . PHP_EOL;
@@ -581,14 +534,10 @@ endforeach;
     }//	switch	 
 	   endif;// not 1st week of Pascha
   $outputcal .="</li></ul>" . PHP_EOL;
-
-
-
-
 // END Kathisma
-       $outputcal .= "<ul>\n<h4>On this day the Church remembers:</h4>" . PHP_EOL;
-       $outputcal .= $gf_html . $lf_html . $more_html . "\n</ul>" . PHP_EOL ;
-       $outputcal .= "<ul>" . PHP_EOL . $hymn_html . "\n</ul>" . PHP_EOL ;
+       $outputcal .= "<ul>" . PHP_EOL . "<h4>On this day the Church remembers:</h4>" . PHP_EOL;
+       $outputcal .= $gf_html . $lf_html . $more_html . PHP_EOL . "</ul>" . PHP_EOL ;
+       $outputcal .= "<ul>" . PHP_EOL . $hymn_html . PHP_EOL . "</ul>" . PHP_EOL ;
        $outputcal .= "<center>". $icon_html . "</center>" . PHP_EOL;
 ?>				
        <?php $outputcal .= " </form>" . PHP_EOL;?>

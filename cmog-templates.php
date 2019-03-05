@@ -20,6 +20,7 @@ require_once 'shortcodes/luke-readings.php';
 require_once 'shortcodes/fixed-feasts-by-month.php';
 require_once 'shortcodes/after-pentecost-readings.php';
 require_once 'shortcodes/monthly-calendar.php';
+require_once 'shortcodes/small.php';
 
 
 
