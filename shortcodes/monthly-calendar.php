@@ -90,8 +90,15 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
 					<?php $outputcal .= "<td  width='14%' class='dayhead'><small>Friday</small></td>" . PHP_EOL;?>
 					<?php $outputcal .= "<td  width='14%' class='dayhead'><small>Saturday</small></td>" . PHP_EOL;?>
 				<?php $outputcal .= "</tr></thead>" . PHP_EOL;?>
-				<?php $outputcal .= "<tfoot><tr>" . PHP_EOL;?>
-					<?php $outputcal .= "<td colspan='8'>foot</td>" . PHP_EOL;?>
+				<?php $outputcal .= "<tfoot><tr>" . PHP_EOL;?>					
+					<?php $outputcal .= "<td class='dayhead'> </td>" . PHP_EOL;?>				
+					<?php $outputcal .= "<td class='dayhead'>Resurrection</td>" . PHP_EOL;?>
+					<?php $outputcal .= "<td class='dayhead'>Holy Angels</td>" . PHP_EOL;?>
+					<?php $outputcal .= "<td class='dayhead'>John the Baptist</td>" . PHP_EOL;?>
+					<?php $outputcal .= "<td class='dayhead'>Theotokos</td>" . PHP_EOL;?>
+					<?php $outputcal .= "<td class='dayhead'>Holy Apostles</td>" . PHP_EOL;?>
+					<?php $outputcal .= "<td class='dayhead'>Lifegiving Cross</td>" . PHP_EOL;?>
+					<?php $outputcal .= "<td class='dayhead'>Departed</td>" . PHP_EOL;?>					
 				<?php $outputcal .= "</tr></tfoot>" . PHP_EOL;?>
              <?php $outputcal .= "   <tbody>" . PHP_EOL;?>
 				

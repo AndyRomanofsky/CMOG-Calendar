@@ -313,13 +313,279 @@ endforeach;
        $outputcal .= "<ul>" . PHP_EOL . $ser_html ."\n</ul>\n<ul>" . $event_html . "\n</ul>" . PHP_EOL ;  
  // temp test code
  $ChurchDates = Pentecost_offset($SYear, $SMonth, $SDay, TRUE ); 
- 
+ var_dump($ChurchDates);
    if (empty($read_html)) $read_html = lookup_read($ChurchDates);
        $outputcal .= "<ul>" . PHP_EOL . $read_html. "\n</ul>" . PHP_EOL; 
 
 //  This section will list the Kathisma that are read. (It now is fixed for Bright week) ------------------------------------------
 //	 STILL NEEDED
 
+
+ 
+//  This section will list the Kathisma that are read. (It now is fixed for Bright week) ------------------------------------------
+//	  
+     $psalter = "<a target='oca' href='/prayers/";
+//	$popup = "?tmpl=component&print=1&page=' onclick=\"return hs.htmlExpand(this,{objectType: 'iframe', width: '678', headingText: 'Kathisma', wrapperClassName: 'titlebar' } )\" ";
+		$popup = "'";
+		 $outputcal .="<ul><h4>Psalter:</h4><li class='read'>" . PHP_EOL;
+		if ($ChurchDates[week_of_Pascha] == 1) : 
+		    $outputcal .=" no Kathisma reading, <a target='oca' href='/prayers/brightweek-prayers/'>Brightweek Prayers</a>" . PHP_EOL;
+		elseif ($ChurchDates[holyweek] == 1): //Holyweek	
+    switch ($Week_day_n) {
+    case 1:   //Monday  Holyweek
+         $outputcal .=  $psalter . "kathisma-4".$popup.">Kathisma 4</a>, " . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-5".$popup.">Kathisma 5</a>, " . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-6".$popup.">Kathisma 6</a> (Matins)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-7".$popup.">Kathisma 7</a> (3rd Hour)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-8".$popup.">Kathisma 8</a> (6th Hour)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-18".$popup.">Kathisma 18</a>(Vespers)" . PHP_EOL;
+        break; 
+    case 2: //Tuesday Holyweek
+         $outputcal .=  $psalter . "kathisma-9".$popup.">Kathisma 9</a>, " . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-10".$popup.">Kathisma 10</a>, " . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-11".$popup.">Kathisma 11</a> (Matins)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-12".$popup.">Kathisma 12</a> (3rd Hour)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-13".$popup.">Kathisma 13</a> (6th Hour)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-18".$popup.">Kathisma 18</a>(Vespers)" . PHP_EOL;
+        break; 
+    case 3: //Wednesday Holyweek
+         $outputcal .=  $psalter . "kathisma-14".$popup.">Kathisma 14</a>, " . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-15".$popup.">Kathisma 15</a>, " . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-16".$popup.">Kathisma 16</a> (Matins)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-19".$popup.">Kathisma 19</a> (3rd Hour)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-20".$popup.">Kathisma 20</a> (6th Hour)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-18".$popup.">Kathisma 18</a>(Vespers)" . PHP_EOL;
+        break; 
+    case 4: //Thursday Holyweek 
+        $outputcal .=  "(no Kathisma reading)" . PHP_EOL;
+        break; 
+    case 5: //Firday Holyweek 
+        $outputcal .="(no Kathisma reading)" . PHP_EOL;
+        break; 
+    case 6: //Saturday Holyweek 
+        $outputcal .=  $psalter . "kathisma-17".$popup.">Kathisma 17</a> (Matins)" . PHP_EOL;
+        break; 
+    case 0: //Sunday Holyweek
+        $outputcal .=  $psalter . "kathisma-2".$popup.">Kathisma 2</a>, " . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-3".$popup.">Kathisma 3</a>, Polyeleos (Matins)" . PHP_EOL;
+        break;    
+		default:
+        $outputcal .= $Week_day_n . " - Holyweek?" . PHP_EOL;
+    }//	switch	 
+		elseif ($ChurchDates[lent] == 0):  // not lent
+     switch ($Week_day_n) {
+    case 1:
+        if ($ChurchDates[normal] == 1):  //Monday normal
+        $outputcal .=  $psalter . "kathisma-4".$popup.">Kathisma 4</a>, " . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-5".$popup.">Kathisma 5</a> (Matins)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-6".$popup.">Kathisma 6</a> (Vespers)</li>" . PHP_EOL;
+        else:           //Monday  
+        $outputcal .=  $psalter . "kathisma-4".$popup.">Kathisma 4</a>, " . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-5".$popup.">Kathisma 5</a>, " . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-6".$popup.">Kathisma 6</a> (Matins)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-18".$popup.">Kathisma 18</a>(Vespers)" . PHP_EOL;
+        endif;
+        break; 
+    case 2:
+        if ($ChurchDates[normal] == 1): //Tuesday normal
+        $outputcal .=  $psalter . "kathisma-7".$popup.">Kathisma 7</a>, " . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-8".$popup.">Kathisma 8</a> (Matins)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-9".$popup.">Kathisma 9</a> (Vespers)</li>" . PHP_EOL;
+        else: //Tuesday  
+        $outputcal .=  $psalter . "kathisma-7".$popup.">Kathisma 7</a>, " . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-8".$popup.">Kathisma 8</a>, " . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-9".$popup.">Kathisma 9</a> (Matins)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-18".$popup.">Kathisma 18</a>(Vespers)" . PHP_EOL;
+        endif;
+        break; 
+    case 3:
+        if ($ChurchDates[normal] == 1): //Wednesday normal
+        $outputcal .=  $psalter . "kathisma-10".$popup.">Kathisma 10</a>, " . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-11".$popup.">Kathisma 11</a> (Matins)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-12".$popup.">Kathisma 12</a> (Vespers)" . PHP_EOL;
+        else: //Wednesday 
+        $outputcal .=  $psalter . "kathisma-10".$popup.">Kathisma 10</a>, " . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-11".$popup.">Kathisma 11</a>, " . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-12".$popup.">Kathisma 12</a> (Matins)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-18".$popup.">Kathisma 18</a> (Vespers)" . PHP_EOL;
+        endif;
+        break; 
+    case 4:
+        if ($ChurchDates[normal] == 1): //Thursday normal
+        $outputcal .=  $psalter . "kathisma-13".$popup.">Kathisma 13</a>, " . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-14".$popup.">Kathisma 14</a> (Matins)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-15".$popup.">Kathisma 15</a> (Vespers)" . PHP_EOL;
+        else: //Thursday
+        $outputcal .=  $psalter . "kathisma-13".$popup.">Kathisma 13</a>, " . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-14".$popup.">Kathisma 14</a>, " . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-15".$popup.">Kathisma 15</a> (Matins)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-18".$popup.">Kathisma 18</a> (Vespers)" . PHP_EOL;
+        endif;
+        break; 
+    case 5: //Friday normal
+        $outputcal .=  $psalter . "kathisma-19".$popup.">Kathisma 19</a>, " . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-20".$popup.">Kathisma 20</a> (Matins)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-18".$popup.">Kathisma 18</a> (Vespers)" . PHP_EOL;
+        break; 
+    case 6: //Saturday normal
+        $outputcal .=  $psalter . "kathisma-16".$popup.">Kathisma 16</a>, " . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-17".$popup.">Kathisma 17</a> (Matins)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-1".$popup.">Kathisma 1</a> (Vespers)" . PHP_EOL;
+        break; 
+    case 0://Sunday
+        $outputcal .=  $psalter . "kathisma-2".$popup.">Kathisma 2</a>, " . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-3".$popup.">Kathisma 3</a> (Matins)" . PHP_EOL;
+        break; 
+   default:
+        $outputcal .=$Week_day_n . " - not lent?" . PHP_EOL;
+    }//	switch	 
+	 else: //Lent
+    switch ($Week_day_n) {
+    case 1: // Monday lent
+        if ($ChurchDates[lent] == 5):  //week 5
+				if ($ChurchDates[Annunciation] == 1 ):
+         $outputcal .=  $psalter . "kathisma-4".$popup.">Kathisma 4</a>, " . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-5".$popup.">Kathisma 5</a>, " . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-6".$popup.">Kathisma 6</a> (Matins)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-7".$popup.">Kathisma 7</a> (1rd Hour)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-8".$popup.">Kathisma 8</a> (3th Hour)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-9".$popup.">Kathisma 9</a> (6th Hour)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-10".$popup.">Kathisma 10</a> (9th Hour)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-11".$popup.">Kathisma 11</a> (Vespers)" . PHP_EOL;
+        else: 
+         $outputcal .=  $psalter . "kathisma-4".$popup.">Kathisma 4</a>, " . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-5".$popup.">Kathisma 5</a>, " . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-6".$popup.">Kathisma 6</a> (Matins)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-7".$popup.">Kathisma 7</a> (3rd Hour)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-8".$popup.">Kathisma 8</a> (6th Hour)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-9".$popup.">Kathisma 9</a> (9th Hour)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-10".$popup.">Kathisma 10</a> (Vespers)" . PHP_EOL;
+				endif;
+        else: 
+        $outputcal .=  $psalter . "kathisma-4".$popup.">Kathisma 4</a>, " . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-5".$popup.">Kathisma 5</a>, " . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-6".$popup.">Kathisma 6</a> (Matins)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-7".$popup.">Kathisma 7</a> (3rd Hour)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-8".$popup.">Kathisma 8</a> (6th Hour)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-9".$popup.">Kathisma 9</a> (9th Hour)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-18".$popup.">Kathisma 18</a> (Vespers)" . PHP_EOL;
+        endif;
+        break; 
+    case 2: //Tuesday lent
+        if ($ChurchDates[lent] == 5):    //week 5
+				if ($ChurchDates[Annunciation] == 1 ):
+         $outputcal .=  $psalter . "kathisma-12".$popup.">Kathisma 12</a> (Matins)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-13".$popup.">Kathisma 13</a> (3rd Hour)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-14".$popup.">Kathisma 14</a> (6th Hour)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-15".$popup.">Kathisma 15</a> (9th Hour)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-16".$popup.">Kathisma 16</a> (Vespers)" . PHP_EOL;
+        else:  
+         $outputcal .=  $psalter . "kathisma-11".$popup.">Kathisma 11</a>, " . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-12".$popup.">Kathisma 12</a>, " . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-13".$popup.">Kathisma 13</a> (Matins)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-14".$popup.">Kathisma 14</a> (1st Hour)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-15".$popup.">Kathisma 15</a> (3rd Hour)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-16".$popup.">Kathisma 16</a> (6th Hour)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-18".$popup.">Kathisma 18</a> (9th Hour)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-19".$popup.">Kathisma 19</a> (Vespers)" . PHP_EOL;
+				endif;
+        else: //not week 5
+        $outputcal .=  $psalter . "kathisma-10".$popup.">Kathisma 10</a>, " . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-11".$popup.">Kathisma 11</a>, " . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-12".$popup.">Kathisma 12</a> (Matins)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-13".$popup.">Kathisma 13</a> (1st Hour)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-14".$popup.">Kathisma 14</a> (3rd Hour)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-15".$popup.">Kathisma 15</a> (6th Hour)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-16".$popup.">Kathisma 16</a> (9th Hour)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-18".$popup.">Kathisma 18</a> (Vespers)" . PHP_EOL;
+        endif;
+        break; 
+    case 3: //Wednesday lent
+        if ($ChurchDates[lent] == 5):     //week 5
+				if ($ChurchDates[Annunciation] == 1 ):
+        $outputcal .=  $psalter . "kathisma-19".$popup.">Kathisma 19</a>, " . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-20".$popup.">Kathisma 20</a>, " . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-1".$popup.">Kathisma 1</a> (Matins)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-2".$popup.">Kathisma 2</a> (1st Hour)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-3".$popup.">Kathisma 3</a> (3rd Hour)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-4".$popup.">Kathisma 4</a> (6th Hour)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-5".$popup.">Kathisma 5</a> (9th Hour)" . PHP_EOL;
+			 else:
+         $outputcal .=  $psalter . "kathisma-20".$popup.">Kathisma 20</a>, " . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-1".$popup.">Kathisma 1</a>, " . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-2".$popup.">Kathisma 2</a> (Matins)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-3".$popup.">Kathisma 3</a> (1st Hour)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-4".$popup.">Kathisma 4</a> (3rd Hour)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-5".$popup.">Kathisma 5</a> (6th Hour)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-6".$popup.">Kathisma 6</a> (9th Hour)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-7".$popup.">Kathisma 7</a> (Vespers)" . PHP_EOL;
+				endif;
+        else: //not week 5 
+        $outputcal .=  $psalter . "kathisma-19".$popup.">Kathisma 19</a>, " . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-20".$popup.">Kathisma 20</a>, " . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-1".$popup.">Kathisma 1</a> (Matins)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-2".$popup.">Kathisma 2</a> (1st Hour)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-3".$popup.">Kathisma 3</a> (3rd Hour)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-4".$popup.">Kathisma 4</a> (6th Hour)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-5".$popup.">Kathisma 5</a> (9th Hour)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-18".$popup.">Kathisma 18</a> (Vespers)" . PHP_EOL;
+        endif;
+        break; 
+    case 4: //Thursday lent
+        if ($ChurchDates[lent] == 5):     //week 5
+				if ($ChurchDates[Annunciation] == 1 ):
+         $outputcal .=  $psalter . "kathisma-6".$popup.">Kathisma 6</a>, " . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-7".$popup.">Kathisma 7</a>, " . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-8".$popup.">Kathisma 8</a> (Matins)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-9".$popup.">Kathisma 9</a> (1st Hour)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-10".$popup.">Kathisma 10</a> (3rd Hour)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-11".$popup.">Kathisma 11</a> (6th Hour)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-12".$popup.">Kathisma 12</a> (9th Hour)" . PHP_EOL;
+        else:
+	     $outputcal .=  $psalter . "kathisma-8".$popup.">Kathisma 8</a> (Matins)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-9".$popup.">Kathisma 9</a> (3rd Hour)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-10".$popup.">Kathisma 10</a> (6th Hour)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-11".$popup.">Kathisma 11</a> (9th Hour)</li><li class='read'>" . PHP_EOL;
+         $outputcal .=  $psalter . "kathisma-12".$popup.">Kathisma 12</a> (Vespers)" . PHP_EOL;
+				endif;
+        else: //not week 5
+        $outputcal .=  $psalter . "kathisma-6".$popup.">Kathisma 6</a>, " . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-7".$popup.">Kathisma 7</a>, " . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-8".$popup.">Kathisma 8</a> (Matins)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-9".$popup.">Kathisma 9</a> (1st Hour)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-10".$popup.">Kathisma 10</a> (3rd Hour)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-11".$popup.">Kathisma 11</a> (6th Hour)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-12".$popup.">Kathisma 12</a> (9th Hour)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-18".$popup.">Kathisma 18</a> (Vespers)" . PHP_EOL;
+        endif;
+        break; 
+    case 5: //Friday Lent
+        $outputcal .=  $psalter . "kathisma-13".$popup.">Kathisma 13</a>, " . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-14".$popup.">Kathisma 14</a>, " . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-15".$popup.">Kathisma 15</a> (Matins)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-19".$popup.">Kathisma 19</a> (3rd Hour)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-20".$popup.">Kathisma 20</a> (6th Hour)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-18".$popup.">Kathisma 18</a> (Vespers)" . PHP_EOL;
+        break; 
+    case 6:  //Saturday Lent (same as normal)
+        $outputcal .=  $psalter . "kathisma-16".$popup.">Kathisma 16</a>, " . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-17".$popup.">Kathisma 17</a> (Matins)</li><li class='read'>" . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-1".$popup.">Kathisma 1</a> (Vespers)" . PHP_EOL;
+        break; 
+    case 0: //Sunday Lent (same as normal)
+        $outputcal .=  $psalter . "kathisma-2".$popup.">Kathisma 2</a>, " . PHP_EOL;
+        $outputcal .=  $psalter . "kathisma-3".$popup.">Kathisma 3</a> (Matins)" . PHP_EOL;
+        break; 
+   default:
+        $outputcal .=$Week_day_n . " - Lent?" . PHP_EOL;
+    }//	switch	 
+	   endif;// not 1st week of Pascha
+  $outputcal .="</li></ul>" . PHP_EOL;
+
+
+
+
+// END Kathisma
        $outputcal .= "<ul>\n<h4>On this day the Church remembers:</h4>" . PHP_EOL;
        $outputcal .= $gf_html . $lf_html . $more_html . "\n</ul>" . PHP_EOL ;
        $outputcal .= "<ul>" . PHP_EOL . $hymn_html . "\n</ul>" . PHP_EOL ;
