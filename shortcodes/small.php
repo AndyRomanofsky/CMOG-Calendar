@@ -4,7 +4,7 @@ add_shortcode( 'small_cal', 'cmog_small_calendar' );
  
 //-------------------------------------------------------------------------------------------------------------------------
 function  s_nav_but($g_action, $g_value, $g_year, $g_month, $g_day, $g_ote=0) {
-//echo("$g_action, $g_value, $g_year, $g_month, $g_day");
+//echo("$g_action, $g_value, $g_year, $g_month, $g_day"); echo '<br />';
 $rout = "";
  $g_date = getDate(mktime(0, 0, 0, $g_month, $g_day, $g_year));
 
@@ -12,7 +12,7 @@ $rout = "";
  if ($g_date[year] > 2799) return;
 
 $rout .= "<form action='$g_action'  method='put'>" ;
-$rout .= "<INPUT type='hidden' name='f_dmMonth' VALUE='$g_date[mon]' >" ;
+$rout .= "<INPUT type='hidden' name='f_month' VALUE='$g_date[mon]' >" ;
 $rout .= "<INPUT type='hidden' name='f_day' VALUE='$g_date[mday]' >" ;
 $rout .= "<INPUT type='hidden' name='f_year' VALUE='$g_date[year]' >" ;
  if ($g_day <> 0)  {

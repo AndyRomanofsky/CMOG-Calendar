@@ -34,7 +34,7 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
 		} ?>
 		<?php $outputcal .= "Year: " . PHP_EOL;?> 
 			<?php
-			$years = $wpdb->get_results( "SELECT DISTINCT `Year` FROM `" . $wpdb->prefix . "cmog_events`", 'ARRAY_A' ); 
+			$years = $wpdb->get_results( "SELECT DISTINCT `Year` FROM `" . $wpdb->prefix . "cmog_events` where `Year` > 1", 'ARRAY_A' ); 
 			?>
 			<?php $outputcal .= "<select name='f_year' >" . PHP_EOL;?>	
 			<?php		
@@ -107,7 +107,7 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
 //get data
 
 if (!empty($SClass) ) {
-	$WhereClass = " and Class = '" . $SClass . "' ";
+	$WhereClass = "  and (Class = '" . $SClass . "' or  `Class` = 'fast'   or  `Class` = 'fastfree')   ";
 	} else {
 	$WhereClass = " and ((`Class` = 'gf' ) or (`Class` = 'lf' ) or (`Class` = 'evt' ) or (`Class` = 'ser' ) or (`Class` = 'fast' ) or (`Class` = 'fastfree') ) ";
 	}
@@ -151,11 +151,17 @@ if (!empty($SClass) ) {
 			$grate_feast = '';
 			$fastbox = '';
 			$saveevts = "";
+			$savefast = "";
 				 foreach($items as $i => $item): 
 				// var_dump($item);
 					if ( $item['Day'] == $day_counter) {
-						$saveevts .= "<tr><td><span class='" . $item['Class'] . "'> " ;
+						if (($item['Class'] == "fast") or ($item['Class'] == "fastfree")) {
+						$savefast = "<span class='" . $item['Class']  . "'>" . $item['EventText'] . "</span>";	
+						} else  {
+						$saveevts .= "<tr><td colspan='2'><span class='" . $item['Class'] . "'> " ;
 						$saveevts .= $item['EventText'] . "</span></td></tr>" . PHP_EOL;
+						}
+						
 					  if ($item['Class'] == "gf") $grate_feast = ' feast';
 					  if ($item['Class'] == "ser") $service = 1;
 					  if ($item['Class'] == "fast") {
@@ -169,18 +175,18 @@ if (!empty($SClass) ) {
 				if (( $fastent == 0) and (($week_day == 3 ) or ($week_day == 5 )))  {
 						   $fastbox= 'fastbox';
 			 }
-			 if (( $service == 0) and ($week_day == 6 ))  {
-				 $saveevts .= "<tr><td><span class='ser'> 6:30 PM - Vespers</span></td></tr>"  . PHP_EOL;
+			 if (( $service == 0 and ($SClass == "ser" or empty($SClass)) ) and ($week_day == 6 ))  {
+				 $saveevts .= "<tr><td colspan='2'><span class='ser'> 6:30 PM - Vespers</span></td></tr>"  . PHP_EOL;
 			 }
-			 if (( $service == 0) and ($week_day == 0 ))  {
-				 $saveevts .= "<tr><td><span class='ser'> 9:40 AM - Hours</span></td></tr>"  . PHP_EOL;
-				 $saveevts .= "<tr><td><span class='ser'> 10:00 AM - Divine Liturgy</span></td></tr>"  . PHP_EOL;
+			 if (( $service == 0 and ($SClass == "ser" or empty($SClass)) ) and ($week_day == 0 ))  {
+				 $saveevts .= "<tr><td colspan='2'><span class='ser'> 9:40 AM - Hours</span></td></tr>"  . PHP_EOL;
+				 $saveevts .= "<tr><td colspan='2'><span class='ser'> 10:00 AM - Divine Liturgy</span></td></tr>"  . PHP_EOL;
 			 } 		
             $outputcal .= "<td  valign='top' class='day " . $fastbox . "' border='1' ><a href='/day?f_year=" . $SYear . "&f_month=" . $SMonth . "&f_day=" . $day_counter . "'>"   . PHP_EOL; 
 			$outputcal .= "<table hight='100%'class='daytable' >" . PHP_EOL ;
-			$outputcal .= "<tr><td border='1' >".$day_counter."</td></tr>" . PHP_EOL;    
-				$outputcal .= $saveevts;
-             $outputcal .=  "</table></a></td>" . PHP_EOL . PHP_EOL;; 
+			$outputcal .= "<tr><td width='12%' border='1' >".$day_counter."</td><td>" . $savefast . "</td></tr>" . PHP_EOL;    
+			$outputcal .= $saveevts;
+            $outputcal .=  "</table></a></td>" . PHP_EOL . PHP_EOL;; 
             $week_day++;
             }		
 	?>			
