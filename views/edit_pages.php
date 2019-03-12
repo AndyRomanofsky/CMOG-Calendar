@@ -12,7 +12,7 @@ function cmog_render_edit_page($id){
 	 $type["-5"] = "pascha";
 	 $type["-4"] = "triodion";
 	 $type["-3"] = "luke";
-	 $type["-2"] = "pentecost";
+	 $type["-2"] = "pentecos";
 	 $type["-1"] = "movable";
     $cmog_template_type =  (int)(!empty($_REQUEST['gmd'])) ? $_REQUEST['gmd'] : ''; //If no sort, default to null
 	$paged = (int) (!empty($_REQUEST['rpagenum'])) ? $_REQUEST['rpagenum'] : 1;  
@@ -206,7 +206,7 @@ function cmog_render_edit_page($id){
   <br />
   <?php cmog_input_text_r('EventText', $row,'Event'); ?>
   week:<br />
-  <input type="number" name='week'   value="<?php echo $row['week']; ?>" min="1" max="52" >
+  <input type="number" name='week'   value="<?php echo $row['week']; ?>" min="-1" max="52" >
   <br />
   wday: *<br />
   <select name='wday' required>  
