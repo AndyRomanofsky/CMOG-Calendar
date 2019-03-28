@@ -75,7 +75,7 @@ $calendar_html .= "</center></td></tr></table></center></small> " . PHP_EOL;
          $calendar_html .= "<tr style=\"height:100\">";
          
      $top_skip = $first_week_day;
-     $calendar_html .= "<td  colspan=\"$top_skip\" style=\"color:000000;\"> </td>";
+     $calendar_html .= "<td  colspan='$top_skip' class='blank'> </td>";
          }
          $week_day = $first_week_day;
          for($day_counter = 1; $day_counter <= $days_in_this_month; $day_counter++)
@@ -90,7 +90,7 @@ $calendar_html .= "</center></td></tr></table></center></small> " . PHP_EOL;
               // $calendar_html .= "<td align='center' valign='top' class='today' ><b><A HREF='$fdaily" . $oparm . $senddate . "'>" . $day_counter . "</a></b></td>";
               $calendar_html .= "<td  align='center' valign='top' class='today' ><b>" . $day_counter . "</b></td>";
             else
-               $calendar_html .= "<td   align='center' valign='top' ><A HREF='$fdaily" . $oparm . $senddate . "'>" . $day_counter . "</a></td>";
+               $calendar_html .= "<td   align='center' valign='top' class='day'><A HREF='$fdaily" . $oparm . $senddate . "'>" . $day_counter . "</a></td>";
             
             $week_day++;
             }
@@ -98,7 +98,7 @@ $calendar_html .= "</center></td></tr></table></center></small> " . PHP_EOL;
 // echo("<br>" . $week_day . "<br>");
          $bottom_skip = (7 - $week_day);
          if ($bottom_skip > 0) {
-         $calendar_html .= "<td  colspan=\"$bottom_skip\" style=\"color:000000;\"> </td>";
+         $calendar_html .= "<td  colspan='$bottom_skip' class='blank'> </td>";
                                } 
          $calendar_html .= "</tr></table>";
  return($calendar_html);
@@ -158,12 +158,11 @@ if ($P_year == "") $P_year = $date["year"];
 $outputcal .=  ("<center>" . Smallcalendar($date, $Year, $Month, $Day, $Month_name,$oparm,$ok_to_edit,$fdaily) . "</center>");
  
 // footer of calendar
-?>
-<?php      
+  
 If (($Month <> $date["mon"]) or ($Year <> $date["year"]) or ($Day <> $date["mday"])){
- $outputcal .=  ("<small><center>(<A HREF='$fdaily' title='" .$date['mon']."/".$date['mday']."/".$date['year']."'>Go to today</a>)</center></small>");}
-?><hr><center><table class='cal2nav' >
-<tr><td <small><center><?php $outputcal .= s_nav_but("$me", "Large Calendar",  $Year,   $Month ,  $Day);?></center></small></td></tr></table></center>
-<?php 
+ $outputcal .= "<small><center>(<A HREF='$fdaily' title='" .$date['mon']."/".$date['mday']."/".$date['year']."'>Go to today</a>)</center></small>" ;}
+ $outputcal .= "<hr><center><table class='cal2nav' >";
+ $outputcal .= "<tr><td <small><center>" . s_nav_but("$me", "Large Calendar",  $Year,   $Month ,  $Day) . "</center></small></td></tr></table></center>";
+  
 RETURN $outputcal;
 }?>

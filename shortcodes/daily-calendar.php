@@ -266,6 +266,7 @@ endforeach;
 // $dday = new MOGDate(getDate(mktime(0,0,0,$SMonth,$SDay,$SYear)));
   $dday = new MOGDate($display_date["year"] . "-".   $display_date["mon"] . "-"  . $display_date["mday"]);
 //$display_date["year"] . "-".   $display_date["mon"] . "-"  . $display_date["mday"] 
+       $outputcal .= "<section class='daily'>";
        $outputcal .= "<center> " .  $dday->getTextofday() . " </center>" ; 
        $outputcal .= "<center>" . $fast_html . "</center>" . PHP_EOL ; 
        $outputcal .= "<ul>" . PHP_EOL . $ser_html . PHP_EOL ."</ul>\n<ul>" . $event_html . PHP_EOL . "</ul>" . PHP_EOL ;  
@@ -541,7 +542,8 @@ endforeach;
        $outputcal .= "<center>". $icon_html . "</center>" . PHP_EOL;
 ?>				
        <?php $outputcal .= " </form>" . PHP_EOL;?>
-    <?php $outputcal .= "</div>";?>
+    <?php $outputcal .= "</div>" . PHP_EOL;?>
+	<?php $outputcal .= "</section>";?>
 	<?php return $outputcal;?>
     <?php
 }
