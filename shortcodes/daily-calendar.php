@@ -1,6 +1,6 @@
 <?php
 //cmog_daily_calendar    
-require_once 'C:\wamp64a\www\cmog\wp-content\plugins\CMOG-templates\/cmog-helper.php';
+
     function ae($id, $dateparms="" ){
        //  $Print= JRequest::getCmd('print'); 
       //    if ($Print <> 1) {
