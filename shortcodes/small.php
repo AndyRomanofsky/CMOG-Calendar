@@ -8,8 +8,8 @@ function  s_nav_but($g_action, $g_value, $g_year, $g_month, $g_day, $g_ote=0) {
 $rout = "";
  $g_date = getDate(mktime(0, 0, 0, $g_month, $g_day, $g_year));
 
- if ($g_date[year] < 12) return; 
- if ($g_date[year] > 2799) return;
+ if ($g_date['year'] < 12) return; 
+ if ($g_date['year'] > 2799) return;
 
 $rout .= "<form action='$g_action'  method='put'>" ;
 $rout .= "<INPUT type='hidden' name='f_month' VALUE='$g_date[mon]' >" ;
@@ -112,7 +112,8 @@ function cmog_small_calendar(){
 $outputcal = "";
 $me =  "/month/";
 $fdaily =  "/today";
-$ok_to_edit=$_GET['ote']; 
+//$ok_to_edit=$_GET['ote']; 
+$ok_to_edit = 0; 
 $date = getDate();
 $P_day = (!empty($_REQUEST['f_day'] )) ? $_REQUEST['f_day'] : '';
 $P_month = (!empty($_REQUEST['f_month'] )) ? $_REQUEST['f_month'] : '';

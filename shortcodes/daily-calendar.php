@@ -282,9 +282,9 @@ endforeach;
 //	$popup = "?tmpl=component&print=1&page=' onclick=\"return hs.htmlExpand(this,{objectType: 'iframe', width: '678', headingText: 'Kathisma', wrapperClassName: 'titlebar' } )\" ";
 		$popup = "'";
 		 $outputcal .="<ul><h4>Psalter:</h4><li class='read'>" . PHP_EOL;
-		if ($ChurchDates[week_of_Pascha] == 1) : //Bright week
+		if ($ChurchDates['week_of_Pascha'] == 1) : //Bright week
 		    $outputcal .=" No Kathisma reading, <a target='prayers' href='/prayers/brightweek-prayers/'>Brightweek Prayers</a>" . PHP_EOL;
-		elseif ($ChurchDates[holyweek] == 1): //Holyweek	
+		elseif ($ChurchDates['holyweek'] == 1): //Holyweek	
     switch ($Week_day_n) {
     case 1:   //Monday  Holyweek
          $outputcal .=  $psalter . "kathisma-4".$popup.">Kathisma 4</a>, " . PHP_EOL;
@@ -326,7 +326,7 @@ endforeach;
 		default:
         $outputcal .= $Week_day_n . " - Holyweek?" . PHP_EOL;
     }//	switch	 
-		elseif ($ChurchDates[lent] == 0):  // not lent
+		elseif ($ChurchDates['lent'] == 0):  // not lent
      switch ($Week_day_n) {
     case 1:
         if ($ChurchDates[normal] == 1):  //Monday normal
@@ -396,7 +396,7 @@ endforeach;
 	 else: //Lent
     switch ($Week_day_n) {
     case 1: // Monday lent
-        if ($ChurchDates[lent] == 5):  //week 5
+        if ($ChurchDates['lent'] == 5):  //week 5
 				if ($ChurchDates[Annunciation] == 1 ):
          $outputcal .=  $psalter . "kathisma-4".$popup.">Kathisma 4</a>, " . PHP_EOL;
          $outputcal .=  $psalter . "kathisma-5".$popup.">Kathisma 5</a>, " . PHP_EOL;
@@ -426,7 +426,7 @@ endforeach;
         endif;
         break; 
     case 2: //Tuesday lent
-        if ($ChurchDates[lent] == 5):    //week 5
+        if ($ChurchDates['lent'] == 5):    //week 5
 				if ($ChurchDates[Annunciation] == 1 ):
          $outputcal .=  $psalter . "kathisma-12".$popup.">Kathisma 12</a> (Matins)</li><li class='read'>" . PHP_EOL;
          $outputcal .=  $psalter . "kathisma-13".$popup.">Kathisma 13</a> (3rd Hour)</li><li class='read'>" . PHP_EOL;
@@ -455,7 +455,7 @@ endforeach;
         endif;
         break; 
     case 3: //Wednesday lent
-        if ($ChurchDates[lent] == 5):     //week 5
+        if ($ChurchDates['lent'] == 5):     //week 5
 				if ($ChurchDates[Annunciation] == 1 ):
         $outputcal .=  $psalter . "kathisma-19".$popup.">Kathisma 19</a>, " . PHP_EOL;
         $outputcal .=  $psalter . "kathisma-20".$popup.">Kathisma 20</a>, " . PHP_EOL;
@@ -486,7 +486,7 @@ endforeach;
         endif;
         break; 
     case 4: //Thursday lent
-        if ($ChurchDates[lent] == 5):     //week 5
+        if ($ChurchDates['lent'] == 5):     //week 5
 				if ($ChurchDates[Annunciation] == 1 ):
          $outputcal .=  $psalter . "kathisma-6".$popup.">Kathisma 6</a>, " . PHP_EOL;
          $outputcal .=  $psalter . "kathisma-7".$popup.">Kathisma 7</a>, " . PHP_EOL;
