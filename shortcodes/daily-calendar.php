@@ -11,6 +11,11 @@
    }
 add_shortcode( 'cmog_day', 'cmog_daily_calendar' );
 function cmog_daily_calendar(){
+	
+		 
+//var_dump(wp_upload_dir());
+	 
+	
 $read = $read_html = $hymn_htm = $more_html = $service = $Week_day_n = $ser_html = $fastfree = $fast = $fast_html = $hymn_html= $event_html = $icon_html = $gf_html = $lf_html = "";
 global $wpdb; //This is used for database queries
 $SDay = (!empty($_REQUEST['f_day'] )) ? $_REQUEST['f_day'] : '';
@@ -19,12 +24,15 @@ $SYear = (!empty ($_REQUEST['f_year'] )) ? $_REQUEST['f_year'] : '';
 $EveryYear = (!empty ($_REQUEST['f_every_year'] )) ? $_REQUEST['f_every_year'] : '';
 $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
  $date = getDate();
+$Week_day_n = $date["wday"];   
 //$yesterday = new MOGDate;
 //var_dump($yesterday->getTextofday());
  if ($SDay == "") $SDay = $date["mday"];
  if ($SMonth == "") $SMonth = $date["mon"];
  if ($SYear == "") $SYear = $date["year"];
- $display_date =   getDate(mktime(0,0,0,$SMonth,$SDay,$SYear));
+ $display_date =   getDate(mktime(0,0,0,$SMonth,$SDay,$SYear));  
+ $Week_day_n = $display_date["wday"];   
+ $SundayBulitin_date = getDate(mktime(0, 0, 0, $SMonth,($SDay - $Week_day_n), $SYear));  
     $outputcal = '';
     ?>
 	<?php $outputcal .= "<h2>" . $display_date["weekday"] . ", " .   $display_date["month"] . " "  .$display_date["mday"] . ", " . $display_date["year"] . "</h2>" . PHP_EOL;?>
@@ -329,7 +337,7 @@ endforeach;
 		elseif ($ChurchDates['lent'] == 0):  // not lent
      switch ($Week_day_n) {
     case 1:
-        if ($ChurchDates[normal] == 1):  //Monday normal
+        if ($ChurchDates['normal'] == 1):  //Monday normal
         $outputcal .=  $psalter . "kathisma-4".$popup.">Kathisma 4</a>, " . PHP_EOL;
         $outputcal .=  $psalter . "kathisma-5".$popup.">Kathisma 5</a> (Matins)</li><li class='read'>" . PHP_EOL;
         $outputcal .=  $psalter . "kathisma-6".$popup.">Kathisma 6</a> (Vespers)" . PHP_EOL;
@@ -341,7 +349,7 @@ endforeach;
         endif;
         break; 
     case 2:
-        if ($ChurchDates[normal] == 1): //Tuesday normal
+        if ($ChurchDates['normal'] == 1): //Tuesday normal
         $outputcal .=  $psalter . "kathisma-7".$popup.">Kathisma 7</a>, " . PHP_EOL;
         $outputcal .=  $psalter . "kathisma-8".$popup.">Kathisma 8</a> (Matins)</li><li class='read'>" . PHP_EOL;
         $outputcal .=  $psalter . "kathisma-9".$popup.">Kathisma 9</a> (Vespers)" . PHP_EOL;
@@ -353,7 +361,7 @@ endforeach;
         endif;
         break; 
     case 3:
-        if ($ChurchDates[normal] == 1): //Wednesday normal
+        if ($ChurchDates['normal'] == 1): //Wednesday normal
         $outputcal .=  $psalter . "kathisma-10".$popup.">Kathisma 10</a>, " . PHP_EOL;
         $outputcal .=  $psalter . "kathisma-11".$popup.">Kathisma 11</a> (Matins)</li><li class='read'>" . PHP_EOL;
         $outputcal .=  $psalter . "kathisma-12".$popup.">Kathisma 12</a> (Vespers)" . PHP_EOL;
@@ -365,7 +373,7 @@ endforeach;
         endif;
         break; 
     case 4:
-        if ($ChurchDates[normal] == 1): //Thursday normal
+        if ($ChurchDates['normal'] == 1): //Thursday normal
         $outputcal .=  $psalter . "kathisma-13".$popup.">Kathisma 13</a>, " . PHP_EOL;
         $outputcal .=  $psalter . "kathisma-14".$popup.">Kathisma 14</a> (Matins)</li><li class='read'>" . PHP_EOL;
         $outputcal .=  $psalter . "kathisma-15".$popup.">Kathisma 15</a> (Vespers)" . PHP_EOL;
@@ -397,7 +405,7 @@ endforeach;
     switch ($Week_day_n) {
     case 1: // Monday lent
         if ($ChurchDates['lent'] == 5):  //week 5
-				if ($ChurchDates[Annunciation] == 1 ):
+				if ($ChurchDates['Annunciation'] == 1 ):
          $outputcal .=  $psalter . "kathisma-4".$popup.">Kathisma 4</a>, " . PHP_EOL;
          $outputcal .=  $psalter . "kathisma-5".$popup.">Kathisma 5</a>, " . PHP_EOL;
          $outputcal .=  $psalter . "kathisma-6".$popup.">Kathisma 6</a> (Matins)</li><li class='read'>" . PHP_EOL;
@@ -427,7 +435,7 @@ endforeach;
         break; 
     case 2: //Tuesday lent
         if ($ChurchDates['lent'] == 5):    //week 5
-				if ($ChurchDates[Annunciation] == 1 ):
+				if ($ChurchDates['Annunciation'] == 1 ):
          $outputcal .=  $psalter . "kathisma-12".$popup.">Kathisma 12</a> (Matins)</li><li class='read'>" . PHP_EOL;
          $outputcal .=  $psalter . "kathisma-13".$popup.">Kathisma 13</a> (3rd Hour)</li><li class='read'>" . PHP_EOL;
          $outputcal .=  $psalter . "kathisma-14".$popup.">Kathisma 14</a> (6th Hour)</li><li class='read'>" . PHP_EOL;
@@ -456,7 +464,7 @@ endforeach;
         break; 
     case 3: //Wednesday lent
         if ($ChurchDates['lent'] == 5):     //week 5
-				if ($ChurchDates[Annunciation] == 1 ):
+				if ($ChurchDates['Annunciation'] == 1 ):
         $outputcal .=  $psalter . "kathisma-19".$popup.">Kathisma 19</a>, " . PHP_EOL;
         $outputcal .=  $psalter . "kathisma-20".$popup.">Kathisma 20</a>, " . PHP_EOL;
         $outputcal .=  $psalter . "kathisma-1".$popup.">Kathisma 1</a> (Matins)</li><li class='read'>" . PHP_EOL;
@@ -487,7 +495,7 @@ endforeach;
         break; 
     case 4: //Thursday lent
         if ($ChurchDates['lent'] == 5):     //week 5
-				if ($ChurchDates[Annunciation] == 1 ):
+				if ($ChurchDates['Annunciation'] == 1 ):
          $outputcal .=  $psalter . "kathisma-6".$popup.">Kathisma 6</a>, " . PHP_EOL;
          $outputcal .=  $psalter . "kathisma-7".$popup.">Kathisma 7</a>, " . PHP_EOL;
          $outputcal .=  $psalter . "kathisma-8".$popup.">Kathisma 8</a> (Matins)</li><li class='read'>" . PHP_EOL;
@@ -542,7 +550,46 @@ endforeach;
        $outputcal .= "<center>". $icon_html . "</center>" . PHP_EOL;
 ?>				
        <?php $outputcal .= " </form>" . PHP_EOL;?>
+	   
+	   
+<?php
+// Sunday Bulitin 
+$upload_dir = wp_upload_dir();  
+// $upload_dir['basedir']  is full path to /wp-content/uploads/
+$bulletin_dir = $upload_dir['basedir'] . "/Documents/bulletin/";
+$bulletin_url = $upload_dir['baseurl'] . "/Documents/bulletin/";
+$bulletin_thumb_dir = $upload_dir['basedir'] . "/Documents/bulletin/thumb/";
+$bulletin_thumb_url = $upload_dir['baseurl'] . "/Documents/bulletin/thumb/";
+//var_dump($SundayBulitin_date);
+	if (($SundayBulitin_date["year"] > "2014") & ($SundayBulitin_date[0] < $date[0])) {
+		$outputcal .= "<h4>Parish Bulletin:</h4>" ;
+		$bulletin_filename = $SundayBulitin_date["month"] . "_" . $SundayBulitin_date["mday"] . "_" . $SundayBulitin_date["year"] . ".pdf";
+		$bulletin_imagename = $SundayBulitin_date["month"] . "_" . $SundayBulitin_date["mday"] . "_" . $SundayBulitin_date["year"] . ".jpg";
+//echo "---> " . wp_normalize_path( $bulletin_dir . $bulletin_filename) . "<----";
+		if (file_exists($bulletin_dir . $bulletin_filename)) { 
+			$outputcal .= "<A HREF='". $bulletin_url . $bulletin_filename  . "' target='_blank'>";
+			if (file_exists($bulletin_thumb_dir . $bulletin_imagename)) {
+				$outputcal .= " <img src='". $bulletin_thumb_url . $bulletin_imagename . "' alt='Bulletin' ><br />"; 
+			}
+			$outputcal .= "Bulletin for the week of Sunday ". $SundayBulitin_date["month"] . " " . $SundayBulitin_date["mday"] . " " . $SundayBulitin_date["year"] . "	</a>"; 
+		} else {
+			$bulletin_filename = $SundayBulitin_date["month"] . " " . $SundayBulitin_date["mday"] . " " . $SundayBulitin_date["year"] . ".pdf";
+			$bulletin_filename = $SundayBulitin_date["month"] . " " . $SundayBulitin_date["mday"] . " " . $SundayBulitin_date["year"] . ".jpg";
+			if (file_exists($bulletin_dir .  $bulletin_filename)) { 
+					$outputcal .= "<A HREF='". $bulletin_url . $bulletin_filename  . "' target='_blank'>";
+				if (file_exists($bulletin_thumb_dir . $bulletin_imagename)) {
+					$outputcal .= " <img src='" . $bulletin_thumb_url . $bulletin_imagename . "' alt='Bulletin' ><br />"; 
+				}
+				$outputcal .= "Bulletin for the week of Sunday ". $SundayBulitin_date["month"] . " " . $SundayBulitin_date["mday"] . " " . $SundayBulitin_date["year"] . "</a><br>"; 
+			} else {
+				$outputcal .= "None found for the week of Sunday " . $SundayBulitin_date["month"] . " " . $SundayBulitin_date["mday"] . " " . $SundayBulitin_date["year"];
+			}
+		}
+	}   
+?> 
     <?php $outputcal .= "</div>" . PHP_EOL;?>
+
+	
 	<?php $outputcal .= "</section>";?>
 	<?php return $outputcal;?>
     <?php
