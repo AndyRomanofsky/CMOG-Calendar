@@ -37,7 +37,8 @@ function __construct()
 // returns jd (Julian Day Number) of Pascha for a given year
 // jd is not to be confused with Julian Calendar!
   function calculatePascha($y)
-    { $jg=0;
+    {  GLOBAL $core_var;
+	$jg=0;
 	if ($y>1582)
 	{ $jg=10; $x = floor($y/100) -16;
 	  if ($x>0) { $jg += (floor($x/4)*3) + $x % 4; } }
@@ -60,13 +61,14 @@ function __construct()
 	return $arr; }
 
   function retrieveXceptions($m, $d, $y)
-    { $arr=array($m, $d, "", 0);
-      $q="select * from xceptions where xcYear='$y' and xcMonth='$m' and xcDay='$d'";
+    {  GLOBAL $core_var;
+	$arr=array($m, $d, "", 0);
+      $q="select * from " . $core_var['db_prefix'] . "xceptions where xcYear='$y' and xcMonth='$m' and xcDay='$d'";  
       $r=$this->query($q);
       if ($w = $r->fetch_array())
 	{ $arr[0]=$w['xcNewMonth']; $arr[1]=$w['xcNewDay']; $arr[2]=$w['xcNote'];
 	  if ($arr[1] < 99)
-	  { $q = "select * from days where daMonth='{$arr[0]}' and daDay='{$arr[1]}'";
+	  { $q = "select * from " . $core_var['db_prefix'] . "days where daMonth='{$arr[0]}' and daDay='{$arr[1]}'";
 	    $w=$this->query_fetch($q);
 	    $arr[3] = $w['daFexc']; } }
       return $arr; }
@@ -117,7 +119,8 @@ function __construct()
 
 
   function calculateDay($m=0, $d=0, $y=0)
-    { $arr=array(); // this will hold all return values
+    {  GLOBAL $core_var;
+	$arr=array(); // this will hold all return values
 	if (!$m || !$d || !$y)
 	{ $x = getDate(); $y=$x['year']; $m=$x['mon']; $d=$x['mday']; }
 // get pday of current year
@@ -178,7 +181,7 @@ function __construct()
 	$menaion_fexc=$xa[3];
 // get records for pday and date from days table
 	if ($fday && $fday != 499) {$xf = "or daPday='$fday'";} else {$xf="";}
-	$q = "select * from days where (daPday='$pday' $xf) or (daMonth='$m' and daDay='$d')";
+	$q = "select * from " . $core_var['db_prefix'] . "days where (daPday='$pday' $xf) or (daMonth='$m' and daDay='$d')";
 
 // $this->deBug=$q;
 
@@ -447,7 +450,8 @@ The heart of this system is the concept of a "paschal year," which begins with Z
 	return $arr; }
 
   function retrieveReadings($day)
-    { $arr=array();
+    {  GLOBAL $core_var;
+	$arr=array();
 	$conditions=array();
 	$types=array();
 	$descs=array();
@@ -476,7 +480,7 @@ The heart of this system is the concept of a "paschal year," which begins with Z
 	    $conditions[]="(reMonth = {$pa['mon']} and reDay = {$pa['mday']} and reType = 'Vespers')"; }
 // make sql
 	$conds = implode(" or ", $conditions);
-	$q = "select readings.*, zachalos.zaDisplay as display, zachalos.zaSdisplay as sdisplay from readings left join zachalos on (zachalos.zaBook=readings.reBook and zachalos.zaNum=readings.reNum) where $conds order by reIndex";
+	$q = "select " . $core_var['db_prefix'] . "readings.*, " . $core_var['db_prefix'] . "zachalos.zaDisplay as display, " . $core_var['db_prefix'] . "zachalos.zaSdisplay as sdisplay from " . $core_var['db_prefix'] . "readings left join " . $core_var['db_prefix'] . "zachalos on (" . $core_var['db_prefix'] . "zachalos.zaBook=" . $core_var['db_prefix'] . "readings.reBook and " . $core_var['db_prefix'] . "zachalos.zaNum=" . $core_var['db_prefix'] . "readings.reNum) where $conds order by reIndex";
 
 // $this->deBug=$q;
 
@@ -554,8 +558,8 @@ The heart of this system is the concept of a "paschal year," which begins with Z
 	return $arr; }
 
   function retrievePericope($book, $num) 
-    {  RETURN  $arr=array();
-		$q="select * from zachalos where zaBook='$book' and zaNum='$num' ";
+    {  RETURN  $arr=array();  GLOBAL $core_var;
+		$q="select * from " . $core_var['db_prefix'] . "zachalos where zaBook='$book' and zaNum='$num' ";
 	$r = $this->query($q);
 	$arr=array(); // this will hold all return values
 	$xv=array(); // this will hold verse numbers
@@ -576,7 +580,7 @@ The heart of this system is the concept of a "paschal year," which begins with Z
 	$current_block=0;
 	foreach($blocks as $v)
 	{ ++$current_block; $current_verse=0; $a = explode("_", $v);
-	  $q = "select scVerse, scText from scriptures where scBook='$a[0]' and scVerse >= $a[1] and scVerse <= $a[2] order by scVerse";
+	  $q = "select scVerse, scText from " . $core_var['db_prefix'] . "scriptures where scBook='$a[0]' and scVerse >= $a[1] and scVerse <= $a[2] order by scVerse";
 	  $r = $this->query($q);
 	  $num_verses=$this->num_rows($r);
 	  while ($w=$this->fetch($r))

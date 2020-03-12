@@ -3,7 +3,7 @@ $core_var=array();
 $core_var['mysql_host']="localhost";
 $core_var['mysql_user']="root";
 $core_var['mysql_password']="";
-$core_var['mysql_database']="calendar";
+$core_var['mysql_database']="cmog_dd";
 
 $core_var['timezone']="America/New_York";
 
@@ -29,4 +29,8 @@ $core_var['fasts'][2]="Great Lent";
 $core_var['fasts'][3]="Apostles Fast";
 $core_var['fasts'][4]="Dormition Fast";
 $core_var['fasts'][5]="Nativity Fast";
+
+$core_var['db_prefix']="cmog66_oc_";
+
+
 ?>
