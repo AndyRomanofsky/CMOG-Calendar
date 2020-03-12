@@ -591,6 +591,43 @@ $bulletin_thumb_url = $upload_dir['baseurl'] . "/Documents/bulletin/thumb/";
 
 	
 	<?php $outputcal .= "</section>";?>
+	<?php  $core = new coreLIB; ?>
+	
+<?php
+   //$d = cal_from_jd($i, CAL_GREGORIAN); var_dump($d);
+ // $d = $display_date;  
+ $jd = unixtojd(mktime(0, 0, 0,$SMonth,$SDay,$SYear));
+ 
+  $d = cal_from_jd($jd, CAL_GREGORIAN);  var_dump($jd);
+  $a = $core->calculateDay($d['month'], $d['day'], $d['year']);
+  $outputcal .=  "<br />" . $d['month'] . "/"   . $d['day'] . "/"   . $d['year'] . "<br />";
+  if ($a['fast']) {$s=" class=\"fast\"";}
+  $outputcal .= "<td$s><p><span class=\"date\">{$d['monthname']} {$d['day']}</span>\n";
+  if ($a['fast'] && $a['fast_level'] && $a['fast_level']!=10 || $a['fast_level']==11)
+    {$outputcal .= "<br /><span class=\"fnote\">{$core->fast_levels[$a['fast_level']]}</span></p> ";}
+  if ($a['snote']) {$outputcal .= "<p class=\"snote\">{$a['snote']}</p>";}
+  $outputcal .= "<p>";
+  if (!$a['tone']) {$tone="";} else {$tone=" &mdash; Tone {$a['tone']}";}
+  if ($d['dow']==0 || ($a['pday'] > -9 && $a['pday'] < 7)) {$outputcal .= "<b>{$a['pname']}$tone.</b> ";}
+  if ($a['fname']) {$outputcal .= "<b>{$a['fname']}.</b> ";}
+  if ($a['saint']) {$outputcal .= "{$a['saint']}";}
+  $outputcal .=  "</p>\n";
+
+  $xr=$core->retrieveReadings($a);
+
+  foreach ($xr['sdisplays'] as $k=>$v)
+    { $xa[]="<span class=\"rdg\" onclick=\"rexec($i,$k);\">$v</span>"; }
+  $x=implode("<br />\n", $xa); unset($xa);
+  $outputcal .= "<p>$x</p>\n";	
+  ?>
+	
+	
+	
+	<?php $outputcal .= "<section>";?>
+	<?php $outputcal .= "<hr />";?>
+		<?php $outputcal .= "</section>";?>
+		
+		
 	<?php return $outputcal;?>
     <?php
 }

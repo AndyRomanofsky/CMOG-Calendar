@@ -659,9 +659,9 @@ if ($ChurchDates['day'] ==  0) $ChurchDates['day'] = 7;
              ORDER BY `listorder` DESC ", 'ARRAY_A');
  
     if (!$result) {
-      echo("<P>Error performing query: " .
-           mysql_error() . "</P>");
-      exit();
+     // echo("<P>Error performing query: " .
+       //    mysql_error() . "</P>");
+     // exit();
     }
     
   if  ($ChurchDates['lukew'] <> 0) {
