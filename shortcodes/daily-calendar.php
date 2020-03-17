@@ -598,8 +598,8 @@ $bulletin_thumb_url = $upload_dir['baseurl'] . "/Documents/bulletin/thumb/";
  // $d = $display_date;  
  $jd = unixtojd(mktime(0, 0, 0,$SMonth,$SDay,$SYear));
  
-  $d = cal_from_jd($jd, CAL_GREGORIAN);  var_dump($jd);
-  $a = $core->calculateDay($d['month'], $d['day'], $d['year']);
+  $d = cal_from_jd($jd, CAL_GREGORIAN); // var_dump($jd);
+  $a = $core->calculateDay($d['month'], $d['day'], $d['year']);   //echo "<pre>"; var_dump($a); echo "</pre>"; 
   $outputcal .=  "<br />" . $d['month'] . "/"   . $d['day'] . "/"   . $d['year'] . "<br />";
   if ($a['fast']) {$s=" class=\"fast\"";}
   $outputcal .= "<td$s><p><span class=\"date\">{$d['monthname']} {$d['day']}</span>\n";
@@ -615,7 +615,8 @@ $bulletin_thumb_url = $upload_dir['baseurl'] . "/Documents/bulletin/thumb/";
 
   $xr=$core->retrieveReadings($a);
 
-  foreach ($xr['sdisplays'] as $k=>$v)
+ // foreach ($xr['sdisplays'] as $k=>$v)
+   foreach ($xr['displays'] as $k=>$v)
     { $xa[]="<span class=\"rdg\" onclick=\"rexec($i,$k);\">$v</span>"; }
   $x=implode("<br />\n", $xa); unset($xa);
   $outputcal .= "<p>$x</p>\n";	
@@ -627,7 +628,20 @@ $bulletin_thumb_url = $upload_dir['baseurl'] . "/Documents/bulletin/thumb/";
 	<?php $outputcal .= "<hr />";?>
 		<?php $outputcal .= "</section>";?>
 		
-		
+		<div style="font-size:18px; line-height:150%; text-align:center; padding-top: .33em;">
+
+<?php
+  $readings_list=$core->retrieveReadings($a);
+  $xs=array();
+  foreach ($readings_list['displays'] as $k=>$v)
+  { if ($k==$reading) {$aa=""; $zz="";} else {$aa="<span class=\"rdg\" onclick=\"rexec($cday,$k);\">"; $zz="</span>";}
+    if ($readings_list['descs'][$k]) {$desc=" (".$readings_list['descs'][$k].")";} else {$desc="";}
+    $xs[]="$aa(" . $readings_list['nums'][$k] . ") $v$zz (" . $readings_list['types'][$k] . ")" . $desc; }
+  $x=implode("<br />\n", $xs); unset($xs);
+  $outputcal .= "<p>$x</p>\n";
+
+?>
+</div>
 	<?php return $outputcal;?>
     <?php
 }
