@@ -1,10 +1,10 @@
 <?php
-/************************** CREATE A PACKAGE CLASS *****************************
+/************************** CREATE A PACKAGE CLASS ****CMOG_Movable_List_Table**
  *******************************************************************************
  * Create a new list table package that extends the core WP_List_Table class.
  */
-class CMOG_Template_List_Table extends WP_List_Table {
-    /** ******************** function __construct *******************************
+class CMOG_Days_List_Table extends WP_List_Table {
+    /** ************************************************************************
      * REQUIRED. Set up a constructor that references the parent constructor. We 
      * use the parent reference to set some default configs.
      ***************************************************************************/
@@ -12,8 +12,8 @@ class CMOG_Template_List_Table extends WP_List_Table {
         global $status, $page;
         //Set parent defaults
         parent::__construct( array(
-            'singular'  => 'template',     //singular name of the listed records
-            'plural'    => 'templates',    //plural name of the listed records
+            'singular'  => 'day',     //singular name of the listed records
+            'plural'    => 'days',    //plural name of the listed records
             'ajax'      => false        //does this table support ajax?
         ) );
     }
@@ -21,12 +21,12 @@ class CMOG_Template_List_Table extends WP_List_Table {
 	protected function get_table_classes() {
     return array( 'widefat',  'striped', $this->_args['plural'] );
 }
-    /** ***********************function column_default************************
+	    /** ************************************************************************
      * Recommended. This method is called when the parent class can't find a method
      * specifically build for a given column. Generally, it's recommended to include
      * one method for each column you want to render, keeping your package class
      * neat and organized. For template, if the class needs to process a column
-     * named 'EventText', it would first see if a method named $this->column_title() 
+     * named 'EventText', it would first see if a method named $this->column_EventText() 
      * exists - if it does, that method will be used. If it doesn't, this one will
      * be used. Generally, you should try to use custom column methods as much as 
      * possible. 
@@ -42,31 +42,31 @@ class CMOG_Template_List_Table extends WP_List_Table {
      * @param array $column_name The name/slug of the column to be processed
      * @return string Text or HTML to be placed inside the column <td>
      **************************************************************************/
-    function column_default($item, $column_name){ 
+       function column_default($item, $column_name){  
         switch($column_name){
-            case 'week'   :
-            case 'Link'  :
-            case 'Class'  :
-            case 'AddDate' :
-            case 'icon' :
-            case 'hymn' :
-            case 'listorder'  :
-            case 'popup'  :
-            case 'asset_id'  :
-            case 'catid'  :
-            case 'created_by' : 
-            case 'published' :
-            case 'access' :
-            case 'language' :
-            case 'ID' :
-            case 'Offset' :
-            case 'Length' :
+            case 'daPday' :
+            case 'daMonth' :
+            case 'daDay'  :
+            case 'daPname'  :
+            case 'daPsub' :
+            case 'daFname' :
+            case 'daFleve' :
+            case 'daService'  :
+            case 'daSnote'  :
+            case 'daSaint'  :
+            case 'daSlevel'  :
+            case 'daFast' :
+            case 'daFexc' :
+            case 'daKatavasia' :
+            case 'daFlag' :
+            case 'daId' :
 			     return $item[$column_name];
             default:
                 return  "? - ". $column_name . "?";
         }
     }
-    /** ****************** function column_EventText ************************
+	*/
+    /** ************************************************************************
      * Recommended. This is a custom column method and is responsible for what
      * is rendered in any column with a name/slug of 'EventText'. Every time the class
      * needs to render a column, it first looks for a method named 
@@ -84,43 +84,39 @@ class CMOG_Template_List_Table extends WP_List_Table {
      **************************************************************************/
     function column_EventText($item){
         //Build row actions
-		
-		$paged = (int) (!empty($_REQUEST['paged'])) ? $_REQUEST['paged'] : 1;  
         $returnurl = $_SERVER['REQUEST_URI'];
 		if( 0 == $item['published'] ){ //draft
 		$actions = array(	
-            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s&gmd=%s&rpagenum=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID'],$item['gmd'],$paged),
-            'trash'    => sprintf('<a href="?page=%s&action=%s&template=%s">Trash</a>',$_REQUEST['page'],'trash',$item['ID']),
-            'publish'    => sprintf('<a href="?page=%s&action=%s&template=%s">Publish</a>',$_REQUEST['page'],'publish',$item['ID']),
+            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s">Edit</a>',$_REQUEST['page'],'edit',$item['daId']),
+            'trash'    => sprintf('<a href="?page=%s&action=%s&template=%s">Trash</a>',$_REQUEST['page'],'trash',$item['daId']),
+            'publish'    => sprintf('<a href="?page=%s&action=%s&template=%s">Publish</a>',$_REQUEST['page'],'publish',$item['daId']),
         );
 		$row_status = " <b>(Draft)</b>";
 		} elseif ( -2 == $item['published'] ){ //trash
 		$actions = array(	
-            'delete'    => sprintf('<a href="?page=%s&action=%s&template=%s">Delete</a>',$_REQUEST['page'],'delete',$item['ID']),
-            'draft'    => sprintf('<a href="?page=%s&action=%s&template=%s">Draft</a>',$_REQUEST['page'],'draft',$item['ID']),
-            'publish'    => sprintf('<a href="?page=%s&action=%s&template=%s">Publish</a>',$_REQUEST['page'],'publish',$item['ID']),
+            'delete'    => sprintf('<a href="?page=%s&action=%s&template=%s">Delete</a>',$_REQUEST['page'],'delete',$item['daId']),
+            'draft'    => sprintf('<a href="?page=%s&action=%s&template=%s">Draft</a>',$_REQUEST['page'],'draft',$item['daId']),
+            'publish'    => sprintf('<a href="?page=%s&action=%s&template=%s">Publish</a>',$_REQUEST['page'],'publish',$item['daId']),
         );
 		$row_status = " <b>(In Trash)</b>";
 		} elseif ( -1 == $item['published'] ){ //archived
 		$actions = array(
-            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s&gmd=%s&rpagenum=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID'],$item['gmd'],$paged),
-            'trash'    => sprintf('<a href="?page=%s&action=%s&template=%s">Trash</a>',$_REQUEST['page'],'trash',$item['ID']),
+            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s">Edit</a>',$_REQUEST['page'],'edit',$item['daId']),
+            'trash'    => sprintf('<a href="?page=%s&action=%s&template=%s">Trash</a>',$_REQUEST['page'],'trash',$item['daId']),
         );
 		$row_status = " <b>(Archived)</b>";
 		} else { // published 
-		$actions = array(	
-            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s&gmd=%s&rpagenum=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID'],$item['gmd'],$paged),
-            'draft'    => sprintf('<a href="?page=%s&action=%s&template=%s">Draft</a>',$_REQUEST['page'],'draft',$item['ID']),
-            'trash'    => sprintf('<a href="?page=%s&action=%s&template=%s">Trash</a>',$_REQUEST['page'],'trash',$item['ID']),
+		$actions = array(			
+            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s">Edit</a>',$_REQUEST['page'],'edit',$item['daId']),
+            'draft'    => sprintf('<a href="?page=%s&action=%s&template=%s">Draft</a>',$_REQUEST['page'],'draft',$item['daId']),
+            'trash'    => sprintf('<a href="?page=%s&action=%s&template=%s">Trash</a>',$_REQUEST['page'],'trash',$item['daId']),
         );
 		$row_status = "";
 		}
-        //Return the title contents
-        //return '<a href="?page=' . $_REQUEST['page'] . '&action=edit&event=' . $item['ID'] . '>' . $item['EventText'] . '</a> ' ;
-        //return '<a href="?page=' . $_REQUEST['page'] . '&action=edit&event=' . $item['ID'] . '>' . $item['EventText'] . '</a> ' . $this->row_actions($actions);
+ 
          return $item['EventText'] . $row_status . $this->row_actions($actions);
     }
-    /** ************ function column_cb **********************
+    /** ************************************************************************
      * REQUIRED if displaying checkboxes or using bulk actions! The 'cb' column
      * is given special treatment when columns are processed. It ALWAYS needs to
      * have it's own method.
@@ -132,8 +128,8 @@ class CMOG_Template_List_Table extends WP_List_Table {
     function column_cb($item){
         return sprintf(
             '<input type="checkbox" name="%1$s[]" value="%2$s" />',
-            /*$1%s*/ $this->_args['singular'],  //Let's simply repurpose the table's singular label ("template")
-            /*$2%s*/ $item['ID']                //The value of the checkbox should be the record's id
+            /*$1%s*/ $this->_args['singular'],  //Let's simply repurpose the table's singular label ("movable")
+            /*$2%s*/ $item['daId']                //The value of the checkbox should be the record's id
         );
     }
     function column_gmd($item){
@@ -145,18 +141,6 @@ class CMOG_Template_List_Table extends WP_List_Table {
             case  -1  : return "Movable";
             default:
                 return print_r($item,true); //Show the item for troubleshooting purposes
-        }
-	}   
-	function column_published($item){
-		         //  'tmplt_id' /
-				 //if (empty($item['published']))	 RETURN ;
-		 switch($item['published']){
-            case -2: return "Trashed"; 
-            case -1: return "Archived"; 
-            case 0  : return "Draft"; 
-            case 1  : return "Published"; 
-            default:
-                return "(" . $item['published'] . ")";
         }
 	}
     function column_wday($item){
@@ -173,6 +157,18 @@ class CMOG_Template_List_Table extends WP_List_Table {
                 return print_r($item,true); //Show the item for troubleshooting purposes
         }
 	}
+	function column_published($item){
+		         //  'tmplt_id' /
+				 if (empty($item['published']))	 RETURN ;
+		 switch($item['published']){
+            case -2: return "Trashed"; 
+            case -1: return "Archived"; 
+            case 0  : return "Draft"; 
+            case 1  : return "Published"; 
+            default:
+                return "(" . $item['published'] . ")";
+        }
+	}
 	function column_Link($item){
 		$out = "";
 		if ( $item['Link'] ) $out .=  "Link: <a href='" . $item['Link'] . "' target='_blank'>" . $item['Link'] . "</a><br />";
@@ -180,15 +176,7 @@ class CMOG_Template_List_Table extends WP_List_Table {
 		if ( $item['icon'] ) $out .=  "<img src='" . $item['icon'] . "' alt='icon'   height='50'><br />";
 		return $out;
 	}
-	function column_Loaded($item){
-		$out = ".";
-		return $out;
-	}
-	
-	
-	
-	
-    /** ***************** function get_columns ************************
+    /** ************************************************************************
      * REQUIRED! This method dictates the table's columns and titles. This should
      * return an array where the key is the column slug (and class) and the value 
      * is the column's title text. If you need a checkbox for bulk actions, refer
@@ -201,45 +189,54 @@ class CMOG_Template_List_Table extends WP_List_Table {
      * @see WP_List_Table::::single_row_columns()
      * @return array An associative array containing column information: 'slugs'=>'Visible Titles'
      **************************************************************************/
-    function get_columns(){ 
+    
+	/**
+            case 'daPda' :
+            case 'daMonth' :
+            case 'daDay'  :
+            case 'daPname'  :
+            case 'daPsub' :
+            case 'daFname' :
+            case 'daFleve' :
+            case 'daService'  :
+            case 'daSnote'  :
+            case 'daSaint'  :
+            case 'daSlevel'  :
+            case 'daFast' :
+            case 'daFexc' :
+            case 'daKatavasia' :
+            case 'daFla' :
+            case 'daId' :
+*/	
+	
+	function get_columns(){
         $columns = array(
             'cb'        => '<input type="checkbox" />', //Render a checkbox instead of text
-            'EventText'     => 'Event Text',
-            'week'     => 'Week',
-             'wday'      => 'Day',
-             'Link'      => 'Link',
-			 'Loaded'   => 'Loaded dates',
-             'Class'     => 'Class',
-             'icon'      => 'Icon',
-             'hymn'     => 'Hymn',
-             'listorder'      => 'List order',
-             'popup'       => 'Popup',
-             'asset_id'       => 'Asset id',
-             'catid'      => 'Cat id',
-             'created_by'     => 'Created by',
-             'gmd'  =>    'Type',
-             'published'      => 'Status',
-             'access'  =>    'Access',
-             'language'      => 'Language' ,
-             'AddDate'     => 'Date added',
-             'ID'     => 'ID',
+            'daPday'     => 'P Day',
+            'daMonth'     => 'Month',
+            'daDay'     => 'Day',
+             'daPname'      => 'P Day Name',
+            'daPsub'      => 'P Day Name sub',
+             'daFname'     => 'Feast',
+            'daService'     => 'Service',
+             'daSnote'      => 'Service note',
+             'daSaint'    => 'Saint',
+             'daSlevel'      => 'Level of saint',
+             'daFast'      => 'Level of fast',
+             'daFexc'       => 'Fasting exception ',
+             'daKatavasia'     => 'atavasia for canon',
+             'daFlag'     => 'Flag',
+             'daId'     => 'ID',
         );
 	  return $columns;
 	}
     function get_hidden(){
         $hidden = array(
-             'access' ,
-             'language' ,
-             'asset_id'  , 
-             'catid' ,
-             'popup'    ,
-			// 'Link',
-             'icon' ,
-             'hymn' ,
+             'daFlag' ,
         );
         return $hidden;
     }
-    /** ********* function get_sortable_columns *********************************
+    /** ************************************************************************
      * Optional. If you want one or more columns to be sortable (ASC/DESC toggle), 
      * you will need to register it here. This should return an array where the 
      * key is the column that needs to be sortable, and the value is db column to 
@@ -253,16 +250,15 @@ class CMOG_Template_List_Table extends WP_List_Table {
      * 
      * @return array An associative array containing all the columns that should be sortable: 'slugs'=>array('data_values',bool)
      **************************************************************************/
-    function get_sortable_columns(){
+    function get_sortable_columns(){ 
         $sortable_columns = array(
-            'EventText'     => array('EventText',false),     //true means it's already sorted
-            'week'    => array('week',false),
-            'wday'  => array('wday',false),
-            'ID'  => array('ID',false),
-        );
+            'daPday'     => array('daPday',false),     //true means it's already sorted
+            'daMonth'    => array('zaBook',false),            
+			'daId'  => array('daId',false),
+        ); 
         return $sortable_columns;
     }
-    /** ***************** function get_bulk_actions *****************************
+    /** ************************************************************************
      * Optional. If you need to include bulk actions in your list table, this is
      * the place to define them. Bulk actions are an associative array in the format
      * 'slug'=>'Visible Title'
@@ -315,7 +311,7 @@ class CMOG_Template_List_Table extends WP_List_Table {
 		}
         return $actions;
     }
-    /** ********** function process_bulk_action *************************
+    /** ************************************************************************
      * Optional. You can handle your bulk actions anywhere or anyhow you prefer.
      * For this template package, we will handle it in the class to keep things
      * clean and organized.
@@ -345,7 +341,7 @@ class CMOG_Template_List_Table extends WP_List_Table {
 					$format =  array( '%d');
 					echo  	'<br /> (bulk) ';
 					foreach ( $values as $value ) {
-						$where  = array ('ID' => $value);
+						$where  = array ('zaId' => $value);
 						$wpdb->update( $table, $data, $where, $format ); 	
 						echo  '<br />template ' .  $value . ' moved to the trash.' ;
 					}				 
@@ -354,7 +350,7 @@ class CMOG_Template_List_Table extends WP_List_Table {
 				$id = $_REQUEST['template'];
 				echo "<div class='notice notice-success is-dismissible'>";
 					// (code to trash row)
-				$where  = array ('ID' => $id);
+				$where  = array ('zaId' => $id);
 				$table = $wpdb->prefix . "cmog_templates";
 				$data	 = array( 'published' => -2);
 				$format =  array( '%d');
@@ -387,7 +383,7 @@ class CMOG_Template_List_Table extends WP_List_Table {
 			$id = $_REQUEST;
 			echo "<div class='notice notice-success is-dismissible'>";
 				// (code to delete row)
-				$where  = array ('ID' => $id);
+				$where  = array ('zaId' => $id);
 				$table = $wpdb->prefix . "cmog_templates";
 				$format =  array( '%d');
 				$wpdb->delete( $table,  $where, $format ); 
@@ -450,7 +446,7 @@ class CMOG_Template_List_Table extends WP_List_Table {
 					$format =  array( '%d');
 					echo  	'<br /> (bulk) ';
 					foreach ( $values as $value ) {
-						$where  = array ('ID' => $value);
+						$where  = array ('zaId' => $value);
 						$wpdb->update( $table, $data, $where, $format ); 	
 						echo  '<br />template ' .  $value . ' set to draft.' ;
 					}				 
@@ -459,7 +455,7 @@ class CMOG_Template_List_Table extends WP_List_Table {
 					$id = $values;
 					echo "<div class='notice notice-success is-dismissible'>s";
 						// (code to draft row)
-					$where  = array ('ID' => $id);
+					$where  = array ('zaId' => $id);
 					$table = $wpdb->prefix . "cmog_templates";
 					$data	 = array( 'published' => 0);
 					$format =  array( '%d');
@@ -482,30 +478,7 @@ class CMOG_Template_List_Table extends WP_List_Table {
 				echo  	'<br /> (can not bulk edit at this time) <br /></div>';
 			} else {
 				// (code to edit row)  
-					if (array_key_exists('gmd',$_REQUEST)){
-				$gmd = $_REQUEST['gmd'];
-				
-				switch($gmd){
-				case -3 :	
-				//cmog_render_edit_luke_page($id);
-				cmog_render_edit_page($id,$gmd);
-				break;
-				case -2 :	
-				cmog_render_edit_page($id,$gmd);
-				break;
-				case -4 :	
-				cmog_render_edit_page($id,$gmd);
-				break;
-				case -5 :	
-				cmog_render_edit_page($id,$gmd);
-				break;
-				default: 
-				var_dump($gmd);
-				}
-			}		
-			 	
-						
-				
+				cmog_render_edit_Movable_page($id);
 				exit;
 			}
         }  
@@ -523,29 +496,10 @@ class CMOG_Template_List_Table extends WP_List_Table {
 			//	echo  	'<br /> (can not bulk add at this time) <br /></div>';
 			//} else {
 				// (code to add row)  
-					if (array_key_exists('gmd',$_REQUEST)){
-				$gmd = $_REQUEST['gmd'];
-				switch($gmd){
-				case -3 :	
-				//cmog_render_edit_luke_page(0);
-				cmog_render_edit_page(0,$gmd);
-				break;
-				case -2 :	
-				cmog_render_edit_page(0,$gmd);
-				break;
-				case -4 :	
-				cmog_render_edit_page(0,$gmd);
-				break;
-				case -5 :	
-				cmog_render_edit_page(0,$gmd);
-				break;
-				default: 
-				var_dump($gmd);
-				}
-				//exit;
+				cmog_render_edit_Movable_page(0);
+				exit;
 			//}
-			}    
-		}
+        }    
 /** template reload **/
 		if( 'reload'===$this->current_action() ) {
 				if (!isset($query['template'])) {
@@ -568,36 +522,14 @@ class CMOG_Template_List_Table extends WP_List_Table {
 		if( 'update'===$this->current_action() ) {
 
 				// (code to add row)  
-				//cmog_render_edit_luke_page("update");
-				
-					if (array_key_exists('gmd',$_REQUEST)){
-				$gmd = $_REQUEST['gmd'];
-				switch($gmd){
-				case -3 :	
-				//cmog_render_edit_luke_page("update");
-				cmog_render_edit_page("update",$gmd);
-				break;
-				case -2 :	
-				cmog_render_edit_page("update",$gmd);
-				break;
-				case -4 :	
-				cmog_render_edit_page("update",$gmd);
-				break;
-				case -5 :	
-				cmog_render_edit_page("update",$gmd);
-				break;
-				default: 
-				var_dump($gmd);
-				}
-					}
-				
+				cmog_render_edit_Movable_page("update");
 				exit;
 
         }    
 
 
 	}
-    /** ************* function prepare_items ********************* 
+    /** ************************************************************************ 
      * REQUIRED! This is where you prepare your data for display. This method will
      * usually be used to query the database, sort and filter the data, and generally
      * get it ready to be displayed. At a minimum, we should set $this->items and
@@ -613,6 +545,7 @@ class CMOG_Template_List_Table extends WP_List_Table {
      * @uses $this->set_pagination_args()
      **************************************************************************/
     function prepare_items($cmog_template_type='ALL') {
+
         global $wpdb; //This is used only if making any database queries
         /**
          * First, lets decide how many records per page to show
@@ -623,7 +556,8 @@ class CMOG_Template_List_Table extends WP_List_Table {
 		// get the current admin screen
 		$screen = get_current_screen();
 		// retrieve the "per_page" option
-		$screen_option = $screen->get_option('per_page', 'option');
+		$screen_option = $screen->get_option('per_page', 'option'); 
+		
 		// retrieve the value of the option stored for the current user
 		$per_page = get_user_meta($user, $screen_option, true);
 		//var_dump($per_page);
@@ -662,44 +596,27 @@ class CMOG_Template_List_Table extends WP_List_Table {
         /**
          * This checks for sorting 
          */
-		$order = (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : 'asc'; //If no order, default to asc
-		if ($cmog_template_type == 'Movable'){
-			$orderby = " Offset $order " ;
-		} else  { 
-				if ( empty($_REQUEST['orderby'])) {
-					  $orderby = " `gmd`  DESC , week  $order ,  wday $order" ;
-				} elseif ($_REQUEST['orderby']  == 'week'){
-					  $orderby = " `gmd`  DESC , week  $order ,  wday  $order" ; 
-				} elseif ($_REQUEST['orderby']  == 'ID'){
-					  $orderby = " ID  $order" ;       
-				} elseif ($_REQUEST['orderby']  == 'wday'){
-					  $orderby = " `gmd`  DESC , wday  $order ,  week  $order" ;    
-				} elseif ($_REQUEST['orderby']  == 'EventText'){
-					  $orderby = " EventText $order,`gmd`  DESC , wday  $order ,  week  $order" ;    
-				} else {			
-					$orderby = $_REQUEST['orderby'] . " " .$order ;
-				}
-		} 
+		 
 		$status_filter = ' and published >= 0 ';
 		if ( array_key_exists('published',$_REQUEST )) {
 			$status_filter =  " and published = " . $_REQUEST['published'] . " " ;
 		} 
 		
-		if ($cmog_template_type == 'ALL'){
-        $data = $wpdb->get_results( "SELECT * FROM `cmog66_cmog_templates` WHERE 1 = 1 $status_filter ORDER BY $orderby  ", 'ARRAY_A' ); 
-        } elseif ($cmog_template_type == -5 ){ //Pascha
-        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_templates WHERE gmd = -5 $status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
-        } elseif ($cmog_template_type == -4){ //Triodion
-        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_templates WHERE gmd = -4 $status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
-        } elseif ($cmog_template_type == -3){ //Luke
-        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_templates WHERE gmd = -3 $status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
-        } elseif ($cmog_template_type == -2){ //Pentecost
-        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_templates WHERE gmd = -2 $status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
-        } elseif ($cmog_template_type == -1){ //Movable
-        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_moveableevent WHERE gmd = -1 $status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
-        } else {
-        $data = $wpdb->get_results( "SELECT * FROM `cmog66_cmog_templates`  WHERE 1 = 1 $status_filter ORDER BY $orderby  ", 'ARRAY_A' ); 
- 		 }
+		$order = (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : 'asc'; //If no order, default to asc
+		$orderby = "  $order " ;
+				if ( empty($_REQUEST['orderby'])) {
+						$orderby = " daMonth  daDay  $order " ;
+				} elseif ($_REQUEST['orderby']  == 'daMonth'){
+					  $orderby = " daMonth  daDay  $order" ;   
+				} elseif ($_REQUEST['orderby']  == 'daDay'){
+					  $orderby = " daDay  daMonth  $order" ;   
+				} else {			
+					$orderby = $_REQUEST['orderby'] . " " .$order ;
+				}
+        //$data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_moveableevent WHERE gmd = -1 //$status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
+	$data = $wpdb->get_results( "SELECT * FROM cmog66_oc_zachalos  ORDER BY   $orderby  ", 'ARRAY_A' ); 
+		
+		
         /***********************************************************************
          * http://codex.wordpress.org/Class_Reference/wpdb
          **********************************************************************/
@@ -721,7 +638,7 @@ class CMOG_Template_List_Table extends WP_List_Table {
          * to ensure that the data is trimmed to only the current page. We can use
          * array_slice() to 
          */
-       $data = array_slice($data,(($current_page-1)*$per_page),$per_page);
+        $data = array_slice($data,(($current_page-1)*$per_page),$per_page);
         /**
          * REQUIRED. Now we can add our *sorted* data to the items property, where 
          * it can be used by the rest of the class.
@@ -730,10 +647,10 @@ class CMOG_Template_List_Table extends WP_List_Table {
         /**
          * REQUIRED. We also have to register our pagination options & calculations.
          */
-       $this->set_pagination_args( array(
-             'total_items' => $total_items,                  //WE have to calculate the total number of items
-           'per_page'    => $per_page,                     //WE have to determine how many items to show on a page
-           'total_pages' => ceil($total_items/$per_page)   //WE have to calculate the total number of pages
-       ) );
+        $this->set_pagination_args( array(
+            'total_items' => $total_items,                  //WE have to calculate the total number of items
+            'per_page'    => $per_page,                     //WE have to determine how many items to show on a page
+            'total_pages' => ceil($total_items/$per_page)   //WE have to calculate the total number of pages
+        ) );
     }
 }

@@ -12,8 +12,8 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
         global $status, $page;
         //Set parent defaults
         parent::__construct( array(
-            'singular'  => 'movable',     //singular name of the listed records
-            'plural'    => 'movables',    //plural name of the listed records
+            'singular'  => 'reading',     //singular name of the listed records
+            'plural'    => 'readings',    //plural name of the listed records
             'ajax'      => false        //does this table support ajax?
         ) );
     }
@@ -42,7 +42,28 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
      * @param array $column_name The name/slug of the column to be processed
      * @return string Text or HTML to be placed inside the column <td>
      **************************************************************************/
-    function column_default($item, $column_name){  
+       function column_default($item, $column_name){  
+        switch($column_name){
+            case 'zaNum' :
+            case 'zaBook' :
+            case 'zaDisplay'  :
+            case 'zaSdisplay'  :
+            case 'zaDesc' :
+            case 'zaPreverse' :
+            case 'zaPrefix' :
+            case 'zaPrefixb'  :
+            case 'zaVerses'  :
+            case 'zaSuffix'  :
+            case 'zaFlag'  :
+            case 'zaId' :
+			     return $item[$column_name];
+            default:
+                return  "? - ". $column_name . "?";
+        }
+    }
+    /** 
+
+   function column_default($item, $column_name){  
         switch($column_name){
             case 'Offset' :
             case 'Length' :
@@ -65,6 +86,7 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
                 return  "? - ". $column_name . "?";
         }
     }
+	*/
     /** ************************************************************************
      * Recommended. This is a custom column method and is responsible for what
      * is rendered in any column with a name/slug of 'EventText'. Every time the class
@@ -86,29 +108,29 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
         $returnurl = $_SERVER['REQUEST_URI'];
 		if( 0 == $item['published'] ){ //draft
 		$actions = array(	
-            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID']),
-            'trash'    => sprintf('<a href="?page=%s&action=%s&template=%s">Trash</a>',$_REQUEST['page'],'trash',$item['ID']),
-            'publish'    => sprintf('<a href="?page=%s&action=%s&template=%s">Publish</a>',$_REQUEST['page'],'publish',$item['ID']),
+            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s">Edit</a>',$_REQUEST['page'],'edit',$item['zaID']),
+            'trash'    => sprintf('<a href="?page=%s&action=%s&template=%s">Trash</a>',$_REQUEST['page'],'trash',$item['zaID']),
+            'publish'    => sprintf('<a href="?page=%s&action=%s&template=%s">Publish</a>',$_REQUEST['page'],'publish',$item['zaID']),
         );
 		$row_status = " <b>(Draft)</b>";
 		} elseif ( -2 == $item['published'] ){ //trash
 		$actions = array(	
-            'delete'    => sprintf('<a href="?page=%s&action=%s&template=%s">Delete</a>',$_REQUEST['page'],'delete',$item['ID']),
-            'draft'    => sprintf('<a href="?page=%s&action=%s&template=%s">Draft</a>',$_REQUEST['page'],'draft',$item['ID']),
-            'publish'    => sprintf('<a href="?page=%s&action=%s&template=%s">Publish</a>',$_REQUEST['page'],'publish',$item['ID']),
+            'delete'    => sprintf('<a href="?page=%s&action=%s&template=%s">Delete</a>',$_REQUEST['page'],'delete',$item['zaID']),
+            'draft'    => sprintf('<a href="?page=%s&action=%s&template=%s">Draft</a>',$_REQUEST['page'],'draft',$item['zaID']),
+            'publish'    => sprintf('<a href="?page=%s&action=%s&template=%s">Publish</a>',$_REQUEST['page'],'publish',$item['zaID']),
         );
 		$row_status = " <b>(In Trash)</b>";
 		} elseif ( -1 == $item['published'] ){ //archived
 		$actions = array(
-            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID']),
-            'trash'    => sprintf('<a href="?page=%s&action=%s&template=%s">Trash</a>',$_REQUEST['page'],'trash',$item['ID']),
+            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s">Edit</a>',$_REQUEST['page'],'edit',$item['zaID']),
+            'trash'    => sprintf('<a href="?page=%s&action=%s&template=%s">Trash</a>',$_REQUEST['page'],'trash',$item['zaID']),
         );
 		$row_status = " <b>(Archived)</b>";
 		} else { // published 
 		$actions = array(			
-            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID']),
-            'draft'    => sprintf('<a href="?page=%s&action=%s&template=%s">Draft</a>',$_REQUEST['page'],'draft',$item['ID']),
-            'trash'    => sprintf('<a href="?page=%s&action=%s&template=%s">Trash</a>',$_REQUEST['page'],'trash',$item['ID']),
+            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s">Edit</a>',$_REQUEST['page'],'edit',$item['zaID']),
+            'draft'    => sprintf('<a href="?page=%s&action=%s&template=%s">Draft</a>',$_REQUEST['page'],'draft',$item['zaID']),
+            'trash'    => sprintf('<a href="?page=%s&action=%s&template=%s">Trash</a>',$_REQUEST['page'],'trash',$item['zaID']),
         );
 		$row_status = "";
 		}
@@ -130,7 +152,7 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
         return sprintf(
             '<input type="checkbox" name="%1$s[]" value="%2$s" />',
             /*$1%s*/ $this->_args['singular'],  //Let's simply repurpose the table's singular label ("movable")
-            /*$2%s*/ $item['ID']                //The value of the checkbox should be the record's id
+            /*$2%s*/ $item['zaID']                //The value of the checkbox should be the record's id
         );
     }
     function column_gmd($item){
@@ -190,40 +212,42 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
      * @see WP_List_Table::::single_row_columns()
      * @return array An associative array containing column information: 'slugs'=>'Visible Titles'
      **************************************************************************/
-    function get_columns(){
+    
+	/**
+	            case 'zaNum' :
+            case 'zaBook' :
+            case 'zaDisplay'  :
+            case 'zaSdisplay'  :
+            case 'zaDesc' :
+            case 'zaPreverse' :
+            case 'zaPrefix' :
+            case 'zaPrefixb'  :
+            case 'zaVerses'  :
+            case 'zaSuffix'  :
+            case 'zaFlag'  :
+            case 'zaId' :
+*/	
+	
+	function get_columns(){
         $columns = array(
             'cb'        => '<input type="checkbox" />', //Render a checkbox instead of text
-            'EventText'     => 'Event Text',
-            'Offset'     => 'Offset',
-             'Length'      => 'Length',
-             'Link'      => 'Links',
-             'Class'     => 'Class',
-             'icon'      => 'Icon',
-             'hymn'     => 'Hymn',
-             'listorder'      => 'List order',
-             'popup'       => 'Popup',
-             'asset_id'       => 'Asset id',
-             'catid'      => 'Cat id',
-             'created_by'     => 'Created by',
-             'gmd'  =>    'Type',
-             'published'      => 'Status',
-             'access'  =>    'Access',
-             'language'      => 'Language' ,
-             'AddDate'     => 'Date added',
-             'ID'     => 'ID',
+            'zaNum'     => 'Number',
+            'zaBook'     => 'Book',
+             'zaDisplay'      => 'Display',
+            'zaDesc'      => 'Desc',
+             'zaPreverse'     => 'Pre-Verse',
+             'zaPrefix'      => 'Prefix',
+             'zaPrefixb'    => 'Prefix B',
+             'zaVerses'      => 'Verses',
+             'zaSuffix'       => 'Suffix',
+             'zaFlag'     => 'Flag',
+             'zaId'     => 'ID',
         );
 	  return $columns;
 	}
     function get_hidden(){
         $hidden = array(
-             'access' ,
-             'language' ,
-             'asset_id'  , 
-             'catid' ,
-             'popup'    ,
-			// 'Link',
-             'icon' ,
-             'hymn' ,
+             'zaFlag' ,
         );
         return $hidden;
     }
@@ -243,9 +267,9 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
      **************************************************************************/
     function get_sortable_columns(){ 
         $sortable_columns = array(
-            'EventText'     => array('EventText',false),     //true means it's already sorted
-            'Offset'    => array('Offset',false),            
-			'ID'  => array('ID',false),
+            'zaNum'     => array('zaNum',false),     //true means it's already sorted
+            'zaBook'    => array('zaBook',false),            
+			'zaId'  => array('zaId',false),
         ); 
         return $sortable_columns;
     }
@@ -332,7 +356,7 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
 					$format =  array( '%d');
 					echo  	'<br /> (bulk) ';
 					foreach ( $values as $value ) {
-						$where  = array ('ID' => $value);
+						$where  = array ('zaId' => $value);
 						$wpdb->update( $table, $data, $where, $format ); 	
 						echo  '<br />template ' .  $value . ' moved to the trash.' ;
 					}				 
@@ -341,7 +365,7 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
 				$id = $_REQUEST['template'];
 				echo "<div class='notice notice-success is-dismissible'>";
 					// (code to trash row)
-				$where  = array ('ID' => $id);
+				$where  = array ('zaId' => $id);
 				$table = $wpdb->prefix . "cmog_templates";
 				$data	 = array( 'published' => -2);
 				$format =  array( '%d');
@@ -374,7 +398,7 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
 			$id = $_REQUEST;
 			echo "<div class='notice notice-success is-dismissible'>";
 				// (code to delete row)
-				$where  = array ('ID' => $id);
+				$where  = array ('zaId' => $id);
 				$table = $wpdb->prefix . "cmog_templates";
 				$format =  array( '%d');
 				$wpdb->delete( $table,  $where, $format ); 
@@ -437,7 +461,7 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
 					$format =  array( '%d');
 					echo  	'<br /> (bulk) ';
 					foreach ( $values as $value ) {
-						$where  = array ('ID' => $value);
+						$where  = array ('zaId' => $value);
 						$wpdb->update( $table, $data, $where, $format ); 	
 						echo  '<br />template ' .  $value . ' set to draft.' ;
 					}				 
@@ -446,7 +470,7 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
 					$id = $values;
 					echo "<div class='notice notice-success is-dismissible'>s";
 						// (code to draft row)
-					$where  = array ('ID' => $id);
+					$where  = array ('zaId' => $id);
 					$table = $wpdb->prefix . "cmog_templates";
 					$data	 = array( 'published' => 0);
 					$format =  array( '%d');
@@ -536,10 +560,7 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
      * @uses $this->set_pagination_args()
      **************************************************************************/
     function prepare_items($cmog_template_type='ALL') {
-        global $wpdb; //This is used only if making any database queries
-        /**
-         * First, lets decide how many records per page to show
-         */
+
         global $wpdb; //This is used only if making any database queries
         /**
          * First, lets decide how many records per page to show
@@ -597,17 +618,18 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
 		} 
 		
 		$order = (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : 'asc'; //If no order, default to asc
-		$orderby = " Offset $order " ;
+		$orderby = "  $order " ;
 				if ( empty($_REQUEST['orderby'])) {
-						$orderby = " Offset $order " ;
-				} elseif ($_REQUEST['orderby']  == 'ID'){
-					  $orderby = " ID  $order" ;     
-				} elseif ($_REQUEST['orderby']  == 'EventText'){
-					  $orderby = " EventText $order" ;    
+						$orderby = " zaNum  $order " ;
+				} elseif ($_REQUEST['orderby']  == 'zaId'){
+					  $orderby = " zaId  $order" ;   
 				} else {			
 					$orderby = $_REQUEST['orderby'] . " " .$order ;
 				}
-        $data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_moveableevent WHERE gmd = -1 $status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
+        //$data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_moveableevent WHERE gmd = -1 //$status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
+	$data = $wpdb->get_results( "SELECT * FROM cmog66_oc_zachalos  ORDER BY   $orderby  ", 'ARRAY_A' ); 
+		
+		
         /***********************************************************************
          * http://codex.wordpress.org/Class_Reference/wpdb
          **********************************************************************/

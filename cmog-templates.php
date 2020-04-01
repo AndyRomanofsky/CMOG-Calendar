@@ -46,7 +46,9 @@ function cmog_add_menu_items(){
 	                             add_submenu_page('cmog_list_test', 'Add Movable', '- Add Movable',  'activate_plugins', 'cmog_list_movable&action=add&template=0', 'cmog_render_edit_Movable_page');
 	$cmog_admin_pages['events'] = add_submenu_page('cmog_list_test', 'Events', 'Events',  'activate_plugins', 'cmog_list_events', 'cmog_render_events_list_page');
 	                          add_submenu_page('cmog_list_test', 'Add new Event', '- Add new Event',  'activate_plugins', 'cmog_list_events&action=add&event=0', 'cmog_render_edit_event_page');
-	$cmog_admin_pages['calendaer'] = add_submenu_page('cmog_list_test', 'Calender', 'Calender',  'activate_plugins', 'cmog_month_calendaer', 'cmog_render_events_calendar_page');
+	$cmog_admin_pages['zachalos'] = add_submenu_page('cmog_list_test', 'Zachalos', 'Zachalosr',  'activate_plugins', 'cmog_list_zachalos', 'cmog_render_zachalos_page');
+
+	//$cmog_admin_pages['top'] = add_menu_page('Template Plugin List Table', 'CMOG Templates', 'activate_plugins', 'cmog_list_zachalos', 'cmog_render_zachalos_page');
 	
 	add_action("load-" .$cmog_admin_pages['top'] , "cmog_top_screen_options");
 	add_action("load-" .$cmog_admin_pages['luke'] , "cmog_luke_screen_options");
@@ -55,6 +57,7 @@ function cmog_add_menu_items(){
 	add_action("load-" .$cmog_admin_pages['triodion'] , "cmog_triodion_screen_options");
 	add_action("load-" .$cmog_admin_pages['movable'] , "cmog_movable_screen_options");
 	add_action("load-" .$cmog_admin_pages['events'] , "cmog_events_screen_options");
+	add_action("load-" .$cmog_admin_pages['zachalos'] , "cmog_zachalos_screen_options");
 	//add_action("load-" .$cmog_admin_pages['calendaer'] , "cmog_calendaer_screen_options");
 	}
 add_action('admin_menu', 'cmog_add_menu_items');
@@ -135,6 +138,14 @@ require 'views/edit_event_page.php';
 } elseif ($cmog_page == "cmog_month_calendaer" ) {
 /** load calsses for list table pages */
 require 'classes/events_list.php';
+/**load views*/
+require 'views/list_pages.php';
+require 'views/edit_pages.php';
+require 'views/edit_event_page.php';
+	
+}elseif ($cmog_page == "cmog_list_zachalos" ) {
+/** load calsses for list table pages */
+require 'classes/zachalos_list.php';
 /**load views*/
 require 'views/list_pages.php';
 require 'views/edit_pages.php';
@@ -264,8 +275,22 @@ function cmog_events_screen_options() {
 	);
 	add_screen_option( 'per_page', $args );
 }
+//Option  tab for zachalos
+function cmog_zachalos_screen_options() {
+ 	global $cmog_admin_pages;
+	$screen = get_current_screen();
+ 	// get out of here if we are not on our settings page
+	if(!is_object($screen) || $screen->id != $cmog_admin_pages['zachalos'])
+		return;
+ 	$args = array(
+		'label' => __('Readings per page', 'cmog'),
+		'default' => 10,
+		'option' => 'cmog_per_page',
+	);
+	add_screen_option( 'per_page', $args );
+}
 
- function cmog_set_event_screen_option($status, $option, $value) {
+function cmog_set_event_screen_option($status, $option, $value) {
  	if ( 'cmog_per_page' == $option ) return $value;
  }
 //Option  tab for calendaer  (not called)

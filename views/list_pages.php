@@ -732,3 +732,82 @@ function cmog_top_menu($addtype = 0 ){
 		<a href="/wp-admin/admin.php?page=cmog_month_calendaer" class="page-title-action">Calendaer</a>
 	<?php
 }
+
+function cmog_render_zachalos_page(){
+	if ( !current_user_can( 'manage_options' ) )  	{
+		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+	} 
+/** *************************** RENDER Events list PAGE ********************************
+ *******************************************************************************
+ * This function renders the admin page and the template list table. Although it's
+ * possible to call prepare_items() and display() from the constructor, there
+ * are often times where you may need to include logic here between those steps,
+ * so we've instead called those methods explicitly. It keeps things flexible, and
+ * it's the way the list tables are used in the WordPress core.
+ */
+ 
+	if ( !current_user_can( 'manage_options' ) )  	{
+		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+	}
+	
+global $wpdb; //This is used only if making any database queries
+/*
+echo "<br> request: " ;  var_dump($_REQUEST);
+echo "<br> post: " ;  var_dump($_POST);
+echo "<br> get: " ;  var_dump($_GET);
+echo "<br> " ;
+echo "<br> server url: " ;  var_dump($_SERVER["REQUEST_URI"]);
+*/
+    //Create an instance of our package class...
+    $Events_List = new CMOG_Zachalos_List_Table();
+    //Fetch, prepare, sort, and filter our data...
+    $Events_List->prepare_items(); 
+	if( 'edit' === $Events_List->current_action() | 'add' === $Events_List->current_action()) RETURN;
+	if( 'Calendar' === $Events_List->current_action()) {
+		//cmog_render_events_calendar_page();
+	
+	}
+    $cmog_template_type =  (int)(!empty($_REQUEST['f_gmd'])) ? $_REQUEST['f_gmd'] : ''; //If no sort, default to null
+	global $wpdb; //This is used only if making any database queries
+$SMonth = (!empty($_REQUEST['f_month'] )) ? $_REQUEST['f_month'] : '';
+$SYear = (!empty ($_REQUEST['f_year'] )) ? $_REQUEST['f_year'] : '';
+$EveryYear = (!empty ($_REQUEST['f_every_year'] )) ? $_REQUEST['f_every_year'] : '';
+
+$SGmd = (!empty ($_REQUEST['f_gmd'] )) ? $_REQUEST['f_gmd'] : '';
+
+ //$date = getDate(); 
+// if ($SMonth == "") $SMonth = $date["mon"];
+ //if ($SYear == "") $SYear = $date["year"];
+    ?>
+    <div class="wrap">
+        <h2>Zachalos List</h2>  
+        <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
+            <p>(some text) </p>
+			<p> Zachalos List </p>
+        </div>
+		<div>
+		  
+        <br />
+        </div>
+        <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
+        <form id="templates-filter" method="get">
+		  <br />
+		  <?php if ( array_key_exists('published',$_REQUEST )) {
+			//$status_filter =  " and published = " . $_REQUEST['published'] . " " ;
+			echo "<input type='hidden' id='published' name='published' value='" . $_REQUEST['published'] . "'>";
+		} ?>
+		  <br />
+            <!-- For plugins, we also need to ensure that the form posts back to our current page -->
+            <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
+            <!-- Now we can render the completed list table -->
+
+            <?php $Events_List->display() ?>
+        </form>
+    </div>
+     
+ 	
+	
+	
+	
+    <?php
+}
