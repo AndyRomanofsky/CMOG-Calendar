@@ -3,7 +3,7 @@
  *******************************************************************************
  * Create a new list table package that extends the core WP_List_Table class.
  */
-class CMOG_Days_List_Table extends WP_List_Table {
+class CMOG_Readings_List_Table extends WP_List_Table {
     /** ************************************************************************
      * REQUIRED. Set up a constructor that references the parent constructor. We 
      * use the parent reference to set some default configs.
@@ -12,8 +12,8 @@ class CMOG_Days_List_Table extends WP_List_Table {
         global $status, $page;
         //Set parent defaults
         parent::__construct( array(
-            'singular'  => 'day',     //singular name of the listed records
-            'plural'    => 'days',    //plural name of the listed records
+            'singular'  => 'reading',     //singular name of the listed records
+            'plural'    => 'readings',    //plural name of the listed records
             'ajax'      => false        //does this table support ajax?
         ) );
     }
@@ -44,22 +44,16 @@ class CMOG_Days_List_Table extends WP_List_Table {
      **************************************************************************/
        function column_default($item, $column_name){  
         switch($column_name){
-            case 'daPday' :
-            case 'daMonth' :
-            case 'daDay'  :
-            case 'daPname'  :
-            case 'daPsub' :
-            case 'daFname' :
-            case 'daFleve' :
-            case 'daService'  :
-            case 'daSnote'  :
-            case 'daSaint'  :
-            case 'daSlevel'  :
-            case 'daFast' :
-            case 'daFexc' :
-            case 'daKatavasia' :
-            case 'daFlag' :
-            case 'daId' :
+            case 'reMonth' :
+            case 'reDay'  :
+            case 'rePday' :
+            case 'reType'  :
+            case 'reDesc' :
+            case 'reBook' :
+            case 'reNum' :
+            case 'reIndex'  :
+            case 'reFlag' :
+            case 'reId' :
 			     return $item[$column_name];
             default:
                 return  "? - ". $column_name . "?";
@@ -133,8 +127,8 @@ class CMOG_Days_List_Table extends WP_List_Table {
         );
     }
 	
-    function column_daMonth($item){
-		switch($item['daMonth']){
+    function column_reMonth($item){
+		switch($item['reMonth']){
             case 0  : return "(movable)";
             case 1  : return "January";
             case  2  : return "February";
@@ -210,32 +204,37 @@ class CMOG_Days_List_Table extends WP_List_Table {
      * @see WP_List_Table::::single_row_columns()
      * @return array An associative array containing column information: 'slugs'=>'Visible Titles'
      **************************************************************************/
-    
-	
+    /*
+            case 'reMonth' :
+            case 'reDay'  :
+            case 'rePday' :
+            case 'reType'  :
+            case 'reDesc' :
+            case 'reBook' :
+            case 'reNum' :
+            case 'reIndex'  :
+            case 'reFlag' :
+            case 'reId' :
+	*/
 	function get_columns(){
         $columns = array(
             'cb'        => '<input type="checkbox" />', //Render a checkbox instead of text
-            'daPday'     => 'P Day',
-            'daMonth'     => 'Month',
-            'daDay'     => 'Day',
-             'daPname'      => 'P Day Name',
-            'daPsub'      => 'P Day Name sub',
-             'daFname'     => 'Feast',
-            'daService'     => 'Service',
-             'daSnote'      => 'Service note',
-             'daSaint'    => 'Saint',
-             'daSlevel'      => 'Level of saint',
-             'daFast'      => 'Level of fast',
-             'daFexc'       => 'Fasting exception ',
-             'daKatavasia'     => 'atavasia for canon',
-             'daFlag'     => 'Flag',
-             'daId'     => 'ID',
+            'reMonth'     => 'Month',
+            'reDay'     => 'Day',
+            'rePday'     => 'P Day',
+            'reType'     => 'Type',
+             'reDesc'      => 'Desc.',
+            'reBook'      => 'Book',
+             'reNum'     => 'Number',
+            'reIndex'     => 'Index',
+             'reFlag'     => 'Flag',
+             'reId'     => 'ID',
         );
 	  return $columns;
 	}
     function get_hidden(){
         $hidden = array(
-             'daFlag' ,
+             'reFlag' ,
         );
         return $hidden;
     }
@@ -255,10 +254,15 @@ class CMOG_Days_List_Table extends WP_List_Table {
      **************************************************************************/
     function get_sortable_columns(){ 
         $sortable_columns = array(
-            'daPday'     => array('daPday',false),     //true means it's already sorted
-            'daDay'    => array('daDay',false),            
-            'daMonth'    => array('daMonth',false),            
-			'daId'  => array('daId',false),
+            'rePday'     => array('rePday',false),     //true means it's already sorted
+            'reDay'    => array('reDay',false),            
+            'reMonth'    => array('reMonth',false),            
+			'reId'  => array('reId',false),
+			'reType'  => array('reType',false),
+			'reBook'   => array('reBook',false),
+			'reIndex'   => array('reIndex',false),
+			'reNum'  => array('reNum',false),
+			
         ); 
         return $sortable_columns;
     }
@@ -609,18 +613,18 @@ class CMOG_Days_List_Table extends WP_List_Table {
 		$order = (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : 'asc'; //If no order, default to asc
 		$orderby = "  $order " ;
 				if ( empty($_REQUEST['orderby'])) {
-						$orderby = " `daPday`, `daMonth` , `daDay` $order " ;
-				} elseif ($_REQUEST['orderby']  == 'daPday'){
-					  $orderby = " `daPday`  $order, `daMonth` $order, `daDay` $order " ;
-				} elseif ($_REQUEST['orderby']  == 'daMonth'){
-					  $orderby = " `daMonth` $order, `daDay` $order" ;   
-				} elseif ($_REQUEST['orderby']  == 'daDay'){
-					  $orderby = " `daDay` $order, `daMonth` $order" ;   
+						$orderby = " `rePday`, `reMonth` , `reDay` $order " ;
+				} elseif ($_REQUEST['orderby']  == 'rePday'){
+					  $orderby = " `rePday`  $order, `reMonth` $order, `reDay` $order " ;
+				} elseif ($_REQUEST['orderby']  == 'reMonth'){
+					  $orderby = " `reMonth` $order, `reDay` $order" ;   
+				} elseif ($_REQUEST['orderby']  == 'reDay'){
+					  $orderby = " `reDay` $order, `reMonth` $order" ;   
 				} else {			
 					$orderby = $_REQUEST['orderby'] . " " .$order ;
 				}
         //$data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_moveableevent WHERE gmd = -1 //$status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
-	 $data = $wpdb->get_results( "SELECT * FROM cmog66_oc_days  ORDER BY   $orderby  ", 'ARRAY_A' ); 
+	 $data = $wpdb->get_results( "SELECT * FROM cmog66_oc_readings  ORDER BY   $orderby  ", 'ARRAY_A' ); 
  	// $data = $wpdb->get_results( "SELECT * FROM cmog66_oc_days", 'ARRAY_A' ); 
   //echo "<pre>";var_dump($orderby); echo "</pre>";  exit;
         /***********************************************************************

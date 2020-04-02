@@ -47,7 +47,9 @@ function cmog_add_menu_items(){
 	$cmog_admin_pages['events'] = add_submenu_page('cmog_list_test', 'Events', 'Events',  'activate_plugins', 'cmog_list_events', 'cmog_render_events_list_page');
 	                          add_submenu_page('cmog_list_test', 'Add new Event', '- Add new Event',  'activate_plugins', 'cmog_list_events&action=add&event=0', 'cmog_render_edit_event_page');
 	$cmog_admin_pages['zachalos'] = add_submenu_page('cmog_list_test', 'Zachalos', 'Zachalosr',  'activate_plugins', 'cmog_list_zachalos', 'cmog_render_zachalos_page');
-
+	$cmog_admin_pages['days'] = add_submenu_page('cmog_list_test', 'Days', 'Days',  'activate_plugins', 'cmog_list_days', 'cmog_render_days_list_page');
+	$cmog_admin_pages['readings'] = add_submenu_page('cmog_list_test', 'Readings', 'Readings',  'activate_plugins', 'cmog_list_readings', 'cmog_render_readings_list_page');
+	$cmog_admin_pages['xceptions'] = add_submenu_page('cmog_list_test', 'Exceptions', 'Exceptions',  'activate_plugins', 'cmog_list_xceptions', 'cmog_render_xceptions_list_page');
 	//$cmog_admin_pages['top'] = add_menu_page('Template Plugin List Table', 'CMOG Templates', 'activate_plugins', 'cmog_list_zachalos', 'cmog_render_zachalos_page');
 	
 	add_action("load-" .$cmog_admin_pages['top'] , "cmog_top_screen_options");
@@ -58,6 +60,9 @@ function cmog_add_menu_items(){
 	add_action("load-" .$cmog_admin_pages['movable'] , "cmog_movable_screen_options");
 	add_action("load-" .$cmog_admin_pages['events'] , "cmog_events_screen_options");
 	add_action("load-" .$cmog_admin_pages['zachalos'] , "cmog_zachalos_screen_options");
+	add_action("load-" .$cmog_admin_pages['days'] , "cmog_days_screen_options");
+	add_action("load-" .$cmog_admin_pages['readings'] , "cmog_readings_screen_options");
+	add_action("load-" .$cmog_admin_pages['xceptions'] , "cmog_xceptions_screen_options");
 	//add_action("load-" .$cmog_admin_pages['calendaer'] , "cmog_calendaer_screen_options");
 	}
 add_action('admin_menu', 'cmog_add_menu_items');
@@ -85,58 +90,58 @@ if (isset($_REQUEST['page'])) {
 	$cmog_page = $_REQUEST['page'];
 }
 //require 'cmog-helper.php';
-/** load calsses for list table pages */
+/** load classes for list table pages */
 
 if ($cmog_page == "cmog_list_test" ) {   
-/** load calsses for list table pages */
+/** load classes for list table pages */
 require 'classes/template_list.php';
 /**load views*/
 require 'views/list_pages.php';
 require 'views/edit_pages.php';
 } elseif ($cmog_page == "cmog_list_luke" ) {
-/** load calsses for list table pages */
+/** load classes for list table pages */
 require 'classes/template_list.php';
 /**load views*/
 require 'views/list_pages.php';
 require 'views/edit_pages.php';
 require 'views/edit_event_page.php';
 } elseif ($cmog_page == "cmog_list_pentecos" ) {
-/** load calsses for list table pages */
+/** load classes for list table pages */
 require 'classes/template_list.php';
 /**load views*/
 require 'views/list_pages.php';
 require 'views/edit_pages.php';
 require 'views/edit_event_page.php';
 } elseif ($cmog_page == "cmog_list_pascha" ) {
-/** load calsses for list table pages */
+/** load classes for list table pages */
 require 'classes/template_list.php';
 /**load views*/
 require 'views/list_pages.php';
 require 'views/edit_pages.php';
 require 'views/edit_event_page.php';
 } elseif ($cmog_page == "cmog_list_triodion" ) {
-/** load calsses for list table pages */
+/** load classes for list table pages */
 require 'classes/template_list.php';
 /**load views*/
 require 'views/list_pages.php';
 require 'views/edit_pages.php';
 require 'views/edit_event_page.php';
 } elseif ($cmog_page == "cmog_list_movable" ) {
-/** load calsses for list table pages */
+/** load classes for list table pages */
 require 'classes/movable_list.php';
 /**load views*/
 require 'views/list_pages.php';
 require 'views/edit_pages.php';
 require 'views/edit_event_page.php';
 } elseif ($cmog_page == "cmog_list_events" ) {
-/** load calsses for list table pages */
+/** load classes for list table pages */
 require 'classes/events_list.php';
 /**load views*/
 require 'views/list_pages.php';
 require 'views/edit_pages.php';
 require 'views/edit_event_page.php';
 } elseif ($cmog_page == "cmog_month_calendaer" ) {
-/** load calsses for list table pages */
+/** load classes for list table pages */
 require 'classes/events_list.php';
 /**load views*/
 require 'views/list_pages.php';
@@ -144,13 +149,36 @@ require 'views/edit_pages.php';
 require 'views/edit_event_page.php';
 	
 }elseif ($cmog_page == "cmog_list_zachalos" ) {
-/** load calsses for list table pages */
+/** load classes for list table pages */
 require 'classes/zachalos_list.php';
 /**load views*/
 require 'views/list_pages.php';
 require 'views/edit_pages.php';
 require 'views/edit_event_page.php';
 	
+}elseif ($cmog_page == "cmog_list_readings" ) {
+/** load classes for list table pages */
+require 'classes/readings_list.php';
+/**load views*/
+require 'views/list_pages.php';
+require 'views/edit_pages.php';
+require 'views/edit_event_page.php';
+	
+}elseif ($cmog_page == "cmog_list_xceptions" ) {
+/** load classes for list table pages */
+require 'classes/xceptions_list.php';
+/**load views*/
+require 'views/list_pages.php';
+require 'views/edit_pages.php';
+require 'views/edit_event_page.php';
+	
+}elseif ($cmog_page == "cmog_list_days" ) {
+/** load classes for list table pages */
+require 'classes/days_list.php';
+/**load views*/
+require 'views/list_pages.php';
+require 'views/edit_pages.php';
+require 'views/edit_event_page.php';
 }
 /*************************** LOAD THE Option tabs ********************************/
 //Option  tab for top
@@ -285,10 +313,53 @@ function cmog_zachalos_screen_options() {
  	$args = array(
 		'label' => __('Readings per page', 'cmog'),
 		'default' => 10,
-		'option' => 'cmog_per_page',
+		'option' => 'cmog_zachalos_per_page',
 	);
 	add_screen_option( 'per_page', $args );
 }
+//Option  tab for readings
+function cmog_readings_screen_options() {
+ 	global $cmog_admin_pages;
+	$screen = get_current_screen();
+ 	// get out of here if we are not on our settings page
+	if(!is_object($screen) || $screen->id != $cmog_admin_pages['readings'])
+		return;
+ 	$args = array(
+		'label' => __('Readings per page', 'cmog'),
+		'default' => 10,
+		'option' => 'cmog_readings_per_page',
+	);
+	add_screen_option( 'per_page', $args );
+}
+//Option  tab for days
+function cmog_days_screen_options() {
+ 	global $cmog_admin_pages;
+	$screen = get_current_screen();
+ 	// get out of here if we are not on our settings page
+	if(!is_object($screen) || $screen->id != $cmog_admin_pages['days'])
+		return;
+ 	$args = array(
+		'label' => __('Days per page', 'cmog'),
+		'default' => 10,
+		'option' => 'cmog_days_per_page',
+	);
+	add_screen_option( 'per_page', $args );
+}
+//Option  tab for xceptions
+function cmog_xceptions_screen_options() {
+ 	global $cmog_admin_pages;
+	$screen = get_current_screen();
+ 	// get out of here if we are not on our settings page
+	if(!is_object($screen) || $screen->id != $cmog_admin_pages['xceptions'])
+		return;
+ 	$args = array(
+		'label' => __('Exceptions per page', 'cmog'),
+		'default' => 10,
+		'option' => 'cmog_xceptions_per_page',
+	);
+	add_screen_option( 'per_page', $args );
+}
+
 
 function cmog_set_event_screen_option($status, $option, $value) {
  	if ( 'cmog_per_page' == $option ) return $value;
@@ -341,6 +412,19 @@ case "cmog_list_triodion":
  break;
 case "cmog_list_movable":
  add_filter('set-screen-option', 'cmog_set_movable_screen_option', 10, 3); 
+ break;
+ 
+case "cmog_list_zachalos":
+ add_filter('set-screen-option', 'cmog_set_zachalos_screen_option', 10, 3); 
+ break;
+case "cmog_list_days":
+ add_filter('set-screen-option', 'cmog_set_days_screen_option', 10, 3); 
+ break;
+case "cmog_list_readings":
+ add_filter('set-screen-option', 'cmog_set_readings_screen_option', 10, 3); 
+ break;
+case "cmog_list_xceptions":
+ add_filter('set-screen-option', 'cmog_set_xceptions_screen_option', 10, 3); 
  break;
  default:
 }

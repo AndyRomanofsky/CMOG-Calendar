@@ -3,7 +3,7 @@
  *******************************************************************************
  * Create a new list table package that extends the core WP_List_Table class.
  */
-class CMOG_Days_List_Table extends WP_List_Table {
+class CMOG_Exceptions_List_Table extends WP_List_Table {
     /** ************************************************************************
      * REQUIRED. Set up a constructor that references the parent constructor. We 
      * use the parent reference to set some default configs.
@@ -12,8 +12,8 @@ class CMOG_Days_List_Table extends WP_List_Table {
         global $status, $page;
         //Set parent defaults
         parent::__construct( array(
-            'singular'  => 'day',     //singular name of the listed records
-            'plural'    => 'days',    //plural name of the listed records
+            'singular'  => 'exception',     //singular name of the listed records
+            'plural'    => 'exceptions',    //plural name of the listed records
             'ajax'      => false        //does this table support ajax?
         ) );
     }
@@ -44,22 +44,14 @@ class CMOG_Days_List_Table extends WP_List_Table {
      **************************************************************************/
        function column_default($item, $column_name){  
         switch($column_name){
-            case 'daPday' :
-            case 'daMonth' :
-            case 'daDay'  :
-            case 'daPname'  :
-            case 'daPsub' :
-            case 'daFname' :
-            case 'daFleve' :
-            case 'daService'  :
-            case 'daSnote'  :
-            case 'daSaint'  :
-            case 'daSlevel'  :
-            case 'daFast' :
-            case 'daFexc' :
-            case 'daKatavasia' :
-            case 'daFlag' :
-            case 'daId' :
+            case 'xcYear' :
+            case 'xcMonth' :
+            case 'xcDay'  :
+            case 'xcNewMonth'  :
+            case 'xcNewDay' :
+            case 'xcNote' :
+            case 'xcFlag' :
+            case 'xcId' :
 			     return $item[$column_name];
             default:
                 return  "? - ". $column_name . "?";
@@ -133,8 +125,8 @@ class CMOG_Days_List_Table extends WP_List_Table {
         );
     }
 	
-    function column_daMonth($item){
-		switch($item['daMonth']){
+    function column_xcMonth($item){
+		switch($item['xcMonth']){
             case 0  : return "(movable)";
             case 1  : return "January";
             case  2  : return "February";
@@ -153,16 +145,30 @@ class CMOG_Days_List_Table extends WP_List_Table {
                 //return print_r($item,true); //Show the item for troubleshooting purposes
         }
 	} 
-    function column_gmd($item){
-		 switch($item['gmd']){
-            case -5: return "Pascha";
-            case -4  : return "Triodion";
-            case  -3  : return "Luke";
-            case  -2  : return "Pentecost";
-            case  -1  : return "Movable";
+    function column_xcNewMonth($item){
+		switch($item['xcNewMonth']){
+            case 0  : return "(movable)";
+            case 1  : return "January";
+            case  2  : return "February";
+            case  3  : return "March";
+            case  4  : return "April";
+            case  5  : return "May";
+            case  6  : return "June";
+            case  7  : return "July";
+            case  8  : return "August";
+            case  9  : return "September";
+            case  10  : return "October";
+            case  11  : return "November";
+            case  12  : return "December";
+            case  99  : return "";
             default:
-                return print_r($item,true); //Show the item for troubleshooting purposes
+                 return "?" . $item['xcNewMonth'];
+                //return print_r($item,true); //Show the item for troubleshooting purposes
         }
+	} 
+    function column_xcNewDay($item){
+		if($item['xcNewDay'] == 99) return "";
+        return $item['xcNewDay'] ;
 	}
     function column_wday($item){
 		switch($item['wday']){
@@ -210,32 +216,33 @@ class CMOG_Days_List_Table extends WP_List_Table {
      * @see WP_List_Table::::single_row_columns()
      * @return array An associative array containing column information: 'slugs'=>'Visible Titles'
      **************************************************************************/
-    
-	
+    /**
+             case 'xcYear' :
+            case 'xcMonth' :
+            case 'xcDay'  :
+            case 'xcNewMonth'  :
+            case 'xcNewDay' :
+            case 'xcNote' :
+            case 'xcFlag' :
+            case 'xcId' :
+	*/
 	function get_columns(){
         $columns = array(
             'cb'        => '<input type="checkbox" />', //Render a checkbox instead of text
-            'daPday'     => 'P Day',
-            'daMonth'     => 'Month',
-            'daDay'     => 'Day',
-             'daPname'      => 'P Day Name',
-            'daPsub'      => 'P Day Name sub',
-             'daFname'     => 'Feast',
-            'daService'     => 'Service',
-             'daSnote'      => 'Service note',
-             'daSaint'    => 'Saint',
-             'daSlevel'      => 'Level of saint',
-             'daFast'      => 'Level of fast',
-             'daFexc'       => 'Fasting exception ',
-             'daKatavasia'     => 'atavasia for canon',
-             'daFlag'     => 'Flag',
-             'daId'     => 'ID',
+            'xcYear'     => 'Year',
+            'xcMonth'     => 'Month',
+            'xcDay'     => 'Day',
+             'xcNewMonth'      => 'New Month',
+            'xcNewDay'      => 'New Day',
+             'xcNote'     => 'Note',
+             'xcFlag'     => 'Flag',
+             'xcId'     => 'ID',
         );
 	  return $columns;
 	}
     function get_hidden(){
         $hidden = array(
-             'daFlag' ,
+             'xcFlag' ,
         );
         return $hidden;
     }
@@ -255,10 +262,10 @@ class CMOG_Days_List_Table extends WP_List_Table {
      **************************************************************************/
     function get_sortable_columns(){ 
         $sortable_columns = array(
-            'daPday'     => array('daPday',false),     //true means it's already sorted
-            'daDay'    => array('daDay',false),            
-            'daMonth'    => array('daMonth',false),            
-			'daId'  => array('daId',false),
+            'xcYear'     => array('xcYear',false),     //true means it's already sorted
+            'xcDay'    => array('xcDay',false),            
+            'xcMonth'    => array('xcMonth',false),            
+			'xcId'  => array('xcId',false),
         ); 
         return $sortable_columns;
     }
@@ -609,18 +616,18 @@ class CMOG_Days_List_Table extends WP_List_Table {
 		$order = (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : 'asc'; //If no order, default to asc
 		$orderby = "  $order " ;
 				if ( empty($_REQUEST['orderby'])) {
-						$orderby = " `daPday`, `daMonth` , `daDay` $order " ;
-				} elseif ($_REQUEST['orderby']  == 'daPday'){
-					  $orderby = " `daPday`  $order, `daMonth` $order, `daDay` $order " ;
-				} elseif ($_REQUEST['orderby']  == 'daMonth'){
-					  $orderby = " `daMonth` $order, `daDay` $order" ;   
-				} elseif ($_REQUEST['orderby']  == 'daDay'){
-					  $orderby = " `daDay` $order, `daMonth` $order" ;   
+						$orderby = " `xcYear`, `xcMonth` , `xcDay` $order " ;
+				} elseif ($_REQUEST['orderby']  == 'xcYear'){
+					  $orderby = " `xcYear`  $order, `xcMonth` $order, `xcDay` $order " ;
+				} elseif ($_REQUEST['orderby']  == 'xcMonth'){
+					  $orderby = " `xcMonth` $order, `xcDay` $order" ;   
+				} elseif ($_REQUEST['orderby']  == 'xcDay'){
+					  $orderby = " `xcDay` $order, `xcMonth` $order" ;   
 				} else {			
 					$orderby = $_REQUEST['orderby'] . " " .$order ;
 				}
         //$data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_moveableevent WHERE gmd = -1 //$status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
-	 $data = $wpdb->get_results( "SELECT * FROM cmog66_oc_days  ORDER BY   $orderby  ", 'ARRAY_A' ); 
+	 $data = $wpdb->get_results( "SELECT * FROM cmog66_oc_xceptions  ORDER BY   $orderby  ", 'ARRAY_A' ); 
  	// $data = $wpdb->get_results( "SELECT * FROM cmog66_oc_days", 'ARRAY_A' ); 
   //echo "<pre>";var_dump($orderby); echo "</pre>";  exit;
         /***********************************************************************
