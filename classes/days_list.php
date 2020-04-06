@@ -561,13 +561,13 @@ class CMOG_Days_List_Table extends WP_List_Table {
 		$screen = get_current_screen();
 		// retrieve the "per_page" option
 		$screen_option = $screen->get_option('per_page', 'option'); 
-		
+		//var_dump($screen_option);
 		// retrieve the value of the option stored for the current user
 		$per_page = get_user_meta($user, $screen_option, true);
 		//var_dump($per_page);
 		if ( empty ( $per_page) || $per_page < 1 ) {
 			// get the default value if none is set
-			$per_page = $screen->get_option( 'per_page', 'default' );
+			$per_page = $screen->get_option( 'per_page', 'default' );	 var_dump($per_page);
 		}
         /**
          * REQUIRED. Now we need to define our column headers. This includes a complete

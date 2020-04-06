@@ -303,6 +303,11 @@ function cmog_events_screen_options() {
 	);
 	add_screen_option( 'per_page', $args );
 }
+
+function cmog_set_event_screen_option($status, $option, $value) {
+ 	if ( 'cmog_per_page' == $option ) return $value;
+ }
+
 //Option  tab for zachalos
 function cmog_zachalos_screen_options() {
  	global $cmog_admin_pages;
@@ -317,6 +322,11 @@ function cmog_zachalos_screen_options() {
 	);
 	add_screen_option( 'per_page', $args );
 }
+
+function cmog_set_zachalos_screen_option($status, $option, $value) {
+ 	if ( 'cmog_zachalos_per_page' == $option ) return $value;
+ }
+
 //Option  tab for readings
 function cmog_readings_screen_options() {
  	global $cmog_admin_pages;
@@ -331,6 +341,11 @@ function cmog_readings_screen_options() {
 	);
 	add_screen_option( 'per_page', $args );
 }
+
+function cmog_set_readings_screen_option($status, $option, $value) {
+ 	if ( 'cmog_readings_per_page' == $option ) return $value;
+ }
+
 //Option  tab for days
 function cmog_days_screen_options() {
  	global $cmog_admin_pages;
@@ -345,6 +360,11 @@ function cmog_days_screen_options() {
 	);
 	add_screen_option( 'per_page', $args );
 }
+
+function cmog_set_days_screen_option($status, $option, $value) {
+ 	if ( 'cmog_days_per_page' == $option ) return $value;
+ }
+
 //Option  tab for xceptions
 function cmog_xceptions_screen_options() {
  	global $cmog_admin_pages;
@@ -359,10 +379,8 @@ function cmog_xceptions_screen_options() {
 	);
 	add_screen_option( 'per_page', $args );
 }
-
-
-function cmog_set_event_screen_option($status, $option, $value) {
- 	if ( 'cmog_per_page' == $option ) return $value;
+function cmog_set_xceptions_screen_option($status, $option, $value) {
+ 	if ( 'cmog_xceptions_per_page' == $option ) return $value;
  }
 //Option  tab for calendaer  (not called)
 function cmog_calendaer_screen_options() {
