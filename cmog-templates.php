@@ -359,6 +359,7 @@ function cmog_days_screen_options() {
 		'option' => 'cmog_days_per_page',
 	);
 	add_screen_option( 'per_page', $args );
+	
 }
 
 function cmog_set_days_screen_option($status, $option, $value) {
@@ -453,17 +454,37 @@ add_action( 'init', 'cmog_load_setfilters' );
 /*************************** LOAD THE Help tabs ********************************///Help tab
 function cmog_plugin_add_help(){
     global $my_admin_page;
-    $screen = get_current_screen();
+    $screen = get_current_screen();  
     if ( $screen->id != "toplevel_page_cmog_list_test" )
         return;
     $screen->add_help_tab( array(
         'id'	=> 'my_help_tab',
         'title'	=> __('My Help Tab'),
-        'content'	=> '<p>' . __( 'Descriptive content that will show in My Help Tab-body goes here.' ) . '</p>',
+        'content'	=> '<p>' . __( 'Descriptive content that will show in My Help Tab-body goes here. x' ) . '</p>',
     ) );
 }
 global $cmog_plugin_hook;
     add_action('load-toplevel_page_cmog_list_test' , 'cmog_plugin_add_help');
+	
+function cmog_plugin_add_help2(){
+    global $my_admin_page;
+    $screen = get_current_screen();  
+    if ( $screen->id != "cmog-templates_page_cmog_list_days" )
+        return;
+    $screen->add_help_tab( array(
+        'id'	=> 'days_help_tab',
+        'title'	=> __('Days Help Tab'),
+        'content'	=> '<p>' . __( 'Descriptive content that will show in day goes here.' ) . '</p>',
+    ) );
+}
+global $cmog_plugin_hook;
+    add_action('load-cmog-templates_page_cmog_list_days' , 'cmog_plugin_add_help2');
+	
+	
+	
+	
+	
+	
 	
 function cmog_plugin_add_calendaer_help(){
     global $my_admin_page;

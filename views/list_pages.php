@@ -859,6 +859,7 @@ $SGmd = (!empty ($_REQUEST['f_gmd'] )) ? $_REQUEST['f_gmd'] : '';
         <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
             <p>(some text) </p>
 			<p> Days List </p>
+
         </div>
 		<div>
 		  
