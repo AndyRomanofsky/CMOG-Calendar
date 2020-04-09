@@ -50,8 +50,8 @@ function cmog_add_menu_items(){
 	$cmog_admin_pages['days'] = add_submenu_page('cmog_list_test', 'Days', 'Days',  'activate_plugins', 'cmog_list_days', 'cmog_render_days_list_page');
 	$cmog_admin_pages['readings'] = add_submenu_page('cmog_list_test', 'Readings', 'Readings',  'activate_plugins', 'cmog_list_readings', 'cmog_render_readings_list_page');
 	$cmog_admin_pages['xceptions'] = add_submenu_page('cmog_list_test', 'Exceptions', 'Exceptions',  'activate_plugins', 'cmog_list_xceptions', 'cmog_render_xceptions_list_page');
-	//$cmog_admin_pages['top'] = add_menu_page('Template Plugin List Table', 'CMOG Templates', 'activate_plugins', 'cmog_list_zachalos', 'cmog_render_zachalos_page');
 	
+	//echo "<pre>"; var_dump($cmog_admin_pages); echo "</pre>"; exit;
 	add_action("load-" .$cmog_admin_pages['top'] , "cmog_top_screen_options");
 	add_action("load-" .$cmog_admin_pages['luke'] , "cmog_luke_screen_options");
 	add_action("load-" .$cmog_admin_pages['pentecos'] , "cmog_pentecost_screen_options");
@@ -465,20 +465,76 @@ function cmog_plugin_add_help(){
 }
 global $cmog_plugin_hook;
     add_action('load-toplevel_page_cmog_list_test' , 'cmog_plugin_add_help');
-	
-function cmog_plugin_add_help2(){
+ 
+function cmog_plugin_add_days_help(){
     global $my_admin_page;
     $screen = get_current_screen();  
     if ( $screen->id != "cmog-templates_page_cmog_list_days" )
         return;
-    $screen->add_help_tab( array(
+	    $screen->add_help_tab( array(
         'id'	=> 'days_help_tab',
         'title'	=> __('Days Help Tab'),
-        'content'	=> '<p>' . __( 'Descriptive content that will show in day goes here.' ) . '</p>',
+        'content'	=> '<p>' . __( 'Descriptive content  goes here. x' ) . '</p>',
     ) );
+    $screen->add_help_tab( array(
+        'id'	=> 'days_table_tab',
+        'title'	=> __('Days Table Tab'),
+         'content'	=> '<p>days<per>
+<b>Defines info on pdays as well as mini menaion</b>
+  daId int AUTO_INCREMENT<br> 
+  daPday int<br> 
+  daMonth int<br> 
+  daDay int<br> 
+  daPname text -- "2d Sunday of Lent" | "Monday of 3d week after Pentecost"<br> 
+  daPsub varchar(128) -- subtext for above<br> 
+  daFname varchar(255) -- title of feast<br> 
+  daFlevel int -- level of feast:<br> 
+	-1 No Liturgy<br> 
+	0 Liturgy<br> 
+	1 Presanctified<br> 
+	2 Black squigg (6-stich typikon symbol)<br> 
+	3 Red squigg (doxology typikon symbol)<br> 
+	4 Red cross (polyeleos typikon symbol)<br> 
+	5 Red cross half-circle (vigil typikon symbol)<br> 
+	6 Red cross circle (great feast typikon symbol)<br> 
+	7 Major feast Theotokos<br> 
+	8 Major feast Lord<br> 
+  daService int -- not used yet, will provide liturgical codes<br> 
+  daSnote varchar(64) -- service note (as on St Tikhon calendar)<br> 
+  daSaint varchar(128) -- at least one saint for display or typikon symbol<br> 
+  daSlevel int -- level of saint (see daFlevel)<br> 
+  daFast int -- fasting level:<br> 
+	0 neutral<br> 
+	1 fast<br> 
+	2 lent<br> 
+	3 apostles<br> 
+	4 dormition<br> 
+	5 nativity<br> 
+  daFexc int -- fasting exceptions:<br> 
+	1 Wine & Oil Allowed<br> 
+	2 Fish, Wine & Oil Allowed<br> 
+	3 Wine & Oil Allowed (cannot be overriden by 2)<br> 
+	4 Fish, Wine & Oil Allowed (overrides 3)<br> 
+	5 Wine Allowed<br> 
+	6 Wine, Oil & Caviar Allowed<br> 
+	7 Meat Fast<br> 
+	8 Strict Fast (Wine & Oil)<br> 
+	9 Strict Fast<br> 
+	10 No overrides<br> 
+	11 Fast Free<br> 
+  daKatavasia varchar(16) -- katavasia for canon (blank=common)<br> 
+  daFlag tinyint -- for housekeeping</per><br> 
+</p>',
+	 
+    ) );
+ 	    $screen->set_help_sidebar(
+         '<p><strong>' . esc_html__( 'For more information:', 'my-text-domain' ) . '</strong></p>' .
+        '<p><a href="https://wordpress.org/">WordPress</a></p>' .
+         '<p><a href="https://wordpress.org/support/" target="_blank">' . esc_html__( 'Support Forums', 'my-text-domain' ) . '</a></p>'
+    );
 }
 global $cmog_plugin_hook;
-    add_action('load-cmog-templates_page_cmog_list_days' , 'cmog_plugin_add_help2');
+    add_action('load-cmog-templates_page_cmog_list_days' , 'cmog_plugin_add_days_help');
 	
 	
 	
