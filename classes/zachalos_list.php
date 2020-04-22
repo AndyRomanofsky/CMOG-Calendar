@@ -213,20 +213,7 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
      * @return array An associative array containing column information: 'slugs'=>'Visible Titles'
      **************************************************************************/
     
-	/**
-	            case 'zaNum' :
-            case 'zaBook' :
-            case 'zaDisplay'  :
-            case 'zaSdisplay'  :
-            case 'zaDesc' :
-            case 'zaPreverse' :
-            case 'zaPrefix' :
-            case 'zaPrefixb'  :
-            case 'zaVerses'  :
-            case 'zaSuffix'  :
-            case 'zaFlag'  :
-            case 'zaId' :
-*/	
+
 	
 	function get_columns(){
         $columns = array(
@@ -268,7 +255,9 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
     function get_sortable_columns(){ 
         $sortable_columns = array(
             'zaNum'     => array('zaNum',false),     //true means it's already sorted
-            'zaBook'    => array('zaBook',false),            
+            'zaBook'    => array('zaBook',false),             
+			'zaDisplay'  => array('zaDisplay',false),               
+			'zaVerses'  => array('zaVerses',false),          
 			'zaId'  => array('zaId',false),
         ); 
         return $sortable_columns;
@@ -623,6 +612,10 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
 						$orderby = " zaNum  $order " ;
 				} elseif ($_REQUEST['orderby']  == 'zaId'){
 					  $orderby = " zaId  $order" ;   
+				} elseif ($_REQUEST['orderby']  == 'zaBook'){
+					  $orderby = " zaBook  $order , zaNum  $order" ;   
+				} elseif ($_REQUEST['orderby']  == 'zaNum'){
+					  $orderby = " zaNum  $order , zaBook  $order" ;   
 				} else {			
 					$orderby = $_REQUEST['orderby'] . " " .$order ;
 				}

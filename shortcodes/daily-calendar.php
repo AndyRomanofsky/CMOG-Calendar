@@ -638,7 +638,7 @@ $bulletin_thumb_url = $upload_dir['baseurl'] . "/Documents/bulletin/thumb/";
     if ($readings_list['descs'][$k]) {$desc=" (".$readings_list['descs'][$k].")";} else {$desc="";}
     $xs[]="$aa(" . $readings_list['nums'][$k] . ") $v$zz (" . $readings_list['types'][$k] . ")" . $desc; }
   $x=implode("<br />\n", $xs); unset($xs);
-  $outputcal .= "<p>$x</p>\n";
+  //$outputcal .= "<p>$x</p>\n";
 
 ?>
 </div>

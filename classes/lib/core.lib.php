@@ -558,7 +558,9 @@ The heart of this system is the concept of a "paschal year," which begins with Z
 	return $arr; }
 
   function retrievePericope($book, $num) 
-    {  RETURN  $arr=array();  GLOBAL $core_var;
+    {  //RETURN  
+	$arr=array(); 
+	GLOBAL $core_var;
 		$q="select * from " . $core_var['db_prefix'] . "zachalos where zaBook='$book' and zaNum='$num' ";
 	$r = $this->query($q);
 	$arr=array(); // this will hold all return values
