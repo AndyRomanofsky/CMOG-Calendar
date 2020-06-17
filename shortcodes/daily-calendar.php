@@ -600,6 +600,8 @@ $bulletin_thumb_url = $upload_dir['baseurl'] . "/Documents/bulletin/thumb/";
  
   $d = cal_from_jd($jd, CAL_GREGORIAN); // var_dump($jd);
   $a = $core->calculateDay($d['month'], $d['day'], $d['year']);   //echo "<pre>"; var_dump($a); echo "</pre>"; 
+ // echo "<pre>"; var_dump($a);    echo "</pre>"; 
+  
   $outputcal .=  "<br />" . $d['month'] . "/"   . $d['day'] . "/"   . $d['year'] . "<br />";
   if ($a['fast']) {$s=" class=\"fast\"";}
   $outputcal .= "<td$s><p><span class=\"date\">{$d['monthname']} {$d['day']}</span>\n";
@@ -638,7 +640,17 @@ $bulletin_thumb_url = $upload_dir['baseurl'] . "/Documents/bulletin/thumb/";
     if ($readings_list['descs'][$k]) {$desc=" (".$readings_list['descs'][$k].")";} else {$desc="";}
     $xs[]="$aa(" . $readings_list['nums'][$k] . ") $v$zz (" . $readings_list['types'][$k] . ")" . $desc; }
   $x=implode("<br />\n", $xs); unset($xs);
-  //$outputcal .= "<p>$x</p>\n";
+  $outputcal .= "<p>$x</p>\n";
+
+  $outputcal .= "<br/>Last year Pascha day is " . $a['vday'];
+  $outputcal .= "<br/>Pascha day is " . $a['pday'];
+  $outputcal .= "<br/>Next Year Pascha day is " . $a['nday'];
+  
+  $outputcal .= "<br/><br/>gospel day is " . $a['gday'];
+  $outputcal .= "<br/>epistle day is " . $a['eday'];
+  $outputcal .= "<br/>days we actually jumped because of Lucan jump is " . $a['jump'];
+  $outputcal .= "<br/>gospel number of Luke " . $a['of_luke'];
+  $outputcal .= "<br/>loating feast index  " . $a['fday'];
 
 ?>
 </div>

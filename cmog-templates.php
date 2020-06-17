@@ -24,7 +24,6 @@ require_once 'shortcodes/small.php';
 require_once 'classes/lib/core.lib.php'; 
 
 
-
 /** ************************ REGISTER THE admin pages  ****************************
  *******************************************************************************
  * Now we just need to define an admin page. For this template, we'll add a top-level
@@ -47,10 +46,11 @@ function cmog_add_menu_items(){
 	$cmog_admin_pages['events'] = add_submenu_page('cmog_list_test', 'Events', 'Events',  'activate_plugins', 'cmog_list_events', 'cmog_render_events_list_page');
 	                          add_submenu_page('cmog_list_test', 'Add new Event', '- Add new Event',  'activate_plugins', 'cmog_list_events&action=add&event=0', 'cmog_render_edit_event_page');
 	$cmog_admin_pages['zachalos'] = add_submenu_page('cmog_list_test', 'Zachalos', 'Zachalosr',  'activate_plugins', 'cmog_list_zachalos', 'cmog_render_zachalos_page');
+	                                  add_submenu_page('cmog_list_test', 'Add new Zachalosr', '- Add new Zachalosr',  'activate_plugins', 'cmog_list_zachalos&action=add&event=0', 'cmog_render_edit_zachalos_page');
 	$cmog_admin_pages['days'] = add_submenu_page('cmog_list_test', 'Days', 'Days',  'activate_plugins', 'cmog_list_days', 'cmog_render_days_list_page');
 	$cmog_admin_pages['readings'] = add_submenu_page('cmog_list_test', 'Readings', 'Readings',  'activate_plugins', 'cmog_list_readings', 'cmog_render_readings_list_page');
 	$cmog_admin_pages['xceptions'] = add_submenu_page('cmog_list_test', 'Exceptions', 'Exceptions',  'activate_plugins', 'cmog_list_xceptions', 'cmog_render_xceptions_list_page');
-	
+	                                  add_submenu_page('cmog_list_test', 'Add new Exceptions', '- Add new Exceptions',  'activate_plugins', 'cmog_list_xceptions&action=add&event=0', 'cmog_render_edit-xceptions_page');
 	//echo "<pre>"; var_dump($cmog_admin_pages); echo "</pre>"; exit;
 	add_action("load-" .$cmog_admin_pages['top'] , "cmog_top_screen_options");
 	add_action("load-" .$cmog_admin_pages['luke'] , "cmog_luke_screen_options");
@@ -151,10 +151,11 @@ require 'views/edit_event_page.php';
 }elseif ($cmog_page == "cmog_list_zachalos" ) {
 /** load classes for list table pages */
 require 'classes/zachalos_list.php';
-/**load views*/
 require 'views/list_pages.php';
-require 'views/edit_pages.php';
-require 'views/edit_event_page.php';
+/**load views*/
+require 'views/edit_zachalos_page.php';
+//require 'views/edit_pages.php';
+//require 'views/edit_event_page.php';
 	
 }elseif ($cmog_page == "cmog_list_readings" ) {
 /** load classes for list table pages */

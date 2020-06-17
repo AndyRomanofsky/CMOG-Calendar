@@ -30,7 +30,7 @@ $rout .= "</form>" ;
 function Smallcalendar($date, $year, $month, $day, $month_name,$oparm='?',$ok_to_edit=0 ,$fdaily )
          {
          //If no parameter is passed use the current date.
-$calendar_html = "";
+$calendar_html = "<section class='pickdate'>";
          $this_month = getDate(mktime(0, 0, 0, $month, 1, $year));
          $next_month = getDate(mktime(0, 0, 0, $month + 1, 1, $year));
          //Find out when this month starts and ends.
@@ -100,7 +100,7 @@ $calendar_html .= "</center></td></tr></table></center></small> " . PHP_EOL;
          if ($bottom_skip > 0) {
          $calendar_html .= "<td  colspan='$bottom_skip' class='blank'> </td>";
                                } 
-         $calendar_html .= "</tr></table>";
+         $calendar_html .= "</tr></table></section>";
  return($calendar_html);
  }
 		 

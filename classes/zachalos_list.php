@@ -47,6 +47,7 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
             case 'zaNum' :
             case 'zaBook' :
             case 'zaDisplay'  :
+			case 'zaLink'  :
             case 'zaSdisplay'  :
             case 'zaDesc' :
             case 'zaPreverse' :
@@ -61,32 +62,7 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
                 return  "? - ". $column_name . "?";
         }
     }
-    /** 
-
-   function column_default($item, $column_name){  
-        switch($column_name){
-            case 'Offset' :
-            case 'Length' :
-            case 'Link'  :
-            case 'Class'  :
-            case 'AddDate' :
-            case 'icon' :
-            case 'hymn' :
-            case 'listorder'  :
-            case 'popup'  :
-            case 'asset_id'  :
-            case 'catid'  :
-            case 'created_by' : 
-            case 'published' :
-            case 'access' :
-            case 'language' :
-            case 'ID' :
-			     return $item[$column_name];
-            default:
-                return  "? - ". $column_name . "?";
-        }
-    }
-	*/
+ 
     /** ************************************************************************
      * Recommended. This is a custom column method and is responsible for what
      * is rendered in any column with a name/slug of 'EventText'. Every time the class
@@ -108,29 +84,29 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
         $returnurl = $_SERVER['REQUEST_URI'];
 		if( 0 == $item['published'] ){ //draft
 		$actions = array(	
-            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s">Edit</a>',$_REQUEST['page'],'edit',$item['zaID']),
-            'trash'    => sprintf('<a href="?page=%s&action=%s&template=%s">Trash</a>',$_REQUEST['page'],'trash',$item['zaID']),
-            'publish'    => sprintf('<a href="?page=%s&action=%s&template=%s">Publish</a>',$_REQUEST['page'],'publish',$item['zaID']),
+            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s">Edit</a>',$_REQUEST['page'],'edit',$item['zaId']),
+            'trash'    => sprintf('<a href="?page=%s&action=%s&template=%s">Trash</a>',$_REQUEST['page'],'trash',$item['zaId']),
+            'publish'    => sprintf('<a href="?page=%s&action=%s&template=%s">Publish</a>',$_REQUEST['page'],'publish',$item['zaId']),
         );
 		$row_status = " <b>(Draft)</b>";
 		} elseif ( -2 == $item['published'] ){ //trash
 		$actions = array(	
-            'delete'    => sprintf('<a href="?page=%s&action=%s&template=%s">Delete</a>',$_REQUEST['page'],'delete',$item['zaID']),
-            'draft'    => sprintf('<a href="?page=%s&action=%s&template=%s">Draft</a>',$_REQUEST['page'],'draft',$item['zaID']),
-            'publish'    => sprintf('<a href="?page=%s&action=%s&template=%s">Publish</a>',$_REQUEST['page'],'publish',$item['zaID']),
+            'delete'    => sprintf('<a href="?page=%s&action=%s&template=%s">Delete</a>',$_REQUEST['page'],'delete',$item['zaId']),
+            'draft'    => sprintf('<a href="?page=%s&action=%s&template=%s">Draft</a>',$_REQUEST['page'],'draft',$item['zaId']),
+            'publish'    => sprintf('<a href="?page=%s&action=%s&template=%s">Publish</a>',$_REQUEST['page'],'publish',$item['zaId']),
         );
 		$row_status = " <b>(In Trash)</b>";
 		} elseif ( -1 == $item['published'] ){ //archived
 		$actions = array(
-            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s">Edit</a>',$_REQUEST['page'],'edit',$item['zaID']),
-            'trash'    => sprintf('<a href="?page=%s&action=%s&template=%s">Trash</a>',$_REQUEST['page'],'trash',$item['zaID']),
+            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s">Edit</a>',$_REQUEST['page'],'edit',$item['zaId']),
+            'trash'    => sprintf('<a href="?page=%s&action=%s&template=%s">Trash</a>',$_REQUEST['page'],'trash',$item['zaId']),
         );
 		$row_status = " <b>(Archived)</b>";
 		} else { // published 
 		$actions = array(			
-            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s">Edit</a>',$_REQUEST['page'],'edit',$item['zaID']),
-            'draft'    => sprintf('<a href="?page=%s&action=%s&template=%s">Draft</a>',$_REQUEST['page'],'draft',$item['zaID']),
-            'trash'    => sprintf('<a href="?page=%s&action=%s&template=%s">Trash</a>',$_REQUEST['page'],'trash',$item['zaID']),
+            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s">Edit</a>',$_REQUEST['page'],'edit',$item['zaId']),
+            'draft'    => sprintf('<a href="?page=%s&action=%s&template=%s">Draft</a>',$_REQUEST['page'],'draft',$item['zaId']),
+            'trash'    => sprintf('<a href="?page=%s&action=%s&template=%s">Trash</a>',$_REQUEST['page'],'trash',$item['zaId']),
         );
 		$row_status = "";
 		}
@@ -152,7 +128,7 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
         return sprintf(
             '<input type="checkbox" name="%1$s[]" value="%2$s" />',
             /*$1%s*/ $this->_args['singular'],  //Let's simply repurpose the table's singular label ("movable")
-            /*$2%s*/ $item['zaID']                //The value of the checkbox should be the record's id
+            /*$2%s*/ $item['zaId']                //The value of the checkbox should be the record's id
         );
     }
     function column_gmd($item){
@@ -199,6 +175,24 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
 		if ( $item['icon'] ) $out .=  "<img src='" . $item['icon'] . "' alt='icon'   height='50'><br />";
 		return $out;
 	}
+	    function column_zaDisplay($item){
+		$actions = array(			
+            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s">Edit</a>',$_REQUEST['page'],'edit',$item['zaId']),
+            'draft'    => sprintf('<a href="?page=%s&action=%s&template=%s">Draft</a>',$_REQUEST['page'],'draft',$item['zaId']),
+            'trash'    => sprintf('<a href="?page=%s&action=%s&template=%s">Trash</a>',$_REQUEST['page'],'trash',$item['zaId']),
+        );
+		$row_status = "";
+		return $item['zaDisplay'] . $row_status . $this->row_actions($actions);
+		}
+	function column_zaLink($item){
+		$out = "";
+		if ( $item['zaLink'] ) {
+			$out .=  "Link: <a href='" . $item['zaLink'] . "' target='_blank'>" . $item['zaLink'] . "</a>";
+		} else {
+			$out .= "(add link) ";
+		}
+		return $out;
+	}
     /** ************************************************************************
      * REQUIRED! This method dictates the table's columns and titles. This should
      * return an array where the key is the column slug (and class) and the value 
@@ -221,6 +215,7 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
             'zaNum'     => 'Number',
             'zaBook'     => 'Book',
              'zaDisplay'      => 'Display',
+			 'zaLink'       => 'Link',
             'zaDesc'      => 'Desc',
              'zaPreverse'     => 'Pre-Verse',
              'zaPrefix'      => 'Prefix',
@@ -482,7 +477,7 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
 				echo  	'<br /> (can not bulk edit at this time) <br /></div>';
 			} else {
 				// (code to edit row)  
-				cmog_render_edit_Movable_page($id);
+				cmog_render_edit_zachalos_page($id); 
 				exit;
 			}
         }  
@@ -500,7 +495,7 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
 			//	echo  	'<br /> (can not bulk add at this time) <br /></div>';
 			//} else {
 				// (code to add row)  
-				cmog_render_edit_Movable_page(0);
+				cmog_render_edit_zachalos_page(0);
 				exit;
 			//}
         }    
@@ -526,7 +521,7 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
 		if( 'update'===$this->current_action() ) {
 
 				// (code to add row)  
-				cmog_render_edit_Movable_page("update");
+				cmog_render_edit_zachalos_page("update");
 				exit;
 
         }    

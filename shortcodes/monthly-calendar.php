@@ -26,7 +26,7 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
 	<?php $outputcal .= "<h2>" .   $display_date["month"]     . ", " . $display_date["year"] . "</h2>" . PHP_EOL;?>
  
       
-        <?php $outputcal .= "<form id='templates-filter' method='get'>" . PHP_EOL;?>
+        <?php $outputcal .= "<form class='calendar' id='templates-filter' method='get'>" . PHP_EOL;?>
 		  <?php $outputcal .= "<br />" . PHP_EOL;?>
 		  <?php if ( array_key_exists('published',$_REQUEST )) {
 			//$status_filter =  " and published = " . $_REQUEST['published'] . " " ;
@@ -79,7 +79,7 @@ $SClass = (!empty ($_REQUEST['f_class'] )) ? $_REQUEST['f_class'] : '';
 		  <?php $outputcal .= "<input type='submit' value='Filter'>" . PHP_EOL;?>
 		  <?php $outputcal .= "<br />" . PHP_EOL;?>
             
-			<?php $outputcal .= "<table class='adminlist' style='border-collapse: collapse; border: 1px solid black;'>" . PHP_EOL;?>
+			<?php $outputcal .= "<table class='adminlist alignwide' style='border-collapse: collapse; border: 1px solid black;'>" . PHP_EOL;?>
 				<?php $outputcal .= "<thead><tr>" . PHP_EOL;?>
 					<?php $outputcal .= "<td  width='2%' class='dayhead'><small> </small></td>" . PHP_EOL;?>
 					<?php $outputcal .= "<td  width='14%' class='dayhead'><small>Sunday</small></td>" . PHP_EOL;?>
@@ -184,7 +184,7 @@ if (!empty($SClass) ) {
 			 } 		
             $outputcal .= "<td  valign='top' class='day " . $fastbox . "' border='1' ><a href='/day?f_year=" . $SYear . "&f_month=" . $SMonth . "&f_day=" . $day_counter . "'>"   . PHP_EOL; 
 			$outputcal .= "<table hight='100%'class='daytable' >" . PHP_EOL ;
-			$outputcal .= "<tr><td width='12%' border='1' >".$day_counter."</td><td>" . $savefast . "</td></tr>" . PHP_EOL;    
+			$outputcal .= "<tr><td width='20%' border='1' >".$day_counter."</td><td>" . $savefast . "</td></tr>" . PHP_EOL;    
 			$outputcal .= $saveevts;
             $outputcal .=  "</table></a></td>" . PHP_EOL . PHP_EOL;; 
             $week_day++;
