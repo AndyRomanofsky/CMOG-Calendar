@@ -11,7 +11,7 @@
    }
 add_shortcode( 'cmog_day', 'cmog_daily_calendar' );
 function cmog_daily_calendar(){
-	
+$core = new coreLIB; 
 		 
 //var_dump(wp_upload_dir());
 	 
@@ -35,7 +35,7 @@ $Week_day_n = $date["wday"];
  $SundayBulitin_date = getDate(mktime(0, 0, 0, $SMonth,($SDay - $Week_day_n), $SYear));  
     $outputcal = '';
     ?>
-	<?php $outputcal .= "<h2>" . $display_date["weekday"] . ", " .   $display_date["month"] . " "  .$display_date["mday"] . ", " . $display_date["year"] . "</h2>" . PHP_EOL;?>
+
         <?php $outputcal .= "<form id='templates-filter' method='get'>" . PHP_EOL;?>
 		  <?php $outputcal .= "<br />" . PHP_EOL;?>
 		<?php $outputcal .= "Year: ";?> 
@@ -69,8 +69,20 @@ $Week_day_n = $date["wday"];
 			<?php $outputcal .= "</select>		" . PHP_EOL;?>
 		<?php $outputcal .= " Day: <input type='number' name='f_day'  min='0' max='31'  value='" . $SDay . "'>" . PHP_EOL      ?>     	
 		  <?php $outputcal .= "<input type='submit' value='Filter'>" . PHP_EOL;?>
-		  <?php $outputcal .= "<br />" . PHP_EOL;?>
+		  <?php $outputcal .= "<br /><hr />" . PHP_EOL;?>
+		  
 	<?php	
+$jd = unixtojd(mktime(0, 0, 0,$SMonth,$SDay,$SYear));
+ 
+  $d = cal_from_jd($jd, CAL_GREGORIAN); // var_dump($jd);
+  $a = $core->calculateDay($d['month'], $d['day'], $d['year']);    //echo "<pre>"; var_dump($a); echo "</pre>"; 
+ //echo "<pre>"; var_dump($a);  
+ $outputcal .= "<h2>" . $display_date["weekday"] . ", " .   $display_date["month"] . " "  .$display_date["mday"] . ", " . $display_date["year"]  . PHP_EOL;
+  if ($a['saint']) {$outputcal .= " - " . $a['saint'] ;}
+  $outputcal .=  "</h2>"; 
+  
+	
+	
 //get data
 				 $items = $wpdb->get_results( "SELECT * FROM `" . $wpdb->prefix . "cmog_events` WHERE (Year = $SYear or Year = -1 ) and Month = $SMonth and Day = $SDay ORDER  BY Day asc", 'ARRAY_A' ); 
 	?>		
@@ -276,14 +288,43 @@ endforeach;
 //$display_date["year"] . "-".   $display_date["mon"] . "-"  . $display_date["mday"] 
        $outputcal .= "<section class='daily'>";
        $outputcal .= "<center> " .  $dday->getTextofday() . " </center>" ; 
-       $outputcal .= "<center>" . $fast_html . "</center>" . PHP_EOL ; 
+       $outputcal .= "<center>" . $fast_html . "</center>" . PHP_EOL ;
+
+  if ($a['fast'] && $a['fast_level'] && $a['fast_level']!=10 || $a['fast_level']==11)
+    {$outputcal .= "<center><span class=\"fnote\">{$core->fast_levels[$a['fast_level']]}</span></center> ";}	
+
+  if ($a['snote']) {$outputcal .= "<center>{$a['snote']}</center>";}
+
+  if (!$a['tone']) {$tone="";} else {$tone=" &mdash; Tone {$a['tone']}";}
+  if ($d['dow']==0 || ($a['pday'] > -9 && $a['pday'] < 7)) {$outputcal .= "<center><b>{$a['pname']}$tone.</b></center> ";}
+  if ($a['fname']) {$outputcal .= "<center><b>{$a['fname']}.</b></center> ";}
+ // $outputcal .=  "</p>\n";	
+
        $outputcal .= "<ul>" . PHP_EOL . $ser_html . PHP_EOL ."</ul>\n<ul>" . $event_html . PHP_EOL . "</ul>" . PHP_EOL ;  
  // temp test code
  $ChurchDates = Pentecost_offset($SYear, $SMonth, $SDay, TRUE ); 
  //var_dump($ChurchDates);
  $Week_day_n = $ChurchDates['day']; //day of the week, 1 is Monday
-   if (empty($read_html)) $read_html = lookup_read($ChurchDates);
-       $outputcal .= "<ul>" . PHP_EOL . $read_html . PHP_EOL . "</ul>" . PHP_EOL; 
+   //if (empty($read_html)) $read_html = lookup_read($ChurchDates);
+       //$outputcal .= "<ul>" . PHP_EOL . $read_html . PHP_EOL . "</ul>" . PHP_EOL; 
+//Readings	
+	    $readings_list=$core->retrieveReadings($a);
+ $xs=array();
+ foreach ($readings_list['displays'] as $k=>$v)
+ {  
+ //if ($k==$reading) {$aa=""; $zz="";} else {$aa="<span class=\"rdg\" onclick=\"rexec($cday,$k);\">"; $zz="</span>";}
+   if ($readings_list['descs'][$k]) {$desc=" (".$readings_list['descs'][$k].")";} else {$desc="";}
+  // $xs[]="$aa(" . $readings_list['nums'][$k] . ") $v$zz (" . $readings_list['types'][$k] . ")" . $desc . " Link " . $readings_list['links'][$k];}
+    if ($readings_list['links'][$k]) {
+	$xs[]=  "<a  HREF='" . $readings_list['links'][$k] . "'> " . $v . "</a> (" . $readings_list['types'][$k] . ")" . $desc ;
+	} else { 
+	$xs[]=  $v . " (" . $readings_list['types'][$k] . ")" . $desc ;
+	}
+}	
+ $x=implode("</li>\n<li class='read'>", $xs); unset($xs);
+ $outputcal .= "<ul><h4>Readings:</h4><li class='read'>$x</li></ul>\n";
+ 
+	   
 //  This section will list the Kathisma that are read. (It now is fixed for Bright week) ------------------------------------------
 //
      $psalter = "<a target='prayers' href='/prayers/";
@@ -588,72 +629,12 @@ $bulletin_thumb_url = $upload_dir['baseurl'] . "/Documents/bulletin/thumb/";
 	}   
 ?> 
     <?php $outputcal .= "</div>" . PHP_EOL;?>
+ <?php $outputcal .=  "<p>(" . $a['pday'] . ")</p>"; ?>
 
 	
 	<?php $outputcal .= "</section>";?>
-	<?php  $core = new coreLIB; ?>
 	
-<?php
-   //$d = cal_from_jd($i, CAL_GREGORIAN); var_dump($d);
- // $d = $display_date;  
- $jd = unixtojd(mktime(0, 0, 0,$SMonth,$SDay,$SYear));
- 
-  $d = cal_from_jd($jd, CAL_GREGORIAN); // var_dump($jd);
-  $a = $core->calculateDay($d['month'], $d['day'], $d['year']);   //echo "<pre>"; var_dump($a); echo "</pre>"; 
- // echo "<pre>"; var_dump($a);    echo "</pre>"; 
-  
-  $outputcal .=  "<br />" . $d['month'] . "/"   . $d['day'] . "/"   . $d['year'] . "<br />";
-  if ($a['fast']) {$s=" class=\"fast\"";}
-  $outputcal .= "<td$s><p><span class=\"date\">{$d['monthname']} {$d['day']}</span>\n";
-  if ($a['fast'] && $a['fast_level'] && $a['fast_level']!=10 || $a['fast_level']==11)
-    {$outputcal .= "<br /><span class=\"fnote\">{$core->fast_levels[$a['fast_level']]}</span></p> ";}
-  if ($a['snote']) {$outputcal .= "<p class=\"snote\">{$a['snote']}</p>";}
-  $outputcal .= "<p>";
-  if (!$a['tone']) {$tone="";} else {$tone=" &mdash; Tone {$a['tone']}";}
-  if ($d['dow']==0 || ($a['pday'] > -9 && $a['pday'] < 7)) {$outputcal .= "<b>{$a['pname']}$tone.</b> ";}
-  if ($a['fname']) {$outputcal .= "<b>{$a['fname']}.</b> ";}
-  if ($a['saint']) {$outputcal .= "{$a['saint']}";}
-  $outputcal .=  "</p>\n";
 
-  $xr=$core->retrieveReadings($a);
-
- // foreach ($xr['sdisplays'] as $k=>$v)
-   foreach ($xr['displays'] as $k=>$v)
-    { $xa[]="<span class=\"rdg\" onclick=\"rexec($i,$k);\">$v</span>"; }
-  $x=implode("<br />\n", $xa); unset($xa);
-  $outputcal .= "<p>$x</p>\n";	
-  ?>
-	
-	
-	
-	<?php $outputcal .= "<section>";?>
-	<?php $outputcal .= "<hr />";?>
-		<?php $outputcal .= "</section>";?>
-		
-		<div style="font-size:18px; line-height:150%; text-align:center; padding-top: .33em;">
-
-<?php
-  $readings_list=$core->retrieveReadings($a);
-  $xs=array();
-  foreach ($readings_list['displays'] as $k=>$v)
-  { if ($k==$reading) {$aa=""; $zz="";} else {$aa="<span class=\"rdg\" onclick=\"rexec($cday,$k);\">"; $zz="</span>";}
-    if ($readings_list['descs'][$k]) {$desc=" (".$readings_list['descs'][$k].")";} else {$desc="";}
-    $xs[]="$aa(" . $readings_list['nums'][$k] . ") $v$zz (" . $readings_list['types'][$k] . ")" . $desc; }
-  $x=implode("<br />\n", $xs); unset($xs);
-  $outputcal .= "<p>$x</p>\n";
-
-  $outputcal .= "<br/>Last year Pascha day is " . $a['vday'];
-  $outputcal .= "<br/>Pascha day is " . $a['pday'];
-  $outputcal .= "<br/>Next Year Pascha day is " . $a['nday'];
-  
-  $outputcal .= "<br/><br/>gospel day is " . $a['gday'];
-  $outputcal .= "<br/>epistle day is " . $a['eday'];
-  $outputcal .= "<br/>days we actually jumped because of Lucan jump is " . $a['jump'];
-  $outputcal .= "<br/>gospel number of Luke " . $a['of_luke'];
-  $outputcal .= "<br/>loating feast index  " . $a['fday'];
-
-?>
-</div>
 	<?php return $outputcal;?>
     <?php
 }

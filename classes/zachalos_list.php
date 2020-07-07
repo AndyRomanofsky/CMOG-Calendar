@@ -1,5 +1,5 @@
 <?php
-/************************** CREATE A PACKAGE CLASS ****CMOG_Movable_List_Table**
+/************************** CREATE A PACKAGE CLASS ****CMOG_Zachalos_List_Table**
  *******************************************************************************
  * Create a new list table package that extends the core WP_List_Table class.
  */
@@ -176,7 +176,8 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
 		return $out;
 	}
 	    function column_zaDisplay($item){
-		$actions = array(			
+
+			$actions = array(			
             'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s">Edit</a>',$_REQUEST['page'],'edit',$item['zaId']),
             'draft'    => sprintf('<a href="?page=%s&action=%s&template=%s">Draft</a>',$_REQUEST['page'],'draft',$item['zaId']),
             'trash'    => sprintf('<a href="?page=%s&action=%s&template=%s">Trash</a>',$_REQUEST['page'],'trash',$item['zaId']),
@@ -600,7 +601,13 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
 		if ( array_key_exists('published',$_REQUEST )) {
 			$status_filter =  " and published = " . $_REQUEST['published'] . " " ;
 		} 
+		$link_filter = '';
 		
+	
+	//filter	
+		if ( array_key_exists('no_link',$_REQUEST )) {		
+			$link_filter = " WHERE zaLink IS NULL OR zaLink = ' ' ";
+		}
 		$order = (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : 'asc'; //If no order, default to asc
 		$orderby = "  $order " ;
 				if ( empty($_REQUEST['orderby'])) {
@@ -615,7 +622,7 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
 					$orderby = $_REQUEST['orderby'] . " " .$order ;
 				}
         //$data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_moveableevent WHERE gmd = -1 //$status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
-	$data = $wpdb->get_results( "SELECT * FROM cmog66_oc_zachalos  ORDER BY   $orderby  ", 'ARRAY_A' ); 
+	$data = $wpdb->get_results( "SELECT * FROM cmog66_oc_zachalos $link_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
 		
 		
         /***********************************************************************

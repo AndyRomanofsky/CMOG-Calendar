@@ -26,7 +26,7 @@ function cmog_render_edit_zachalos_page($id){
 	/**  template update **/
 		if ($id) {
 		 	if ((isset($_REQUEST['action'])) and ($_REQUEST['action'] == 'update'   )){
-					echo "<div class='notice notice-success is-dismissible'>";
+					//echo "<div class='notice notice-success is-dismissible'>";
 					check_admin_referer( 'cmog_movable-update');
 					$data	 = array(  
                     'zaNum' => $_REQUEST['zaNum'],
@@ -56,7 +56,7 @@ function cmog_render_edit_zachalos_page($id){
                     '%s', // zaPrefixb 
                     '%s', // zaVerses 
                     '%s', // zaSuffix 
-                    '%s', // zaFlag 
+                    '%d', // zaFlag 
                     '%d', // zaId 	
 					);
 					$rownumber = $wpdb->replace( $table, $data, $format ); 
@@ -93,29 +93,15 @@ function cmog_render_edit_zachalos_page($id){
 			
 				<?php if ($id) { 
 				
-				Echo "<p>" . $row['Offset'] . " days from Pascha.</p>";
-				
-				
-				
-				if (1 <> $row['Length']) {
-				Echo "<p>For " .  $row['Length'] . " days.</p>";
-				}
-				
-				
-				/*if (-1 == $row['Year']){
-				echo  $row['Month'] . "/" . $row['Day'] . "/(every year)<br />";
-				} else{
-				echo  $row['Month'] . "/" . $row['Day'] . "/" . $row['Year'] . "<br />";
-				}*/
-				
-				
-				if ($row['Link']) {
-					echo "<a href='" . $row['Link']  .  "' target='_blank'><p class='" . $row['Class'] ."'>" . $row['EventText'] ." </p></a>";
+				Echo "<p>Reading " . $row['zaNum'] . " from " . $row['zaBook'] . "</p>";
+						
+				if (1 <> zaDesc) {
+				Echo "<p>(" .  $row['zaDesc'] . ")</p>";
+				}				
+				if ($row['zaLink']) {
+					echo "<p><a href='" . $row['zaLink']  .  "' target='_blank'>" . $row['zaDisplay'] ." </p></a>";
 				}else{
-				echo "<p class='" . $row['Class'] ."'>" . $row['EventText'] ." </p>";
-				}
-				if ($row['icon']) {
-				echo "<img src='" . $row['icon'] . "' alt='icon'   height='60'>";
+				echo "<p>" . $row['zaDisplay'] ." </p>";
 				}
 			}?>
 			

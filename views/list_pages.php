@@ -774,7 +774,8 @@ $SYear = (!empty ($_REQUEST['f_year'] )) ? $_REQUEST['f_year'] : '';
 $EveryYear = (!empty ($_REQUEST['f_every_year'] )) ? $_REQUEST['f_every_year'] : '';
 
 $SGmd = (!empty ($_REQUEST['f_gmd'] )) ? $_REQUEST['f_gmd'] : '';
-
+//$f_book = "";
+//$f_book = (!empty($_REQUEST['f_book'] )) ? $_REQUEST['f_book'] : '';
  //$date = getDate(); 
 // if ($SMonth == "") $SMonth = $date["mon"];
  //if ($SYear == "") $SYear = $date["year"];
@@ -797,11 +798,31 @@ $SGmd = (!empty ($_REQUEST['f_gmd'] )) ? $_REQUEST['f_gmd'] : '';
 			echo "<input type='hidden' id='published' name='published' value='" . $_REQUEST['published'] . "'>";
 		} ?>
 		  <br />
+
+		Book:  
+			<?php
+			$books = $wpdb->get_results( "SELECT DISTINCT `zaBook` FROM `cmog66_oc_zachalos`", 'ARRAY_A' ); 
+			?>
+			<select name='f_book' >	
+			<?php
+			echo "<option value=''> </option>;";	
+			foreach($books as  $y): 
+			echo "<option value=" . $y['zaBook'] ; 
+			//if (  $f_book == $y['zaBook']  )  echo " selected "; 
+			echo ">" . $y['zaBook'] . "</option>;";	
+			endforeach; 
+			?>
+			</select>	
+
+		Show missing links only: <input type="checkbox" name="no_link" value="Yes" <?php if ('Yes' == $NoLink  ) echo ' checked';?>  >
+		
+		<br /><input type="submit" value='Filter'>
+		  <br />
             <!-- For plugins, we also need to ensure that the form posts back to our current page -->
             <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
             <!-- Now we can render the completed list table -->
 
-            <?php $Events_List->display() ?>
+            <?php  $Events_List->display() ?>
         </form>
     </div>
 <?php }    
@@ -847,6 +868,9 @@ echo "<br> server url: " ;  var_dump($_SERVER["REQUEST_URI"]);
 $SMonth = (!empty($_REQUEST['f_month'] )) ? $_REQUEST['f_month'] : '';
 $SYear = (!empty ($_REQUEST['f_year'] )) ? $_REQUEST['f_year'] : '';
 $EveryYear = (!empty ($_REQUEST['f_every_year'] )) ? $_REQUEST['f_every_year'] : '';
+
+
+$NoLink = (!empty ($_REQUEST['no_link'] )) ? $_REQUEST['no_link'] : '';
 
 $SGmd = (!empty ($_REQUEST['f_gmd'] )) ? $_REQUEST['f_gmd'] : '';
 

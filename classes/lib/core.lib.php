@@ -458,6 +458,7 @@ The heart of this system is the concept of a "paschal year," which begins with Z
 	$books=array();
 	$nums=array();
 	$idx=array();
+	$links=array();
 // assemble conditions for sql
 	if ($day['no_memorial']) {$nomem=" and reDesc != 'Departed'";} else {$nomem="";}
 	if ($day['gday'] != 499)
@@ -480,7 +481,8 @@ The heart of this system is the concept of a "paschal year," which begins with Z
 	    $conditions[]="(reMonth = {$pa['mon']} and reDay = {$pa['mday']} and reType = 'Vespers')"; }
 // make sql
 	$conds = implode(" or ", $conditions);
-	$q = "select " . $core_var['db_prefix'] . "readings.*, " . $core_var['db_prefix'] . "zachalos.zaDisplay as display, " . $core_var['db_prefix'] . "zachalos.zaSdisplay as sdisplay from " . $core_var['db_prefix'] . "readings left join " . $core_var['db_prefix'] . "zachalos on (" . $core_var['db_prefix'] . "zachalos.zaBook=" . $core_var['db_prefix'] . "readings.reBook and " . $core_var['db_prefix'] . "zachalos.zaNum=" . $core_var['db_prefix'] . "readings.reNum) where $conds order by reIndex";
+    // $q = "select " . $core_var['db_prefix'] . "readings.*, " . $core_var['db_prefix'] . "zachalos.zaDisplay as display, " . $core_var['db_prefix'] . "zachalos.zaSdisplay as sdisplay from " . $core_var['db_prefix'] . "readings left join " . $core_var['db_prefix'] . "zachalos on (" . $core_var['db_prefix'] . "zachalos.zaBook=" . $core_var['db_prefix'] . "readings.reBook and " . $core_var['db_prefix'] . "zachalos.zaNum=" . $core_var['db_prefix'] . "readings.reNum) where $conds order by reIndex";
+	$q = "select " . $core_var['db_prefix'] . "readings.*, " . $core_var['db_prefix'] . "zachalos.zaDisplay as display, " . $core_var['db_prefix'] . "zachalos.zaLink as link, " . $core_var['db_prefix'] . "zachalos.zaSdisplay as sdisplay from " . $core_var['db_prefix'] . "readings left join " . $core_var['db_prefix'] . "zachalos on (" . $core_var['db_prefix'] . "zachalos.zaBook=" . $core_var['db_prefix'] . "readings.reBook and " . $core_var['db_prefix'] . "zachalos.zaNum=" . $core_var['db_prefix'] . "readings.reNum) where $conds order by reIndex";
 
 // $this->deBug=$q;
 
@@ -490,6 +492,7 @@ The heart of this system is the concept of a "paschal year," which begins with Z
 	    $descs[] = $w['reDesc'];
 	    $books[] = $w['reBook'];
 	    $displays[] = $w['display'];
+	    $links[] = $w['link'];
 	    $sdisplays[] = $w['sdisplay'];
 	    $nums[] = $w['reNum'];
 	    $idx[] = $w['reIndex']; }
@@ -501,6 +504,7 @@ The heart of this system is the concept of a "paschal year," which begins with Z
 	        $xd=array($descs[0], $descs[1], $descs[$i], $descs[$j]);
 	        $xb=array($books[0], $books[1], $books[$i], $books[$j]);
 	        $xy=array($displays[0], $displays[1], $displays[$i], $displays[$j]);
+	        $xl=array($links[0], $links[1], $links[$i], $links[$j]);
 	        $xs=array($sdisplays[0], $sdisplays[1], $sdisplays[$i], $sdisplays[$j]);
 	        $xn=array($nums[0], $nums[1], $nums[$i], $nums[$j]);
 	        $xi=array($idx[0], $idx[1], $idx[$i], $idx[$j]); 
@@ -510,6 +514,7 @@ The heart of this system is the concept of a "paschal year," which begins with Z
 		    $xd[]=$descs[$k];
 		    $xb[]=$books[$k];
 		    $xy[]=$displays[$k];
+		    $xl[]=$links[$k];
 		    $xs[]=$sdisplays[$k];
 		    $xn[]=$nums[$k];
 		    $xi[]=$idx[$k]; } }
@@ -517,6 +522,7 @@ The heart of this system is the concept of a "paschal year," which begins with Z
 	        $descs=$xd;
 	        $books=$xb;
 	        $displays=$xy;
+	        $links=$xl;
 	        $sdisplays=$xs;
 	        $nums=$xn;
 	        $idx=$xi; }
@@ -528,6 +534,7 @@ The heart of this system is the concept of a "paschal year," which begins with Z
 	        $xd=array($descs[$i]);
 	        $xb=array($books[$i]);
 	        $xy=array($displays[$i]);
+	        $xl=array($links[$i]);
 	        $xs=array($sdisplays[$i]);
 	        $xn=array($nums[$i]);
 	        $xi=array($idx[$i]); 
@@ -537,6 +544,7 @@ The heart of this system is the concept of a "paschal year," which begins with Z
 		    $xd[]=$descs[$k];
 		    $xb[]=$books[$k];
 		    $xy[]=$displays[$k];
+		    $xl[]=$links[$k];
 		    $xs[]=$sdisplays[$k];
 		    $xn[]=$nums[$k];
 		    $xi[]=$idx[$k]; } }
@@ -544,6 +552,7 @@ The heart of this system is the concept of a "paschal year," which begins with Z
 	        $descs=$xd;
 	        $books=$xb;
 	        $displays=$xy;
+	        $links=$xl;
 	        $sdisplays=$xs;
 	        $nums=$xn;
 	        $idx=$xi; } }
@@ -555,6 +564,7 @@ The heart of this system is the concept of a "paschal year," which begins with Z
 	$arr['sdisplays']=$sdisplays;
 	$arr['nums']=$nums;
 	$arr['idx']=$idx;
+	$arr['links']=$links;
 	return $arr; }
 
   function retrievePericope($book, $num) 
