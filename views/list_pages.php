@@ -734,10 +734,7 @@ function cmog_top_menu($addtype = 0 ){
 }
 
 function cmog_render_zachalos_page() {
-	if ( !current_user_can( 'manage_options' ) )  	{
-		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-	} 
-/** *************************** RENDER Events list PAGE ********************************
+/** *************************** RENDER zachalos list PAGE ********************************
  *******************************************************************************
  * This function renders the admin page and the template list table. Although it's
  * possible to call prepare_items() and display() from the constructor, there
@@ -749,7 +746,8 @@ function cmog_render_zachalos_page() {
 	if ( !current_user_can( 'manage_options' ) )  	{
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	}
-	
+	$test2 = 'render class';
+//var_dump($test2); exit;
 global $wpdb; //This is used only if making any database queries
 /*
 echo "<br> request: " ;  var_dump($_REQUEST);
@@ -772,10 +770,11 @@ echo "<br> server url: " ;  var_dump($_SERVER["REQUEST_URI"]);
 $SMonth = (!empty($_REQUEST['f_month'] )) ? $_REQUEST['f_month'] : '';
 $SYear = (!empty ($_REQUEST['f_year'] )) ? $_REQUEST['f_year'] : '';
 $EveryYear = (!empty ($_REQUEST['f_every_year'] )) ? $_REQUEST['f_every_year'] : '';
+$NoLink = (!empty ($_REQUEST['no_link'] )) ? $_REQUEST['no_link'] : 'No';
 
 $SGmd = (!empty ($_REQUEST['f_gmd'] )) ? $_REQUEST['f_gmd'] : '';
-//$f_book = "";
-//$f_book = (!empty($_REQUEST['f_book'] )) ? $_REQUEST['f_book'] : '';
+ $f_book = "";
+ $f_book = (!empty($_REQUEST['f_book'] )) ? $_REQUEST['f_book'] : '';
  //$date = getDate(); 
 // if ($SMonth == "") $SMonth = $date["mon"];
  //if ($SYear == "") $SYear = $date["year"];
@@ -805,10 +804,10 @@ $SGmd = (!empty ($_REQUEST['f_gmd'] )) ? $_REQUEST['f_gmd'] : '';
 			?>
 			<select name='f_book' >	
 			<?php
-			echo "<option value=''> </option>;";	
+			echo "<option value=' '> </option>;";	
 			foreach($books as  $y): 
 			echo "<option value=" . $y['zaBook'] ; 
-			//if (  $f_book == $y['zaBook']  )  echo " selected "; 
+			if (  $f_book == $y['zaBook']  )  echo " selected "; 
 			echo ">" . $y['zaBook'] . "</option>;";	
 			endforeach; 
 			?>
@@ -822,7 +821,7 @@ $SGmd = (!empty ($_REQUEST['f_gmd'] )) ? $_REQUEST['f_gmd'] : '';
             <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
             <!-- Now we can render the completed list table -->
 
-            <?php  $Events_List->display() ?>
+            <?php   $Events_List->display() ?>
         </form>
     </div>
 <?php }    

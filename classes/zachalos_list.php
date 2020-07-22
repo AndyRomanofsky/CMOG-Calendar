@@ -176,9 +176,16 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
 		return $out;
 	}
 	    function column_zaDisplay($item){
-
+	         $parms = "";
+  			if(  isset($_REQUEST['f_book'])){ 
+			$parms .= "&f_book=" . $_REQUEST['f_book'] ;
+			} 
+  			if(  isset($_REQUEST['no_link'])){
+			$parms .= "&no_link=" . $_REQUEST['no_link'];
+			}
+ 
 			$actions = array(			
-            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s">Edit</a>',$_REQUEST['page'],'edit',$item['zaId']),
+            'edit'      => sprintf('<a href="?page=%s&action=%s&template=%s%s">Edit</a>',$_REQUEST['page'],'edit',$item['zaId'],$parms),
             'draft'    => sprintf('<a href="?page=%s&action=%s&template=%s">Draft</a>',$_REQUEST['page'],'draft',$item['zaId']),
             'trash'    => sprintf('<a href="?page=%s&action=%s&template=%s">Trash</a>',$_REQUEST['page'],'trash',$item['zaId']),
         );
@@ -550,7 +557,8 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
         /**
          * First, lets decide how many records per page to show
          */
-		 
+//$test= 'test1-prepare_items';
+//var_dump($test); exit;
 		 // get the current user ID
 		$user = get_current_user_id();
 		// get the current admin screen
@@ -601,13 +609,19 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
 		if ( array_key_exists('published',$_REQUEST )) {
 			$status_filter =  " and published = " . $_REQUEST['published'] . " " ;
 		} 
+		$filter = ' where 1 = 1 ';
 		$link_filter = '';
-		
-	
+		$book_filter = '';
+//var_dump($filter); exit;	
 	//filter	
 		if ( array_key_exists('no_link',$_REQUEST )) {		
-			$link_filter = " WHERE zaLink IS NULL OR zaLink = ' ' ";
+			$link_filter = " and  (zaLink IS NULL OR zaLink = ' ') ";
 		}
+ 		if ( array_key_exists('f_book',$_REQUEST ) and ($_REQUEST['f_book'] <> ' ')) {		
+			$book_filter = " and zaBook = '" . $_REQUEST['f_book'] . "' ";
+	 	}
+		$filter .= $link_filter .  $book_filter;
+
 		$order = (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : 'asc'; //If no order, default to asc
 		$orderby = "  $order " ;
 				if ( empty($_REQUEST['orderby'])) {
@@ -622,7 +636,9 @@ class CMOG_Zachalos_List_Table extends WP_List_Table {
 					$orderby = $_REQUEST['orderby'] . " " .$order ;
 				}
         //$data = $wpdb->get_results( "SELECT * FROM cmog66_cmog_moveableevent WHERE gmd = -1 //$status_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
-	$data = $wpdb->get_results( "SELECT * FROM cmog66_oc_zachalos $link_filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
+		
+
+	$data = $wpdb->get_results( "SELECT * FROM cmog66_oc_zachalos $filter ORDER BY   $orderby  ", 'ARRAY_A' ); 
 		
 		
         /***********************************************************************

@@ -9,6 +9,14 @@ function cmog_render_edit_zachalos_page($id){
 	if ( !current_user_can( 'manage_options' ) )  	{
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	} ?>
+		<?php    $parms = "";
+  			if(  isset($_REQUEST['f_book'])){ 
+			$parms .= "&f_book=" . $_REQUEST['f_book'] ;
+			} 
+  			if(  isset($_REQUEST['no_link'])){
+			$parms .= "&no_link=" . $_REQUEST['no_link'];
+			}
+			?>	
 	
 	 <div class="wrap">
 	<?php if ($id) {
@@ -114,7 +122,7 @@ function cmog_render_edit_zachalos_page($id){
 			<?php if ("Add" == $submit ){;?>
 			<a class="button" href="/wp-admin/admin.php?page=cmog_list_zachalos" >Cancel</a>
 			<?php } else { ?>
-			<a class="button" href="/wp-admin/admin.php?page=cmog_list_zachalos&published=<?php echo $row['published']?>" >Close</a>
+			<a class="button" href="/wp-admin/admin.php?page=cmog_list_zachalos&published=<?php echo $row['published']?><?php echo $parms ?>" >Close</a>
 			<?php }  ?>
   <br />
   		   <input type="hidden" id="page" name="page" value="cmog_list_zachalos">
@@ -140,8 +148,14 @@ function cmog_render_edit_zachalos_page($id){
 			<input type="hidden" name='_wp_http_referer'   value="<?php echo $_REQUEST['_wp_http_referer'];?>">
 			<?php }
 			?>
-
- 
+<?php
+  			if(  isset($_REQUEST['f_book'])){ ?>
+			<input type="hidden" name='f_book' value="<?php echo $_REQUEST['f_book'];?>">
+			<?php }  
+  			if(  isset($_REQUEST['no_link'])){ ?>
+			<input type="hidden" name='no_link' value="<?php echo $_REQUEST['no_link'];?>">
+			<?php }
+?> 
   <br /> * required field<br />
 			</form>
 	</div>	 
